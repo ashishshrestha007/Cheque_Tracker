@@ -22,8 +22,13 @@
             --border: #DFE1E6;
             --border-focus: #0052CC;
             --success: #00875A;
+            --success-light: rgba(0, 135, 90, 0.1);
             --error: #DE350B;
+            --error-light: rgba(222, 53, 11, 0.1);
             --warning: #FF991F;
+            --warning-light: rgba(255, 153, 31, 0.1);
+            --info: #0065FF;
+            --info-light: rgba(0, 101, 255, 0.1);
             --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
             --shadow-md: 0 4px 8px rgba(9, 30, 66, 0.1);
             --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.12);
@@ -53,6 +58,10 @@
             --bg-tertiary: #21262D;
             --border: #30363D;
             --border-focus: #4C9AFF;
+            --success-light: rgba(0, 135, 90, 0.2);
+            --error-light: rgba(222, 53, 11, 0.2);
+            --warning-light: rgba(255, 153, 31, 0.2);
+            --info-light: rgba(0, 101, 255, 0.2);
             --header-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         }
 
@@ -100,7 +109,6 @@
             pointer-events: none;
         }
 
-        /* Sidebar Circles */
         .sidebar-shapes {
             position: absolute;
             top: 0;
@@ -173,7 +181,6 @@
             text-transform: uppercase;
         }
 
-        /* Sidebar Nav */
         .sidebar-nav {
             padding: 0 12px;
             position: relative;
@@ -239,7 +246,6 @@
             background: var(--error);
         }
 
-        /* Sidebar Footer */
         .sidebar-footer {
             position: absolute;
             bottom: 24px;
@@ -417,32 +423,38 @@
             position: absolute;
             top: -4px;
             right: -4px;
-            width: 18px;
+            min-width: 18px;
             height: 18px;
             background: var(--error);
             color: white;
             font-size: 10px;
             font-weight: 700;
-            border-radius: 50%;
+            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0 4px;
+        }
+
+        .header-btn .badge:empty,
+        .header-btn .badge[data-count="0"] {
+            display: none;
         }
 
         .theme-toggle .sun { display: none; }
         [data-theme="dark"] .theme-toggle .sun { display: block; }
         [data-theme="dark"] .theme-toggle .moon { display: none; }
 
-        /* Notification Panel */
+        /* Notification Dropdown (SAME AS CHEQUE.HTML) */
         .notification-wrapper {
             position: relative;
         }
 
-        .notification-panel {
+        .notification-dropdown {
             position: absolute;
-            top: calc(100% + 12px);
+            top: calc(100% + 8px);
             right: 0;
-            width: 380px;
+            width: 400px;
             background: var(--bg-primary);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
@@ -455,13 +467,13 @@
             overflow: hidden;
         }
 
-        .notification-panel.active {
+        .notification-dropdown.active {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
 
-        .notification-panel-header {
+        .notification-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -470,24 +482,50 @@
             background: var(--bg-secondary);
         }
 
-        .notification-panel-title {
-            font-size: 15px;
+        .notification-header h4 {
+            font-size: 14px;
             font-weight: 700;
             color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .notification-mark-read {
-            font-size: 12px;
+        .notification-header h4 .count {
+            background: var(--error);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .notification-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .notification-header-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
             font-weight: 600;
-            color: var(--accent);
-            background: none;
-            border: none;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .notification-mark-read:hover {
-            color: var(--accent-hover);
+        .notification-header-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .notification-header-btn.danger:hover {
+            background: var(--error-light);
+            color: var(--error);
+            border-color: var(--error);
         }
 
         .notification-list {
@@ -497,32 +535,33 @@
 
         .notification-item {
             display: flex;
-            gap: 14px;
-            padding: 16px 20px;
+            gap: 12px;
+            padding: 14px 20px;
             border-bottom: 1px solid var(--border);
-            transition: var(--transition);
             cursor: pointer;
+            transition: var(--transition);
         }
 
         .notification-item:hover {
             background: var(--bg-secondary);
         }
 
+        .notification-item.unread {
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        .notification-item.unread:hover {
+            background: rgba(0, 82, 204, 0.12);
+        }
+
         .notification-item:last-child {
             border-bottom: none;
         }
 
-        .notification-item.unread {
-            background: var(--primary-light);
-        }
-
-        .notification-item.unread:hover {
-            background: var(--accent-light);
-        }
-
         .notification-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
@@ -531,93 +570,51 @@
         }
 
         .notification-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: white;
         }
 
-        .notification-icon.success { background: linear-gradient(135deg, #00875A 0%, #006644 100%); }
-        .notification-icon.info { background: linear-gradient(135deg, #0052CC 0%, #0747A6 100%); }
-        .notification-icon.warning { background: linear-gradient(135deg, #FF991F 0%, #FF8B00 100%); }
-        .notification-icon.error { background: linear-gradient(135deg, #DE350B 0%, #BF2600 100%); }
+        .notification-icon.success { background: linear-gradient(135deg, #00875A, #006644); }
+        .notification-icon.warning { background: linear-gradient(135deg, #FF991F, #FF8B00); }
+        .notification-icon.info { background: linear-gradient(135deg, #0052CC, #0747A6); }
+        .notification-icon.error { background: linear-gradient(135deg, #DE350B, #BF2600); }
 
         .notification-content {
             flex: 1;
             min-width: 0;
         }
 
-        .notification-text {
+        .notification-title {
             font-size: 13px;
-            color: var(--text-primary);
-            line-height: 1.5;
-            margin-bottom: 6px;
-        }
-
-        .notification-text strong {
             font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
         }
 
-        .notification-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .notification-message {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .notification-time {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .notification-tag {
             font-size: 10px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .notification-tag.deposited {
-            background: rgba(0, 135, 90, 0.1);
-            color: var(--success);
-        }
-
-        .notification-tag.pending {
-            background: rgba(255, 153, 31, 0.1);
-            color: var(--warning);
-        }
-
-        .notification-tag.received {
-            background: rgba(0, 82, 204, 0.1);
-            color: var(--primary);
-        }
-
-        .notification-unread-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            flex-shrink: 0;
+            color: var(--text-muted);
             margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .notification-panel-footer {
-            padding: 12px 20px;
-            border-top: 1px solid var(--border);
-            background: var(--bg-secondary);
-            text-align: center;
-        }
-
-        .notification-view-all {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--accent);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .notification-view-all:hover {
-            color: var(--accent-hover);
+        .notification-time svg {
+            width: 12px;
+            height: 12px;
+            fill: var(--text-muted);
         }
 
         .notification-empty {
@@ -628,8 +625,8 @@
         .notification-empty-icon {
             width: 60px;
             height: 60px;
-            background: var(--bg-secondary);
             border-radius: 50%;
+            background: var(--bg-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -637,51 +634,115 @@
         }
 
         .notification-empty-icon svg {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             fill: var(--text-muted);
         }
 
-        .notification-empty-text {
+        .notification-empty h5 {
             font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
             margin-bottom: 4px;
         }
 
-        .notification-empty-subtext {
+        .notification-empty p {
             font-size: 12px;
             color: var(--text-muted);
         }
 
-        /* Notification Panel Arrow */
-        .notification-panel::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: 16px;
-            width: 16px;
-            height: 16px;
-            background: var(--bg-secondary);
-            border-left: 1px solid var(--border);
-            border-top: 1px solid var(--border);
-            transform: rotate(45deg);
-        }
-
-        /* Overlay when notification is open */
-        .notification-overlay {
+        /* Toast Notification (SAME AS CHEQUE.HTML) */
+        .toast-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 999;
-            display: none;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .notification-overlay.active {
-            display: block;
+        .toast {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            min-width: 380px;
+            max-width: 450px;
+            animation: slideInRight 0.3s ease-out;
         }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideOutRight {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100px); }
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--error); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.info { border-left: 4px solid var(--info); }
+
+        .toast-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .toast.success .toast-icon { background: linear-gradient(135deg, #00875A, #006644); }
+        .toast.error .toast-icon { background: linear-gradient(135deg, #DE350B, #BF2600); }
+        .toast.warning .toast-icon { background: linear-gradient(135deg, #FF991F, #FF8B00); }
+        .toast.info .toast-icon { background: linear-gradient(135deg, #0052CC, #0747A6); }
+
+        .toast-content { flex: 1; }
+
+        .toast-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .toast-close {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover { background: var(--bg-secondary); }
+        .toast-close svg { width: 16px; height: 16px; fill: var(--text-muted); }
 
         /* Main Content Area */
         .main-content {
@@ -754,6 +815,11 @@
         .stat-change.negative {
             background: rgba(222, 53, 11, 0.1);
             color: var(--error);
+        }
+
+        .stat-change.neutral {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
         }
 
         .stat-change svg {
@@ -890,7 +956,7 @@
             transform: translateX(4px);
         }
 
-        /* Recent Activity & Chart Grid */
+        /* Content Grid */
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -959,6 +1025,7 @@
         .activity-icon.blue { background: linear-gradient(135deg, #0052CC, #0747A6); }
         .activity-icon.green { background: linear-gradient(135deg, #00875A, #006644); }
         .activity-icon.orange { background: linear-gradient(135deg, #FF991F, #FF8B00); }
+        .activity-icon.purple { background: linear-gradient(135deg, #6554C0, #5243AA); }
 
         .activity-content {
             flex: 1;
@@ -970,6 +1037,9 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .activity-meta {
@@ -980,10 +1050,38 @@
         .activity-amount {
             font-size: 14px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--success);
+            white-space: nowrap;
         }
 
-        /* Quick Stats in Card */
+        .activity-empty {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .activity-empty-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .activity-empty-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-muted);
+        }
+
+        .activity-empty p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Quick Stats List */
         .quick-stats-list {
             display: flex;
             flex-direction: column;
@@ -997,6 +1095,11 @@
             padding: 14px;
             background: var(--bg-secondary);
             border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .quick-stat-item:hover {
+            background: var(--bg-tertiary);
         }
 
         .quick-stat-label {
@@ -1009,9 +1112,10 @@
         }
 
         .quick-stat-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
 
         .quick-stat-dot.blue { background: #0052CC; }
@@ -1057,9 +1161,8 @@
                 grid-template-columns: 1fr;
             }
 
-            .notification-panel {
-                width: 340px;
-                right: -50px;
+            .notification-dropdown {
+                right: -100px;
             }
         }
 
@@ -1078,22 +1181,113 @@
 
             .stats-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-value {
+                font-size: 24px;
             }
 
             .actions-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
             }
 
-            .notification-panel {
+            .action-card {
+                padding: 20px;
+            }
+
+            .content-grid {
+                gap: 16px;
+            }
+
+            .content-card {
+                padding: 16px;
+            }
+
+            .notification-dropdown {
                 position: fixed;
-                top: 70px;
+                top: 60px;
                 left: 16px;
                 right: 16px;
                 width: auto;
+                max-height: calc(100vh - 80px);
             }
 
-            .notification-panel::before {
-                display: none;
+            .notification-list {
+                max-height: 300px;
+            }
+
+            .notification-header-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .activity-item {
+                padding: 10px;
+            }
+
+            .activity-amount {
+                font-size: 12px;
+            }
+
+            .quick-stat-item {
+                padding: 12px;
+            }
+
+            .quick-stat-label {
+                font-size: 12px;
+            }
+
+            .quick-stat-value {
+                font-size: 14px;
+            }
+
+            .toast {
+                min-width: 300px;
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 20px;
+            }
+
+            .header-subtitle {
+                font-size: 11px;
+            }
+
+            .stat-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .stat-change {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+
+            .action-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .action-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .action-title {
+                font-size: 15px;
+            }
+
+            .action-description {
+                font-size: 12px;
             }
         }
 
@@ -1115,21 +1309,6 @@
         .action-card:nth-child(3) { animation-delay: 0.4s; }
 
         .content-card { animation: fadeIn 0.4s ease-out forwards; opacity: 0; animation-delay: 0.45s; }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .notification-item {
-            animation: slideDown 0.3s ease-out forwards;
-        }
-
-        .notification-item:nth-child(1) { animation-delay: 0.05s; }
-        .notification-item:nth-child(2) { animation-delay: 0.1s; }
-        .notification-item:nth-child(3) { animation-delay: 0.15s; }
-        .notification-item:nth-child(4) { animation-delay: 0.2s; }
-        .notification-item:nth-child(5) { animation-delay: 0.25s; }
     </style>
 </head>
 <body>
@@ -1156,14 +1335,14 @@
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">Main Menu</div>
-                <a href="#" class="nav-item active">
+                <a href="{% url 'dashboard' %}" class="nav-item active">
                     <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
                     Dashboard
                 </a>
                 <a href="{% url 'cheque' %}" class="nav-item">
                     <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>
                     Cheque In
-                    <span class="badge alert">5</span>
+                    <span class="badge alert" id="sidebarPendingBadge">0</span>
                 </a>
                 <a href="{% url 'deposit' %}" class="nav-item">
                     <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
@@ -1205,16 +1384,13 @@
         </div>
     </aside>
 
-    <!-- Notification Overlay -->
-    <div class="notification-overlay" id="notificationOverlay" onclick="closeNotifications()"></div>
-
     <!-- Main Wrapper -->
     <div class="main-wrapper">
         <!-- Header -->
         <header class="header">
             <div class="header-left">
                 <h1 class="header-title">Dashboard</h1>
-                <p class="header-subtitle">Welcome back, John! Here's your overview.</p>
+                <p class="header-subtitle">Welcome back! Here's your overview.</p>
             </div>
             <div class="header-right">
                 <div class="header-datetime">
@@ -1222,24 +1398,27 @@
                     <div class="header-date" id="currentDate">Loading...</div>
                 </div>
                 <div class="header-actions">
-                    <!-- Notification Button with Panel -->
+                    <!-- Notification Button with Dropdown (SAME AS CHEQUE.HTML) -->
                     <div class="notification-wrapper">
-                        <button class="header-btn" id="notificationBtn" onclick="toggleNotifications()" title="Notifications">
+                        <button class="header-btn" id="notificationBtn" title="Notifications" onclick="toggleNotificationDropdown()">
                             <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-                            <span class="badge" id="notificationCount">5</span>
+                            <span class="badge" id="notificationBadge">0</span>
                         </button>
-
-                        <!-- Notification Panel -->
-                        <div class="notification-panel" id="notificationPanel">
-                            <div class="notification-panel-header">
-                                <span class="notification-panel-title">Notifications</span>
-                                <button class="notification-mark-read" onclick="markAllRead()">Mark all as read</button>
+                        
+                        <!-- Notification Dropdown -->
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <h4>
+                                    Notifications
+                                    <span class="count" id="notificationCount">0</span>
+                                </h4>
+                                <div class="notification-header-actions">
+                                    <button class="notification-header-btn" onclick="markAllAsRead()">Mark all read</button>
+                                    <button class="notification-header-btn danger" onclick="clearAllNotifications()">Clear all</button>
+                                </div>
                             </div>
                             <div class="notification-list" id="notificationList">
-                                <!-- Notifications will be inserted here -->
-                            </div>
-                            <div class="notification-panel-footer">
-                                <a href="#" class="notification-view-all">View All Notifications</a>
+                                <!-- Notifications will be loaded here -->
                             </div>
                         </div>
                     </div>
@@ -1261,9 +1440,9 @@
                         <div class="stat-icon blue">
                             <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>
                         </div>
-                        <div class="stat-change positive">
+                        <div class="stat-change positive" id="totalChequesChange">
                             <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
-                            +12.5%
+                            <span>0 today</span>
                         </div>
                     </div>
                     <div class="stat-value" id="totalCheques">0</div>
@@ -1276,37 +1455,37 @@
                         </div>
                         <div class="stat-change positive">
                             <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
-                            +8.3%
+                            <span>Total</span>
                         </div>
                     </div>
-                    <div class="stat-value" id="totalDeposits">$0</div>
-                    <div class="stat-label">Total Deposits</div>
+                    <div class="stat-value" id="totalAmount">NPR 0</div>
+                    <div class="stat-label">Total Amount</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-icon orange">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                         </div>
-                        <div class="stat-change negative">
-                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                            -5.2%
+                        <div class="stat-change negative" id="pendingChange">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                            <span>Pending</span>
                         </div>
                     </div>
-                    <div class="stat-value" id="pendingItems">0</div>
-                    <div class="stat-label">Pending Items</div>
+                    <div class="stat-value" id="pendingCheques">0</div>
+                    <div class="stat-label">Pending Cheques</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-icon purple">
-                            <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         </div>
                         <div class="stat-change positive">
                             <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
-                            +15.7%
+                            <span>Today</span>
                         </div>
                     </div>
-                    <div class="stat-value" id="completedToday">0</div>
-                    <div class="stat-label">Completed Today</div>
+                    <div class="stat-value" id="todayCheques">0</div>
+                    <div class="stat-label">Added Today</div>
                 </div>
             </div>
 
@@ -1356,49 +1535,10 @@
                 <div class="content-card">
                     <div class="content-card-header">
                         <h3 class="content-card-title">Recent Activity</h3>
-                        <a href="#" class="section-link">View All</a>
+                        <a href="cheque-in.html" class="section-link">View All</a>
                     </div>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon blue">
-                                <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Cheque #CHK-2024-001</div>
-                                <div class="activity-meta">Received • 2 min ago</div>
-                            </div>
-                            <div class="activity-amount">$2,500</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon green">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Deposit Completed</div>
-                                <div class="activity-meta">Success • 15 min ago</div>
-                            </div>
-                            <div class="activity-amount">$5,750</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon orange">
-                                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Report Generated</div>
-                                <div class="activity-meta">Monthly • 1 hour ago</div>
-                            </div>
-                            <div class="activity-amount">PDF</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon blue">
-                                <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">Cheque #CHK-2024-002</div>
-                                <div class="activity-meta">Processing • 2 hours ago</div>
-                            </div>
-                            <div class="activity-amount">$1,200</div>
-                        </div>
+                    <div class="activity-list" id="recentActivityList">
+                        <!-- Loaded dynamically -->
                     </div>
                 </div>
 
@@ -1406,37 +1546,10 @@
                 <div class="content-card">
                     <div class="content-card-header">
                         <h3 class="content-card-title">Quick Overview</h3>
-                        <a href="#" class="section-link">Details</a>
+                        <a href="report.html" class="section-link">Details</a>
                     </div>
-                    <div class="quick-stats-list">
-                        <div class="quick-stat-item">
-                            <span class="quick-stat-label">
-                                <span class="quick-stat-dot blue"></span>
-                                Pending Cheques
-                            </span>
-                            <span class="quick-stat-value">18</span>
-                        </div>
-                        <div class="quick-stat-item">
-                            <span class="quick-stat-label">
-                                <span class="quick-stat-dot green"></span>
-                                Completed Today
-                            </span>
-                            <span class="quick-stat-value">42</span>
-                        </div>
-                        <div class="quick-stat-item">
-                            <span class="quick-stat-label">
-                                <span class="quick-stat-dot orange"></span>
-                                Awaiting Approval
-                            </span>
-                            <span class="quick-stat-value">7</span>
-                        </div>
-                        <div class="quick-stat-item">
-                            <span class="quick-stat-label">
-                                <span class="quick-stat-dot purple"></span>
-                                Today's Value
-                            </span>
-                            <span class="quick-stat-value">$45,280</span>
-                        </div>
+                    <div class="quick-stats-list" id="quickOverviewList">
+                        <!-- Loaded dynamically -->
                     </div>
                 </div>
             </div>
@@ -1448,152 +1561,354 @@
         </footer>
     </div>
 
-    <script>
-        // Notification Data
-        let notifications = [
-            {
-                id: 1,
-                type: 'success',
-                icon: 'deposit',
-                title: 'Cheque Deposited Successfully',
-                message: '<strong>Sarah Johnson</strong> deposited cheque <strong>#CHK-2024-089</strong> worth <strong>$3,500</strong>',
-                time: '2 min ago',
-                tag: 'deposited',
-                unread: true
-            },
-            {
-                id: 2,
-                type: 'info',
-                icon: 'cheque',
-                title: 'New Cheque Received',
-                message: '<strong>Mike Chen</strong> submitted a new cheque <strong>#CHK-2024-090</strong> for <strong>$1,200</strong>',
-                time: '15 min ago',
-                tag: 'received',
-                unread: true
-            },
-            {
-                id: 3,
-                type: 'success',
-                icon: 'deposit',
-                title: 'Cheque Deposited Successfully',
-                message: '<strong>Emily Davis</strong> deposited cheque <strong>#CHK-2024-088</strong> worth <strong>$7,800</strong>',
-                time: '1 hour ago',
-                tag: 'deposited',
-                unread: true
-            },
-            {
-                id: 4,
-                type: 'warning',
-                icon: 'pending',
-                title: 'Pending Approval Required',
-                message: 'Cheque <strong>#CHK-2024-087</strong> requires your approval before deposit',
-                time: '2 hours ago',
-                tag: 'pending',
-                unread: true
-            },
-            {
-                id: 5,
-                type: 'info',
-                icon: 'cheque',
-                title: 'New Cheque Received',
-                message: '<strong>Alex Thompson</strong> submitted a new cheque <strong>#CHK-2024-086</strong> for <strong>$2,100</strong>',
-                time: '3 hours ago',
-                tag: 'received',
-                unread: true
-            }
-        ];
+    <!-- Toast Container (SAME AS CHEQUE.HTML) -->
+    <div class="toast-container" id="toastContainer"></div>
 
-        // Render Notifications
+    <script>
+        // ==================== CONSTANTS (SAME AS CHEQUE.HTML) ====================
+        const STORAGE_KEY = 'chequeTrackerData';
+        const NOTIFICATIONS_KEY = 'chequeTrackerNotifications';
+
+        // State
+        let notifications = [];
+
+        // ==================== NOTIFICATION SYSTEM (EXACT SAME AS CHEQUE.HTML) ====================
+        
+        function loadNotifications() {
+            const saved = localStorage.getItem(NOTIFICATIONS_KEY);
+            if (saved) {
+                notifications = JSON.parse(saved);
+            }
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        function saveNotifications() {
+            localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+        }
+
+        function addNotification(data) {
+            const notification = {
+                id: Date.now() + Math.random().toString(36).substr(2, 9),
+                type: data.type || 'general',
+                category: data.category || 'info',
+                title: data.title,
+                message: data.message,
+                read: false,
+                timestamp: new Date().toISOString()
+            };
+            
+            notifications.unshift(notification);
+            
+            if (notifications.length > 50) {
+                notifications = notifications.slice(0, 50);
+            }
+            
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            
+            return notification;
+        }
+
         function renderNotifications() {
-            const notificationList = document.getElementById('notificationList');
-            const unreadCount = notifications.filter(n => n.unread).length;
+            const container = document.getElementById('notificationList');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            
             document.getElementById('notificationCount').textContent = unreadCount;
             
-            if (unreadCount === 0) {
-                document.getElementById('notificationCount').style.display = 'none';
-            } else {
-                document.getElementById('notificationCount').style.display = 'flex';
-            }
-
             if (notifications.length === 0) {
-                notificationList.innerHTML = `
+                container.innerHTML = `
                     <div class="notification-empty">
                         <div class="notification-empty-icon">
                             <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
                         </div>
-                        <div class="notification-empty-text">No notifications</div>
-                        <div class="notification-empty-subtext">You're all caught up!</div>
+                        <h5>No Notifications</h5>
+                        <p>You're all caught up!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notifications.slice(0, 10).map(notification => `
+                <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="markAsRead('${notification.id}')">
+                    <div class="notification-icon ${notification.category}">
+                        ${getNotificationIcon(notification.category)}
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">
+                            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            ${getTimeAgo(notification.timestamp)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getNotificationIcon(category) {
+            const icons = {
+                success: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+                warning: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+                info: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+                error: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
+            };
+            return icons[category] || icons.info;
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const then = new Date(timestamp);
+            const diffMs = now - then;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            return then.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            badge.setAttribute('data-count', unreadCount);
+        }
+
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function markAsRead(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                notification.read = true;
+                saveNotifications();
+                renderNotifications();
+                updateNotificationBadge();
+            }
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(n => n.read = true);
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            showToast('success', 'All Read', 'All notifications marked as read');
+        }
+
+        function clearAllNotifications() {
+            notifications = [];
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            showToast('success', 'Cleared', 'All notifications have been cleared');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.notification-wrapper');
+            const dropdown = document.getElementById('notificationDropdown');
+            
+            if (wrapper && !wrapper.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // ==================== TOAST NOTIFICATION (SAME AS CHEQUE.HTML) ====================
+
+        function showToast(type, title, message, data = null) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconSvg = type === 'success' 
+                ? '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
+                : type === 'warning'
+                ? '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>'
+                : type === 'info'
+                ? '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
+                : '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>';
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${iconSvg}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // ==================== FORMAT HELPERS ====================
+
+        function formatNepaliNumber(num) {
+            const numStr = Math.floor(num).toString();
+            let result = '';
+            let count = 0;
+            
+            for (let i = numStr.length - 1; i >= 0; i--) {
+                count++;
+                result = numStr[i] + result;
+                
+                if (count === 3 && i !== 0) {
+                    result = ',' + result;
+                } else if (count > 3 && (count - 3) % 2 === 0 && i !== 0) {
+                    result = ',' + result;
+                }
+            }
+            
+            return result;
+        }
+
+        // ==================== DASHBOARD FUNCTIONS ====================
+
+        function loadChequeData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        function updateDashboardStats() {
+            const cheques = loadChequeData();
+            const today = new Date().toDateString();
+            
+            let totalCheques = cheques.length;
+            let totalAmount = 0;
+            let pendingCheques = 0;
+            let todayCount = 0;
+
+            cheques.forEach(entry => {
+                const amount = parseFloat(entry.amount) || 0;
+                totalAmount += amount;
+                
+                if (entry.status === 'pending') pendingCheques++;
+                
+                if (new Date(entry.submittedAt).toDateString() === today) {
+                    todayCount++;
+                }
+            });
+
+            document.getElementById('totalCheques').textContent = totalCheques;
+            document.getElementById('totalAmount').textContent = 'NPR ' + formatNepaliNumber(totalAmount);
+            document.getElementById('pendingCheques').textContent = pendingCheques;
+            document.getElementById('todayCheques').textContent = todayCount;
+            document.getElementById('sidebarPendingBadge').textContent = pendingCheques;
+
+            const changeEl = document.getElementById('totalChequesChange');
+            if (todayCount > 0) {
+                changeEl.classList.remove('neutral');
+                changeEl.classList.add('positive');
+                changeEl.querySelector('span').textContent = '+' + todayCount + ' today';
+            } else {
+                changeEl.classList.remove('positive');
+                changeEl.classList.add('neutral');
+                changeEl.querySelector('span').textContent = '0 today';
+            }
+        }
+
+        function renderRecentActivity() {
+            const cheques = loadChequeData();
+            const container = document.getElementById('recentActivityList');
+            
+            if (cheques.length === 0) {
+                container.innerHTML = `
+                    <div class="activity-empty">
+                        <div class="activity-empty-icon">
+                            <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg>
+                        </div>
+                        <p>No recent activity</p>
+                        <p style="font-size: 11px; margin-top: 4px;">Add cheques to see activity here</p>
                     </div>
                 `;
                 return;
             }
 
-            let html = '';
-            notifications.forEach(notification => {
-                const iconSvg = getNotificationIcon(notification.icon);
-                html += `
-                    <div class="notification-item ${notification.unread ? 'unread' : ''}" onclick="markAsRead(${notification.id})">
-                        <div class="notification-icon ${notification.type}">
-                            ${iconSvg}
+            const recentEntries = cheques.slice(0, 4);
+            
+            container.innerHTML = recentEntries.map(entry => {
+                const iconClass = entry.status === 'cleared' ? 'green' : entry.status === 'pending' ? 'orange' : 'blue';
+                const statusText = entry.status.charAt(0).toUpperCase() + entry.status.slice(1);
+                
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon ${iconClass}">
+                            <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>
                         </div>
-                        <div class="notification-content">
-                            <div class="notification-text">${notification.message}</div>
-                            <div class="notification-meta">
-                                <span class="notification-time">${notification.time}</span>
-                                <span class="notification-tag ${notification.tag}">${notification.tag}</span>
-                            </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Cheque #${entry.chequeNo}</div>
+                            <div class="activity-meta">${statusText} • ${getTimeAgo(entry.submittedAt)}</div>
                         </div>
-                        ${notification.unread ? '<div class="notification-unread-dot"></div>' : ''}
+                        <div class="activity-amount">NPR ${formatNepaliNumber(entry.amount)}</div>
                     </div>
                 `;
+            }).join('');
+        }
+
+        function renderQuickOverview() {
+            const cheques = loadChequeData();
+            const container = document.getElementById('quickOverviewList');
+            const today = new Date().toDateString();
+
+            let pendingCount = 0;
+            let clearedCount = 0;
+            let todayCount = 0;
+            let todayAmount = 0;
+
+            cheques.forEach(entry => {
+                if (entry.status === 'pending') pendingCount++;
+                if (entry.status === 'cleared') clearedCount++;
+                if (new Date(entry.submittedAt).toDateString() === today) {
+                    todayCount++;
+                    todayAmount += parseFloat(entry.amount) || 0;
+                }
             });
-            notificationList.innerHTML = html;
+
+            container.innerHTML = `
+                <div class="quick-stat-item">
+                    <span class="quick-stat-label">
+                        <span class="quick-stat-dot orange"></span>
+                        Pending Cheques
+                    </span>
+                    <span class="quick-stat-value">${pendingCount}</span>
+                </div>
+                <div class="quick-stat-item">
+                    <span class="quick-stat-label">
+                        <span class="quick-stat-dot green"></span>
+                        Cleared Cheques
+                    </span>
+                    <span class="quick-stat-value">${clearedCount}</span>
+                </div>
+                <div class="quick-stat-item">
+                    <span class="quick-stat-label">
+                        <span class="quick-stat-dot blue"></span>
+                        Added Today
+                    </span>
+                    <span class="quick-stat-value">${todayCount}</span>
+                </div>
+                <div class="quick-stat-item">
+                    <span class="quick-stat-label">
+                        <span class="quick-stat-dot purple"></span>
+                        Today's Value
+                    </span>
+                    <span class="quick-stat-value">NPR ${formatNepaliNumber(todayAmount)}</span>
+                </div>
+            `;
         }
 
-        function getNotificationIcon(type) {
-            const icons = {
-                deposit: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>',
-                cheque: '<svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>',
-                pending: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
-            };
-            return icons[type] || icons.cheque;
-        }
-
-        // Toggle Notifications Panel
-        function toggleNotifications() {
-            const panel = document.getElementById('notificationPanel');
-            const overlay = document.getElementById('notificationOverlay');
-            const isActive = panel.classList.contains('active');
-            
-            if (isActive) {
-                closeNotifications();
-            } else {
-                panel.classList.add('active');
-                overlay.classList.add('active');
-            }
-        }
-
-        function closeNotifications() {
-            document.getElementById('notificationPanel').classList.remove('active');
-            document.getElementById('notificationOverlay').classList.remove('active');
-        }
-
-        // Mark notification as read
-        function markAsRead(id) {
-            const notification = notifications.find(n => n.id === id);
-            if (notification) {
-                notification.unread = false;
-                renderNotifications();
-            }
-        }
-
-        // Mark all as read
-        function markAllRead() {
-            notifications.forEach(n => n.unread = false);
-            renderNotifications();
-        }
-
-        // Theme Toggle
         function toggleTheme() {
             const body = document.body;
             const currentTheme = body.getAttribute('data-theme');
@@ -1601,12 +1916,6 @@
             localStorage.setItem('theme', currentTheme === 'dark' ? 'light' : 'dark');
         }
 
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
-        }
-
-        // Update Time
         function updateTime() {
             const now = new Date();
             const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
@@ -1615,80 +1924,41 @@
             document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', timeOptions);
             document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', dateOptions);
         }
-        
-        setInterval(updateTime, 1000);
-        updateTime();
 
-        // Animate Numbers
-        function animateNumber(id, target, prefix = '', suffix = '') {
-            const element = document.getElementById(id);
-            const duration = 1500;
-            const steps = 50;
-            const stepDuration = duration / steps;
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += target / steps;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                element.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
-            }, stepDuration);
-        }
+        // ==================== INITIALIZE ====================
 
-        // Initialize
         window.addEventListener('load', () => {
-            renderNotifications();
-            
-            setTimeout(() => {
-                animateNumber('totalCheques', 1256);
-                animateNumber('totalDeposits', 384750, '$');
-                animateNumber('pendingItems', 42);
-                animateNumber('completedToday', 128);
-            }, 500);
-        });
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
 
-        // Card hover effects
-        document.querySelectorAll('.action-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 150);
-                }, 100);
+            loadNotifications();
+            updateDashboardStats();
+            renderRecentActivity();
+            renderQuickOverview();
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // Escape key to close
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.getElementById('notificationDropdown').classList.remove('active');
+                }
+            });
+
+            // Listen for storage changes (sync across tabs)
+            window.addEventListener('storage', function(e) {
+                if (e.key === STORAGE_KEY) {
+                    updateDashboardStats();
+                    renderRecentActivity();
+                    renderQuickOverview();
+                }
+                if (e.key === NOTIFICATIONS_KEY) {
+                    loadNotifications();
+                }
             });
         });
-
-        // Close notification panel when pressing Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeNotifications();
-            }
-        });
-
-        // Simulate new notification (for demo)
-        function addNewNotification() {
-            const newNotification = {
-                id: Date.now(),
-                type: 'success',
-                icon: 'deposit',
-                title: 'Cheque Deposited Successfully',
-                message: '<strong>New Staff</strong> deposited cheque <strong>#CHK-2024-' + Math.floor(Math.random() * 999) + '</strong> worth <strong>$' + (Math.floor(Math.random() * 9000) + 1000) + '</strong>',
-                time: 'Just now',
-                tag: 'deposited',
-                unread: true
-            };
-            notifications.unshift(newNotification);
-            renderNotifications();
-        }
-
-        // Demo: Add new notification every 30 seconds
-        // setInterval(addNewNotification, 30000);
     </script>
 </body>
 </html>

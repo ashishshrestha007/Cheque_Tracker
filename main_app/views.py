@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .models import cheque_details
 
 
 def login_view(request):
@@ -50,6 +51,27 @@ def dashboard_home(request):
     return render(request,"dashboard.html")
 
 def cheque_home(request):
+    if request.method=="POST":
+        cheque_number=request.POST.get("cheque_no")
+        cheque_date=request.POST.get("cheque_date")
+        cheque_bank=request.POST.get("cheque_bank")
+        account_name=request.POST.get("account_name")
+        payee_name=request.POST.get("payee_name")
+        cheque_amount=request.POST.get("cheque_amount")
+        remarks=request.POST.get("remarks")
+        cheque_entry=cheque_details(
+            cheque_number=cheque_number,
+            cheque_date=cheque_date,
+            cheque_bank=cheque_bank,
+            account_name=account_name,
+            payee_name=payee_name,
+            cheque_amount=cheque_amount,
+            remarks=remarks
+        )
+        cheque_entry.save()
+        return redirect("cheque")
+        
+
     return render(request,"cheque.html")
 
 def deposit_home(request):
