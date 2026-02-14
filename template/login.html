@@ -1411,40 +1411,7 @@
             passwordError.style.display = 'none';
             return false;
         }
-
-        // Form Submit
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const isStaffIdValid = validateStaffId();
-            const isPasswordValid = validatePassword();
-
-            if (!staffIdInput.value || !passwordInput.value) {
-                showToast('error', 'Login Failed', 'Please enter your username and password');
-                return;
-            }
-
-            if (!isStaffIdValid || !isPasswordValid) {
-                showToast('error', 'Validation Error', 'Please check your credentials');
-                return;
-            }
-
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            submitBtn.classList.remove('loading');
-            submitBtn.classList.add('success');
-
-            showToast('success', 'Login Successful', 'Redirecting to your dashboard...');
-
-            setTimeout(() => {
-                submitBtn.classList.remove('success');
-                submitBtn.disabled = false;
-                window.location.href = '{% url "dashboard" %}';
-            }, 2000);
-        });
+       
 
         // Input focus effects
         document.querySelectorAll('.input-wrapper input').forEach(input => {

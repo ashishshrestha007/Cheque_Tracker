@@ -1014,6 +1014,7 @@
         if (savedTheme === 'dark') {
             document.body.setAttribute('data-theme', 'dark');
         }
+        
 
         // Password Toggle
         function togglePass(id, icon) {
@@ -1027,6 +1028,8 @@
                 path.setAttribute('d', 'M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z');
             }
         }
+            
+        
 
         // Password Strength
         function checkStrength(pass) {
@@ -1058,6 +1061,8 @@
             }
             checkMatch();
         }
+            
+        
 
         // Password Match
         function checkMatch() {
@@ -1078,49 +1083,9 @@
                 }
             }
         }
-
-        // Toast Functions
-        function showToast(type, title, message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastMessage').textContent = message;
-            toast.className = 'toast ' + type + ' show';
-            setTimeout(hideToast, 4000);
-        }
-
-        function hideToast() {
-            document.getElementById('toast').classList.remove('show');
-        }
-
-        // Form Submit
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
             
-            const p1 = document.getElementById('password').value;
-            const p2 = document.getElementById('confirmPassword').value;
-            
-            if (p1 !== p2) {
-                document.getElementById('errorMsg').classList.add('show');
-                showToast('error', 'Error', 'Passwords do not match');
-                return;
-            }
 
-            const btn = document.getElementById('submitBtn');
-            btn.classList.add('loading');
-            btn.disabled = true;
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            btn.classList.remove('loading');
-            btn.classList.add('success');
-
-            showToast('success', 'Account Created', 'Redirecting to login page...');
-
-            setTimeout(() => {
-                window.location.href = '{% url "login" %}';
-            }, 2000);
-        });
-
+    
         // Input Focus Effects
         document.querySelectorAll('.input-wrapper input').forEach(input => {
             input.addEventListener('focus', function() {
