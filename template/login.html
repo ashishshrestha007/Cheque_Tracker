@@ -1215,7 +1215,8 @@
         </div>
 
         <!-- Login Form -->
-        <form id="loginForm" autocomplete="off">
+        <form id="loginForm" autocomplete="off" method="POST">
+            {% csrf_token %}
             <div class="form-group">
                 <div class="form-label">
                     <label for="staffId">Username</label>
@@ -1441,7 +1442,7 @@
             setTimeout(() => {
                 submitBtn.classList.remove('success');
                 submitBtn.disabled = false;
-                // window.location.href = '/dashboard';
+                window.location.href = '{% url "dashboard" %}';
             }, 2000);
         });
 
