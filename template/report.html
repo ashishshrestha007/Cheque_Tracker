@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics | ChequeTracker Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0052CC;
+            --primary-hover: #0065FF;
+            --primary-light: rgba(0, 82, 204, 0.08);
+            --primary-gradient: linear-gradient(135deg, #0052CC 0%, #0747A6 100%);
+            --accent: #0065FF;
+            --accent-hover: #2684FF;
+            --accent-light: rgba(0, 101, 255, 0.1);
+            --text-primary: #172B4D;
+            --text-secondary: #5E6C84;
+            --text-muted: #97A0AF;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F4F5F7;
+            --bg-tertiary: #EBECF0;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border: #DFE1E6;
+            --border-light: #E8E8E8;
+            --border-focus: #0052CC;
+            --success: #00875A;
+            --success-light: rgba(0, 135, 90, 0.1);
+            --success-gradient: linear-gradient(135deg, #00875A 0%, #006644 100%);
+            --error: #DE350B;
+            --error-light: rgba(222, 53, 11, 0.1);
+            --warning: #FF991F;
+            --warning-light: rgba(255, 153, 31, 0.1);
+            --warning-gradient: linear-gradient(135deg, #FF991F 0%, #FF8B00 100%);
+            --info: #0065FF;
+            --info-light: rgba(0, 101, 255, 0.1);
+            --purple: #6554C0;
+            --purple-light: rgba(101, 84, 192, 0.1);
+            --purple-gradient: linear-gradient(135deg, #6554C0 0%, #5243AA 100%);
+            --shadow-xs: 0 1px 2px rgba(9, 30, 66, 0.06);
+            --shadow-sm: 0 1px 3px rgba(9, 30, 66, 0.08);
+            --shadow-md: 0 4px 8px rgba(9, 30, 66, 0.1);
+            --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.12);
+            --shadow-xl: 0 16px 32px rgba(9, 30, 66, 0.15);
+            --shadow-2xl: 0 24px 48px rgba(9, 30, 66, 0.2);
+            --shadow-card: 0 2px 8px rgba(9, 30, 66, 0.08), 0 0 1px rgba(9, 30, 66, 0.08);
+            --shadow-card-hover: 0 8px 24px rgba(9, 30, 66, 0.12), 0 0 1px rgba(9, 30, 66, 0.1);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-bg: linear-gradient(135deg, #0052CC 0%, #0747A6 100%);
+            --sidebar-width: 260px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #4C9AFF;
+            --primary-hover: #79B8FF;
+            --primary-light: rgba(76, 154, 255, 0.12);
+            --accent: #4C9AFF;
+            --accent-hover: #79B8FF;
+            --accent-light: rgba(76, 154, 255, 0.12);
+            --text-primary: #E6E8EB;
+            --text-secondary: #B8C1CC;
+            --text-muted: #8C95A0;
+            --bg-primary: #161B22;
+            --bg-secondary: #0D1117;
+            --bg-tertiary: #21262D;
+            --bg-glass: rgba(22, 27, 34, 0.95);
+            --border: #30363D;
+            --border-light: #3D4450;
+            --border-focus: #4C9AFF;
+            --success-light: rgba(0, 135, 90, 0.2);
+            --error-light: rgba(222, 53, 11, 0.2);
+            --warning-light: rgba(255, 153, 31, 0.2);
+            --info-light: rgba(0, 101, 255, 0.2);
+            --purple-light: rgba(101, 84, 192, 0.2);
+            --header-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2);
+            --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-tertiary); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--header-bg);
+            padding: 24px 0;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .sidebar-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .sidebar-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sidebar-circle-1 { width: 150px; height: 150px; top: -50px; right: -50px; }
+        .sidebar-circle-2 { width: 100px; height: 100px; bottom: 20%; left: -30px; }
+        .sidebar-circle-3 { width: 80px; height: 80px; bottom: -20px; right: 20px; }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-logo .logo-icon svg { width: 22px; height: 22px; fill: white; }
+        .sidebar-logo .logo-text { display: flex; flex-direction: column; }
+        .sidebar-logo .logo-text span:first-child { font-size: 18px; font-weight: 700; color: white; }
+        .sidebar-logo .logo-text span:last-child { font-size: 10px; color: rgba(255, 255, 255, 0.6); letter-spacing: 1px; text-transform: uppercase; }
+
+        .sidebar-nav { padding: 0 12px; position: relative; z-index: 1; }
+        .nav-section { margin-bottom: 24px; }
+        .nav-section-title { font-size: 10px; font-weight: 600; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1.5px; padding: 0 12px; margin-bottom: 8px; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover { background: rgba(255, 255, 255, 0.1); color: white; }
+        .nav-item.active { background: rgba(255, 255, 255, 0.15); color: white; }
+        .nav-item svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .sidebar-footer { position: absolute; bottom: 24px; left: 12px; right: 12px; z-index: 1; }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            margin-bottom: 12px;
+        }
+
+        .sidebar-user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4C9AFF 0%, #00C7E6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-user-avatar svg { width: 20px; height: 20px; fill: white; }
+        .sidebar-user-info { flex: 1; min-width: 0; }
+        .sidebar-user-name { font-size: 13px; font-weight: 600; color: white; }
+        .sidebar-user-role { font-size: 11px; color: rgba(255, 255, 255, 0.6); }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logout-btn:hover { background: rgba(255, 255, 255, 0.15); color: white; }
+        .logout-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+        }
+
+        .header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-left { display: flex; flex-direction: column; }
+
+        .header-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .header-breadcrumb a { color: var(--text-secondary); text-decoration: none; transition: var(--transition-fast); }
+        .header-breadcrumb a:hover { color: var(--primary); }
+        .header-breadcrumb span { color: var(--text-primary); font-weight: 500; }
+        .header-title { font-size: 26px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+
+        .header-datetime {
+            text-align: right;
+            padding: 10px 18px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .header-time { font-size: 20px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+        .header-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        .header-btn-wrapper { position: relative; }
+
+        .header-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .header-btn:hover { background: var(--bg-tertiary); border-color: var(--border-light); transform: translateY(-1px); }
+        .header-btn svg { width: 20px; height: 20px; fill: var(--text-secondary); }
+
+        .header-btn .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            background: var(--error);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .theme-toggle .sun { display: none; }
+        [data-theme="dark"] .theme-toggle .sun { display: block; }
+        [data-theme="dark"] .theme-toggle .moon { display: none; }
+
+        /* Notification Dropdown */
+        .notification-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 380px;
+            max-height: 500px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .notification-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .notification-header {
+            padding: 18px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-header h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-header .unread-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .notification-actions { display: flex; gap: 8px; }
+
+        .notification-action-btn {
+            padding: 6px 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: inherit;
+        }
+
+        .notification-action-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+
+        .notification-list { max-height: 360px; overflow-y: auto; }
+
+        .notification-item {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .notification-item:hover { background: var(--bg-secondary); }
+        .notification-item.unread { background: var(--primary-light); }
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-icon svg { width: 20px; height: 20px; fill: white; }
+        .notification-icon.success { background: var(--success-gradient); }
+        .notification-icon.warning { background: var(--warning-gradient); }
+        .notification-icon.info { background: var(--primary-gradient); }
+        .notification-icon.error { background: linear-gradient(135deg, #DE350B 0%, #BF2600 100%); }
+
+        .notification-content { flex: 1; min-width: 0; }
+        .notification-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+        .notification-message { font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 5px; }
+        .notification-time { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+        .notification-time svg { width: 12px; height: 12px; fill: currentColor; }
+
+        .notification-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition-fast);
+        }
+
+        .notification-item:hover .notification-delete { opacity: 1; }
+        .notification-delete:hover { background: var(--error-light); }
+        .notification-delete svg { width: 14px; height: 14px; fill: var(--error); }
+
+        .notification-empty {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .notification-empty-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-empty-icon svg { width: 35px; height: 35px; fill: var(--text-muted); opacity: 0.5; }
+        .notification-empty h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+        .notification-empty p { font-size: 13px; color: var(--text-secondary); }
+
+        .notification-footer {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .notification-view-all {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .notification-view-all:hover { color: var(--primary-hover); }
+
+        .main-content { padding: 28px 36px; max-width: 1500px; margin: 0 auto; }
+
+        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 20px; }
+        .page-header-content h1 { font-size: 32px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 8px; }
+        .page-header-content p { font-size: 15px; color: var(--text-secondary); max-width: 500px; }
+        .page-header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
+
+        .summary-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+        .summary-card.blue::before { background: var(--primary-gradient); }
+        .summary-card.green::before { background: var(--success-gradient); }
+        .summary-card.orange::before { background: var(--warning-gradient); }
+        .summary-card.purple::before { background: var(--purple-gradient); }
+        .summary-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
+
+        .summary-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-icon svg { width: 28px; height: 28px; fill: white; }
+        .summary-icon.blue { background: var(--primary-gradient); }
+        .summary-icon.green { background: var(--success-gradient); }
+        .summary-icon.orange { background: var(--warning-gradient); }
+        .summary-icon.purple { background: var(--purple-gradient); }
+
+        .summary-content { flex: 1; }
+        .summary-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 6px; }
+        .summary-value { font-size: 28px; font-weight: 800; color: var(--text-primary); line-height: 1.1; letter-spacing: -0.5px; }
+        .summary-change { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; margin-top: 10px; padding: 4px 10px; border-radius: var(--radius-full); font-weight: 600; }
+        .summary-change.up { background: var(--success-light); color: var(--success); }
+        .summary-change.neutral { background: var(--bg-tertiary); color: var(--text-secondary); }
+        .summary-change svg { width: 14px; height: 14px; fill: currentColor; }
+
+        .filter-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .filter-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .filter-section-header svg { width: 22px; height: 22px; fill: var(--primary); }
+        .filter-section-header h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+        .filter-row { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+        .filter-group { display: flex; flex-direction: column; gap: 8px; }
+        .filter-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .filter-input, .filter-select {
+            height: 44px;
+            padding: 0 14px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: var(--transition);
+            min-width: 160px;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+            background: var(--bg-primary);
+        }
+
+        .filter-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2397A0AF'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+
+        .filter-buttons { display: flex; gap: 10px; margin-left: auto; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 44px;
+            padding: 0 20px;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn svg { width: 18px; height: 18px; fill: currentColor; }
+        .btn-primary { background: var(--primary-gradient); color: white; box-shadow: 0 4px 12px rgba(0, 82, 204, 0.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 82, 204, 0.35); }
+        .btn-secondary { background: var(--bg-primary); border-color: var(--border); color: var(--text-primary); }
+        .btn-secondary:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
+
+        .export-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            padding: 0 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            color: white;
+            font-family: inherit;
+        }
+
+        .export-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .export-btn:hover { transform: translateY(-2px); }
+        .export-btn.excel { background: linear-gradient(135deg, #217346 0%, #185C37 100%); }
+        .export-btn.pdf { background: linear-gradient(135deg, #E53935 0%, #C62828 100%); }
+        .export-btn.csv { background: linear-gradient(135deg, #7B1FA2 0%, #6A1B9A 100%); }
+        .export-btn.email { background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%); }
+        .export-btn.print { background: linear-gradient(135deg, #455A64 0%, #37474F 100%); }
+
+        .report-table-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .report-table-header {
+            background: var(--primary-gradient);
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+        }
+
+        .report-table-header-left { display: flex; align-items: center; gap: 16px; position: relative; z-index: 1; }
+
+        .report-table-icon {
+            width: 54px;
+            height: 54px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .report-table-icon svg { width: 28px; height: 28px; fill: white; }
+        .report-table-header h3 { font-size: 20px; font-weight: 700; color: white; }
+        .report-table-header p { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+        .report-table-header .count { background: rgba(255,255,255,0.2); color: white; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: var(--radius-full); margin-left: 12px; }
+        .table-actions-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+
+        .table-controls {
+            padding: 18px 28px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box { position: relative; width: 360px; }
+
+        .search-box input {
+            width: 100%;
+            height: 44px;
+            padding: 0 44px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .search-box input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        .search-box input::placeholder { color: var(--text-muted); }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; fill: var(--text-muted); }
+        .search-shortcut { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg-tertiary); padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+        .result-info { font-size: 14px; color: var(--text-secondary); }
+        .result-info strong { color: var(--text-primary); font-weight: 700; }
+
+        .table-wrapper { overflow-x: auto; max-height: 550px; overflow-y: auto; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { position: sticky; top: 0; z-index: 10; }
+        .data-table th, .data-table td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+        .data-table th { background: var(--bg-tertiary); font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        .data-table td { font-size: 14px; color: var(--text-primary); background: var(--bg-primary); transition: var(--transition-fast); }
+        .data-table tbody tr:hover td { background: var(--primary-light); }
+
+        .table-sn { font-weight: 600; color: var(--text-muted); }
+        .table-cheque-no { font-weight: 700; color: var(--primary); font-family: 'SF Mono', Monaco, monospace; font-size: 13px; }
+        .table-name { font-weight: 600; }
+        .table-bank { display: flex; align-items: center; gap: 10px; }
+        .bank-logo { width: 28px; height: 28px; background: var(--bg-tertiary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: var(--text-secondary); }
+        .table-amount { font-weight: 700; color: var(--success); font-variant-numeric: tabular-nums; }
+        .table-date { color: var(--text-secondary); font-size: 13px; font-variant-numeric: tabular-nums; }
+
+        .table-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
+        .table-status.pending { background: var(--warning-light); color: #B7791F; }
+        .table-status.cleared { background: var(--success-light); color: var(--success); }
+        .table-status.processing { background: var(--primary-light); color: var(--primary); }
+        .table-status.bounced { background: var(--error-light); color: var(--error); }
+        .table-status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .table-status.cleared .table-status-dot, .table-status.bounced .table-status-dot { animation: none; }
+        .table-remarks { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: 13px; }
+
+        .table-row-actions { display: flex; align-items: center; gap: 4px; opacity: 0; transition: var(--transition-fast); }
+        .data-table tbody tr:hover .table-row-actions { opacity: 1; }
+
+        .action-btn { width: 32px; height: 32px; border: none; background: transparent; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+        .action-btn:hover { background: var(--bg-tertiary); }
+        .action-btn svg { width: 16px; height: 16px; fill: var(--text-muted); }
+        .action-btn.view:hover svg { fill: var(--info); }
+        .action-btn.edit:hover svg { fill: var(--warning); }
+        .action-btn.delete:hover svg { fill: var(--error); }
+
+        .no-data { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+        .no-data-icon { width: 100px; height: 100px; margin: 0 auto 24px; background: var(--bg-tertiary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; }
+        .no-data-icon svg { width: 50px; height: 50px; fill: var(--text-muted); opacity: 0.5; }
+        .no-data h4 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+        .no-data p { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+
+        .table-footer { display: flex; align-items: center; justify-content: space-between; padding: 18px 28px; background: var(--bg-secondary); border-top: 1px solid var(--border); }
+        .table-footer-info { font-size: 13px; color: var(--text-secondary); }
+        .pagination { display: flex; align-items: center; gap: 6px; }
+
+        .pagination-btn { min-width: 38px; height: 38px; padding: 0 10px; border: 1px solid var(--border); background: var(--bg-primary); border-radius: var(--radius-md); font-size: 14px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; font-family: inherit; }
+        .pagination-btn:hover:not(:disabled) { background: var(--bg-tertiary); border-color: var(--text-muted); }
+        .pagination-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+        .pagination-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .pagination-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+        .charts-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 28px; }
+
+        .chart-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-card); transition: var(--transition); }
+        .chart-card:hover { box-shadow: var(--shadow-card-hover); }
+
+        .chart-header { padding: 20px 24px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+        .chart-header-left { display: flex; align-items: center; gap: 14px; }
+        .chart-icon { width: 44px; height: 44px; background: var(--primary-light); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+        .chart-icon svg { width: 22px; height: 22px; fill: var(--primary); }
+        .chart-header h4 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+        .chart-header p { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+        .chart-body { padding: 24px; }
+        .chart-container { position: relative; height: 280px; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: var(--transition); }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: var(--bg-primary); border-radius: var(--radius-2xl); padding: 0; max-width: 520px; width: 90%; transform: scale(0.95) translateY(20px); transition: var(--transition); box-shadow: var(--shadow-2xl); overflow: hidden; }
+        .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); }
+        .modal-header h3 { font-size: 20px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 12px; }
+        .modal-header h3 svg { width: 26px; height: 26px; fill: var(--primary); }
+        .modal-close { width: 38px; height: 38px; border-radius: var(--radius-md); background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+        .modal-close:hover { background: var(--bg-tertiary); }
+        .modal-close svg { width: 20px; height: 20px; fill: var(--text-muted); }
+
+        .modal-body { padding: 28px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+        .form-label .required { color: var(--error); margin-left: 3px; }
+
+        .form-input, .form-textarea, .form-select { width: 100%; padding: 14px 16px; background: var(--bg-primary); border: 2px solid var(--border); border-radius: var(--radius-lg); font-family: inherit; font-size: 14px; color: var(--text-primary); transition: var(--transition); }
+        .form-textarea { min-height: 120px; resize: vertical; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+        .modal-footer { display: flex; gap: 12px; justify-content: flex-end; padding: 20px 28px; background: var(--bg-secondary); border-top: 1px solid var(--border); }
+
+        .toast-container { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 14px; }
+        .toast { display: flex; align-items: flex-start; gap: 14px; padding: 18px 22px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-2xl); min-width: 360px; max-width: 420px; animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
+        .toast::before { content: ''; position: absolute; bottom: 0; left: 0; height: 4px; animation: progress 4s linear forwards; }
+        @keyframes progress { from { width: 100%; } to { width: 0%; } }
+        .toast.success::before { background: var(--success); }
+        .toast.error::before { background: var(--error); }
+        .toast.info::before { background: var(--info); }
+
+        .toast-icon { width: 44px; height: 44px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .toast-icon svg { width: 22px; height: 22px; fill: white; }
+        .toast.success .toast-icon { background: var(--success-gradient); }
+        .toast.error .toast-icon { background: linear-gradient(135deg, #DE350B 0%, #BF2600 100%); }
+        .toast.info .toast-icon { background: linear-gradient(135deg, #0065FF 0%, #0052CC 100%); }
+        .toast-content { flex: 1; }
+        .toast-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .toast-message { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+        .toast-close { width: 28px; height: 28px; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); transition: var(--transition-fast); }
+        .toast-close:hover { background: var(--bg-tertiary); }
+        .toast-close svg { width: 16px; height: 16px; fill: var(--text-muted); }
+
+        @media print {
+            .sidebar, .header, .filter-section, .charts-section, .table-actions-bar, .table-controls, .table-footer, .page-header-actions { display: none !important; }
+            .main-wrapper { margin-left: 0; }
+            .main-content { padding: 0; }
+        }
+
+        @media (max-width: 1280px) { .summary-cards { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .main-wrapper { margin-left: 0; } .charts-section { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .summary-cards { grid-template-columns: 1fr; }
+            .filter-row { flex-direction: column; align-items: stretch; }
+            .filter-buttons { margin-left: 0; width: 100%; }
+            .search-box { width: 100%; }
+            .notification-dropdown { width: 320px; right: -60px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-shapes">
+            <div class="sidebar-circle sidebar-circle-1"></div>
+            <div class="sidebar-circle sidebar-circle-2"></div>
+            <div class="sidebar-circle sidebar-circle-3"></div>
+        </div>
+
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            </div>
+            <div class="logo-text">
+                <span>ChequeTracker</span>
+                <span>Management</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Main Menu</div>
+                <a href="index.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    Dashboard
+                </a>
+                <a href="cheque-in.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>
+                    Cheque In
+                </a>
+                <a href="deposit.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    Deposit
+                </a>
+                <a href="report.html" class="nav-item active">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                    Reports
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">System</div>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                    Settings
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                    Help & Support
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">John Doe</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+            </div>
+            <a href="login.html" class="logout-btn">
+                <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                Sign Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="header-breadcrumb">
+                    <a href="index.html">Home</a>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    <span>Reports & Analytics</span>
+                </div>
+                <h1 class="header-title">Reports</h1>
+            </div>
+            <div class="header-right">
+                <div class="header-datetime">
+                    <div class="header-time" id="currentTime">00:00</div>
+                    <div class="header-date" id="currentDate">Loading...</div>
+                </div>
+                
+                <!-- Notification Button with Dropdown -->
+                <div class="header-btn-wrapper">
+                    <button class="header-btn" id="notificationBtn" onclick="toggleNotifications()" title="Notifications">
+                        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </button>
+                    
+                    <!-- Notification Dropdown -->
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h4>Notifications <span class="unread-badge" id="unreadBadge">3</span></h4>
+                            <div class="notification-actions">
+                                <button class="notification-action-btn" onclick="markAllAsRead()">Mark all read</button>
+                                <button class="notification-action-btn" onclick="clearAllNotifications()">Clear all</button>
+                            </div>
+                        </div>
+                        <div class="notification-list" id="notificationList">
+                            <!-- Notifications will be populated here -->
+                        </div>
+                        <div class="notification-footer">
+                            <span class="notification-view-all" onclick="showToast('info', 'All Notifications', 'Viewing all notifications')">View All Notifications</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="header-btn theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <svg class="moon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+                    <svg class="sun" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-content">
+                    <h1>Reports & Analytics</h1>
+                    <p>Comprehensive view of all cheque transactions with advanced filtering and export capabilities</p>
+                </div>
+                <div class="page-header-actions">
+                    <button class="btn btn-secondary" onclick="resetFilters()">
+                        <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+                        Reset
+                    </button>
+                    <button class="btn btn-primary" onclick="generateReport()">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="summary-card blue">
+                    <div class="summary-icon blue"><svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg></div>
+                    <div class="summary-content">
+                        <div class="summary-label">Total Cheques</div>
+                        <div class="summary-value" id="totalCheques">0</div>
+                        <div class="summary-change neutral"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>All time records</div>
+                    </div>
+                </div>
+                <div class="summary-card green">
+                    <div class="summary-icon green"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                    <div class="summary-content">
+                        <div class="summary-label">Cleared</div>
+                        <div class="summary-value" id="clearedCheques">0</div>
+                        <div class="summary-change up" id="clearedRate"><svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>0% rate</div>
+                    </div>
+                </div>
+                <div class="summary-card orange">
+                    <div class="summary-icon orange"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+                    <div class="summary-content">
+                        <div class="summary-label">Pending</div>
+                        <div class="summary-value" id="pendingCheques">0</div>
+                        <div class="summary-change neutral"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>Awaiting clearance</div>
+                    </div>
+                </div>
+                <div class="summary-card purple">
+                    <div class="summary-icon purple"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+                    <div class="summary-content">
+                        <div class="summary-label">Total Amount</div>
+                        <div class="summary-value" id="totalAmount">NPR 0</div>
+                        <div class="summary-change up"><svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>Total value</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-section-header">
+                    <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                    <h3>Advanced Filters</h3>
+                </div>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">From Date</label>
+                        <input type="date" class="filter-input" id="dateFrom">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">To Date</label>
+                        <input type="date" class="filter-input" id="dateTo">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="filter-select" id="filterStatus">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="cleared">Cleared</option>
+                            <option value="processing">Processing</option>
+                            <option value="bounced">Bounced</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Bank</label>
+                        <select class="filter-select" id="filterBank">
+                            <option value="">All Banks</option>
+                            <option value="Nepal Bank Limited">Nepal Bank Limited</option>
+                            <option value="Nabil Bank">Nabil Bank</option>
+                            <option value="Himalayan Bank">Himalayan Bank</option>
+                            <option value="Global IME Bank">Global IME Bank</option>
+                            <option value="NIC Asia Bank">NIC Asia Bank</option>
+                        </select>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="btn btn-secondary" onclick="resetFilters()">
+                            <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+                            Reset
+                        </button>
+                        <button class="btn btn-primary" onclick="applyFilters()">
+                            <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Table Section -->
+            <div class="report-table-section">
+                <div class="report-table-header">
+                    <div class="report-table-header-left">
+                        <div class="report-table-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+                        <div>
+                            <h3>Transaction Records <span class="count" id="reportCount">0</span></h3>
+                            <p>Complete cheque records with all details</p>
+                        </div>
+                    </div>
+                    <div class="table-actions-bar">
+                        <button class="export-btn excel" onclick="exportToExcel()"><svg viewBox="0 0 24 24"><path d="M21.17 3.25Q21.5 3.25 21.76 3.5 22 3.74 22 4.08V19.92Q22 20.26 21.76 20.5 21.5 20.75 21.17 20.75H7.83Q7.5 20.75 7.24 20.5 7 20.26 7 19.92V17H2.83Q2.5 17 2.24 16.76 2 16.5 2 16.17V7.83Q2 7.5 2.24 7.24 2.5 7 2.83 7H7V4.08Q7 3.74 7.24 3.5 7.5 3.25 7.83 3.25M7 13.06L8.18 15.28H9.97L8 12.06L9.93 8.89H8.22L7.13 10.9L7.09 10.96L7.06 11.03Q6.8 10.5 6.5 9.96 6.25 9.43 5.97 8.89H4.16L6.05 12.08L4 15.28H5.78M13.88 19.5V17H8.25V19.5M13.88 15.75V12.63H12V15.75M13.88 11.38V8.25H12V11.38M13.88 7V4.5H8.25V7M20.75 19.5V17H15.13V19.5M20.75 15.75V12.63H15.13V15.75M20.75 11.38V8.25H15.13V11.38M20.75 7V4.5H15.13V7Z"/></svg>Excel</button>
+                        <button class="export-btn pdf" onclick="exportToPDF()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6m4 18H6V4h7v5h5v11z"/></svg>PDF</button>
+                        <button class="export-btn csv" onclick="exportToCSV()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6m4 18H6V4h7v5h5v11M8 15h2v2H8v-2m0-4h2v2H8v-2m0 8h2v2H8v-2m4-4h4v2h-4v-2m0-4h4v2h-4v-2m0 8h4v2h-4v-2"/></svg>CSV</button>
+                        <button class="export-btn email" onclick="showEmailModal()"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Email</button>
+                        <button class="export-btn print" onclick="window.print()"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Print</button>
+                    </div>
+                </div>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <input type="text" id="searchInput" placeholder="Search cheques, banks, names..." oninput="searchTable()">
+                        <span class="search-shortcut">⌘K</span>
+                    </div>
+                    <div class="result-info">Showing <strong id="resultCount">0</strong> of <strong id="totalCount">0</strong> entries</div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Cheque No.</th>
+                                <th>Account Holder</th>
+                                <th>Bank</th>
+                                <th>Amount (NPR)</th>
+                                <th>Cheque Date</th>
+                                <th>Submit Date</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-footer-info">Showing <strong>1</strong> to <strong id="showingTo">0</strong> of <strong id="totalEntries">0</strong> entries</div>
+                    <div class="pagination" id="pagination"></div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <div class="chart-icon"><svg viewBox="0 0 24 24"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg></div>
+                            <div><h4>Status Distribution</h4><p>Breakdown by current status</p></div>
+                        </div>
+                    </div>
+                    <div class="chart-body"><div class="chart-container"><canvas id="statusChart"></canvas></div></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <div class="chart-icon"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg></div>
+                            <div><h4>Bank-wise Distribution</h4><p>Top banks by volume</p></div>
+                        </div>
+                    </div>
+                    <div class="chart-body"><div class="chart-container"><canvas id="bankChart"></canvas></div></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <div class="chart-icon"><svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg></div>
+                            <div><h4>Monthly Trend</h4><p>Cheques over time</p></div>
+                        </div>
+                    </div>
+                    <div class="chart-body"><div class="chart-container"><canvas id="trendChart"></canvas></div></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <div class="chart-icon"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+                            <div><h4>Amount by Status</h4><p>Total value grouped</p></div>
+                        </div>
+                    </div>
+                    <div class="chart-body"><div class="chart-container"><canvas id="amountChart"></canvas></div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Email Modal -->
+    <div class="modal-overlay" id="emailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Send Report via Email</h3>
+                <button class="modal-close" onclick="closeEmailModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Recipient Email <span class="required">*</span></label>
+                    <input type="email" class="form-input" id="emailTo" placeholder="example@email.com">
+                    <p class="form-hint">The report will be sent to this email address</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <input type="text" class="form-input" id="emailSubject" value="ChequeTracker Report">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message (Optional)</label>
+                    <textarea class="form-textarea" id="emailMessage" placeholder="Add a message..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Format</label>
+                    <select class="form-select" id="emailFormat">
+                        <option value="excel">Excel (.xlsx)</option>
+                        <option value="pdf">PDF (.pdf)</option>
+                        <option value="csv">CSV (.csv)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEmailModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="sendEmail()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>Send Report</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const STORAGE_KEY = 'chequeTrackerData';
+        const NOTIFICATION_KEY = 'chequeTrackerNotifications';
+        
+        let chequeEntries = [];
+        let filteredEntries = [];
+        let charts = {};
+        let currentPage = 1;
+        let rowsPerPage = 25;
+        let notifications = [];
+
+        // ==================== NOTIFICATIONS ====================
+        
+        function loadNotifications() {
+            const saved = localStorage.getItem(NOTIFICATION_KEY);
+            if (saved) {
+                notifications = JSON.parse(saved);
+            } else {
+                // Default notifications
+                notifications = [
+                    { id: 1, type: 'success', title: 'Cheque Cleared', message: 'Cheque #CH-2024-001 from Nepal Bank has been cleared successfully.', time: new Date(Date.now() - 2*60*60*1000).toISOString(), read: false },
+                    { id: 2, type: 'warning', title: 'Pending Approval', message: '3 cheques are pending approval for deposit.', time: new Date(Date.now() - 5*60*60*1000).toISOString(), read: false },
+                    { id: 3, type: 'info', title: 'Daily Report Ready', message: 'Your daily cheque report is ready to download.', time: new Date(Date.now() - 24*60*60*1000).toISOString(), read: false }
+                ];
+                saveNotifications();
+            }
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        function saveNotifications() {
+            localStorage.setItem(NOTIFICATION_KEY, JSON.stringify(notifications));
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notificationList');
+            
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-empty">
+                        <div class="notification-empty-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                        </div>
+                        <h4>No Notifications</h4>
+                        <p>You're all caught up!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = notifications.map(n => `
+                <div class="notification-item ${n.read ? '' : 'unread'}" onclick="markAsRead(${n.id})">
+                    <div class="notification-icon ${n.type}">
+                        ${getNotificationIcon(n.type)}
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${n.title}</div>
+                        <div class="notification-message">${n.message}</div>
+                        <div class="notification-time">
+                            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            ${getTimeAgo(n.time)}
+                        </div>
+                    </div>
+                    <button class="notification-delete" onclick="event.stopPropagation(); deleteNotification(${n.id})">
+                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                success: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+                warning: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+                info: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+                error: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
+            };
+            return icons[type] || icons.info;
+        }
+
+        function getTimeAgo(timestamp) {
+            const seconds = Math.floor((new Date() - new Date(timestamp)) / 1000);
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            return `${Math.floor(seconds / 86400)} days ago`;
+        }
+
+        function updateNotificationBadge() {
+            const unread = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            const unreadBadge = document.getElementById('unreadBadge');
+            
+            if (unread > 0) {
+                badge.textContent = unread > 9 ? '9+' : unread;
+                badge.style.display = 'flex';
+                unreadBadge.textContent = unread;
+            } else {
+                badge.style.display = 'none';
+                unreadBadge.textContent = '0';
+            }
+        }
+
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function markAsRead(id) {
+            const notif = notifications.find(n => n.id === id);
+            if (notif && !notif.read) {
+                notif.read = true;
+                saveNotifications();
+                renderNotifications();
+                updateNotificationBadge();
+            }
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(n => n.read = true);
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            showToast('success', 'All Read', 'All notifications marked as read');
+        }
+
+        function deleteNotification(id) {
+            notifications = notifications.filter(n => n.id !== id);
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        function clearAllNotifications() {
+            if (confirm('Clear all notifications?')) {
+                notifications = [];
+                saveNotifications();
+                renderNotifications();
+                updateNotificationBadge();
+                showToast('info', 'Cleared', 'All notifications cleared');
+            }
+        }
+
+        function addNotification(type, title, message) {
+            notifications.unshift({
+                id: Date.now(),
+                type,
+                title,
+                message,
+                time: new Date().toISOString(),
+                read: false
+            });
+            if (notifications.length > 50) notifications = notifications.slice(0, 50);
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        // Close notification dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('notificationDropdown');
+            const btn = document.getElementById('notificationBtn');
+            if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // ==================== DATA LOADING ====================
+        
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) chequeEntries = JSON.parse(saved);
+            filteredEntries = [...chequeEntries];
+            updateStats();
+            renderTable();
+            renderCharts();
+        }
+
+        function formatNepaliNumber(num) {
+            if (!num) return '0';
+            const numStr = Math.floor(num).toString();
+            let result = '', count = 0;
+            for (let i = numStr.length - 1; i >= 0; i--) {
+                count++;
+                result = numStr[i] + result;
+                if (count === 3 && i !== 0) result = ',' + result;
+                else if (count > 3 && (count - 3) % 2 === 0 && i !== 0) result = ',' + result;
+            }
+            return result;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function updateStats() {
+            const total = filteredEntries.length;
+            const cleared = filteredEntries.filter(e => e.status === 'cleared').length;
+            const pending = filteredEntries.filter(e => e.status === 'pending').length;
+            const totalAmount = filteredEntries.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
+            const clearRate = total > 0 ? ((cleared / total) * 100).toFixed(1) : 0;
+
+            document.getElementById('totalCheques').textContent = total;
+            document.getElementById('clearedCheques').textContent = cleared;
+            document.getElementById('pendingCheques').textContent = pending;
+            document.getElementById('totalAmount').textContent = 'NPR ' + formatNepaliNumber(totalAmount);
+            document.getElementById('clearedRate').innerHTML = `<svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>${clearRate}% rate`;
+            document.getElementById('reportCount').textContent = total;
+            document.getElementById('resultCount').textContent = total;
+            document.getElementById('totalCount').textContent = chequeEntries.length;
+            document.getElementById('totalEntries').textContent = total;
+            document.getElementById('showingTo').textContent = Math.min(rowsPerPage, total);
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('reportTableBody');
+            const start = (currentPage - 1) * rowsPerPage;
+            const pageData = filteredEntries.slice(start, start + rowsPerPage);
+            
+            if (filteredEntries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10"><div class="no-data"><div class="no-data-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><h4>No Records Found</h4><p>No cheque entries match your criteria.</p><button class="btn btn-primary" onclick="resetFilters()">Clear Filters</button></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = pageData.map((e, i) => {
+                const idx = start + i + 1;
+                const initials = (e.chequeBank || 'NA').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                return `<tr>
+                    <td class="table-sn">${idx}</td>
+                    <td class="table-cheque-no">${e.chequeNo || '-'}</td>
+                    <td class="table-name">${e.accountName || '-'}</td>
+                    <td><div class="table-bank"><div class="bank-logo">${initials}</div><span>${e.chequeBank || '-'}</span></div></td>
+                    <td class="table-amount">NPR ${formatNepaliNumber(e.amount || 0)}</td>
+                    <td class="table-date">${formatDate(e.chequeDate)}</td>
+                    <td class="table-date">${formatDate(e.submittedAt)}</td>
+                    <td><span class="table-status ${e.status || 'pending'}"><span class="table-status-dot"></span>${(e.status || 'pending').charAt(0).toUpperCase() + (e.status || 'pending').slice(1)}</span></td>
+                    <td class="table-remarks" title="${e.remarks || ''}">${e.remarks || '-'}</td>
+                    <td><div class="table-row-actions">
+                        <button class="action-btn view" title="View"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
+                        <button class="action-btn edit" title="Edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+                        <button class="action-btn delete" title="Delete"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+                    </div></td>
+                </tr>`;
+            }).join('');
+            
+            document.getElementById('resultCount').textContent = pageData.length;
+            document.getElementById('showingTo').textContent = Math.min(start + rowsPerPage, filteredEntries.length);
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredEntries.length / rowsPerPage);
+            const pag = document.getElementById('pagination');
+            if (totalPages <= 1) { pag.innerHTML = ''; return; }
+            let html = `<button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})"><svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>`;
+            for (let i = 1; i <= Math.min(totalPages, 5); i++) html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+            if (totalPages > 5) html += `<span style="padding:0 8px;color:var(--text-muted);">...</span><button class="pagination-btn ${totalPages === currentPage ? 'active' : ''}" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+            html += `<button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg></button>`;
+            pag.innerHTML = html;
+        }
+
+        function goToPage(page) { currentPage = page; renderTable(); }
+
+        // Charts
+        function renderCharts() {
+            renderStatusChart();
+            renderBankChart();
+            renderTrendChart();
+            renderAmountChart();
+        }
+
+        function renderStatusChart() {
+            const ctx = document.getElementById('statusChart');
+            if (charts.statusChart) charts.statusChart.destroy();
+            const data = { pending: filteredEntries.filter(e => e.status === 'pending').length, cleared: filteredEntries.filter(e => e.status === 'cleared').length, processing: filteredEntries.filter(e => e.status === 'processing').length, bounced: filteredEntries.filter(e => e.status === 'bounced').length };
+            charts.statusChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Pending', 'Cleared', 'Processing', 'Bounced'], datasets: [{ data: [data.pending, data.cleared, data.processing, data.bounced], backgroundColor: ['#FF991F', '#00875A', '#0052CC', '#DE350B'], borderWidth: 0, borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, font: { size: 12 } } } } } });
+        }
+
+        function renderBankChart() {
+            const ctx = document.getElementById('bankChart');
+            if (charts.bankChart) charts.bankChart.destroy();
+            const bankData = {};
+            filteredEntries.forEach(e => { const b = e.chequeBank || 'Unknown'; bankData[b] = (bankData[b] || 0) + 1; });
+            const sorted = Object.entries(bankData).sort((a, b) => b[1] - a[1]).slice(0, 6);
+            charts.bankChart = new Chart(ctx, { type: 'bar', data: { labels: sorted.map(b => b[0].length > 12 ? b[0].substring(0, 12) + '...' : b[0]), datasets: [{ data: sorted.map(b => b[1]), backgroundColor: '#0052CC', borderRadius: 6, barThickness: 32 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
+        }
+
+        function renderTrendChart() {
+            const ctx = document.getElementById('trendChart');
+            if (charts.trendChart) charts.trendChart.destroy();
+            const monthData = {};
+            filteredEntries.forEach(e => { if (e.submittedAt || e.chequeDate) { const m = new Date(e.submittedAt || e.chequeDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }); monthData[m] = (monthData[m] || 0) + 1; } });
+            const labels = Object.keys(monthData).slice(-6);
+            charts.trendChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ data: labels.map(m => monthData[m]), borderColor: '#0052CC', backgroundColor: 'rgba(0,82,204,0.1)', tension: 0.4, fill: true, pointBackgroundColor: '#0052CC', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
+        }
+
+        function renderAmountChart() {
+            const ctx = document.getElementById('amountChart');
+            if (charts.amountChart) charts.amountChart.destroy();
+            const amounts = { pending: filteredEntries.filter(e => e.status === 'pending').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0), cleared: filteredEntries.filter(e => e.status === 'cleared').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0), processing: filteredEntries.filter(e => e.status === 'processing').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0) };
+            charts.amountChart = new Chart(ctx, { type: 'bar', data: { labels: ['Pending', 'Cleared', 'Processing'], datasets: [{ data: [amounts.pending, amounts.cleared, amounts.processing], backgroundColor: ['#FF991F', '#00875A', '#0052CC'], borderRadius: 6, barThickness: 48 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'NPR ' + formatNepaliNumber(v) }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
+        }
+
+        // Filters
+        function applyFilters() {
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            const status = document.getElementById('filterStatus').value;
+            const bank = document.getElementById('filterBank').value;
+            filteredEntries = chequeEntries.filter(e => {
+                let m = true;
+                if (dateFrom && new Date(e.chequeDate) < new Date(dateFrom)) m = false;
+                if (dateTo && new Date(e.chequeDate) > new Date(dateTo)) m = false;
+                if (status && e.status !== status) m = false;
+                if (bank && e.chequeBank !== bank) m = false;
+                return m;
+            });
+            currentPage = 1;
+            updateStats(); renderTable(); renderCharts();
+            showToast('success', 'Filters Applied', `Found ${filteredEntries.length} records`);
+            addNotification('info', 'Filters Applied', `Report filtered: ${filteredEntries.length} records found.`);
+        }
+
+        function resetFilters() {
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterBank').value = '';
+            document.getElementById('searchInput').value = '';
+            filteredEntries = [...chequeEntries];
+            currentPage = 1;
+            updateStats(); renderTable(); renderCharts();
+            showToast('info', 'Filters Cleared', 'Showing all entries');
+        }
+
+        function generateReport() { applyFilters(); showToast('success', 'Report Generated', 'Your report is ready'); addNotification('success', 'Report Generated', `Report with ${filteredEntries.length} entries generated.`); }
+
+        function searchTable() {
+            const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            filteredEntries = !term ? [...chequeEntries] : chequeEntries.filter(e => (e.chequeNo && e.chequeNo.toLowerCase().includes(term)) || (e.accountName && e.accountName.toLowerCase().includes(term)) || (e.chequeBank && e.chequeBank.toLowerCase().includes(term)) || (e.remarks && e.remarks.toLowerCase().includes(term)));
+            currentPage = 1;
+            updateStats(); renderTable(); renderCharts();
+        }
+
+        // Export Functions
+        function exportToExcel() {
+            if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to export'); return; }
+            const data = filteredEntries.map((e, i) => ({ 'S.N.': i + 1, 'Cheque Number': e.chequeNo || '', 'Account Holder': e.accountName || '', 'Bank': e.chequeBank || '', 'Amount (NPR)': e.amount || 0, 'Cheque Date': formatDate(e.chequeDate), 'Submit Date': formatDate(e.submittedAt), 'Status': (e.status || 'pending').toUpperCase(), 'Remarks': e.remarks || '' }));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), 'Cheque Report');
+            const filename = `ChequeTracker_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(wb, filename);
+            showToast('success', 'Excel Exported', `Downloaded ${filename}`);
+            addNotification('success', 'Excel Export', `Report "${filename}" exported successfully.`);
+        }
+
+        function exportToPDF() {
+            if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to export'); return; }
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+                doc.setFillColor(0, 82, 204); doc.rect(0, 0, 297, 32, 'F');
+                doc.setTextColor(255, 255, 255); doc.setFontSize(24); doc.setFont('helvetica', 'bold');
+                doc.text('ChequeTracker Pro Report', 14, 18);
+                doc.setFontSize(11); doc.setFont('helvetica', 'normal');
+                doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 27);
+                doc.setTextColor(23, 43, 77);
+                const tableData = filteredEntries.map((e, i) => [i + 1, e.chequeNo || '-', (e.accountName || '-').substring(0, 25), (e.chequeBank || '-').substring(0, 20), 'NPR ' + formatNepaliNumber(e.amount || 0), formatDate(e.chequeDate), (e.status || 'pending').toUpperCase()]);
+                doc.autoTable({ startY: 40, head: [['S.N.', 'Cheque No.', 'Account Holder', 'Bank', 'Amount', 'Date', 'Status']], body: tableData, theme: 'striped', headStyles: { fillColor: [0, 82, 204], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center', fontSize: 9 }, bodyStyles: { fontSize: 8, textColor: [23, 43, 77] }, alternateRowStyles: { fillColor: [245, 247, 250] }, margin: { left: 14, right: 14 } });
+                const filename = `ChequeTracker_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+                doc.save(filename);
+                showToast('success', 'PDF Exported', `Downloaded ${filename}`);
+                addNotification('success', 'PDF Export', `Report "${filename}" exported successfully.`);
+            } catch (e) { console.error(e); showToast('error', 'Export Failed', 'Could not generate PDF'); }
+        }
+
+        function exportToCSV() {
+            if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to export'); return; }
+            const headers = ['S.N.', 'Cheque No.', 'Account Holder', 'Bank', 'Amount', 'Cheque Date', 'Submit Date', 'Status', 'Remarks'];
+            const csv = [headers.join(','), ...filteredEntries.map((e, i) => [i + 1, `"${e.chequeNo || ''}"`, `"${e.accountName || ''}"`, `"${e.chequeBank || ''}"`, e.amount || 0, `"${formatDate(e.chequeDate)}"`, `"${formatDate(e.submittedAt)}"`, `"${e.status || 'pending'}"`, `"${e.remarks || ''}"`].join(','))].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const filename = `ChequeTracker_Report_${new Date().toISOString().split('T')[0]}.csv`;
+            link.href = URL.createObjectURL(blob); link.download = filename; link.click();
+            showToast('success', 'CSV Exported', 'Report exported successfully');
+            addNotification('success', 'CSV Export', `Report "${filename}" exported successfully.`);
+        }
+
+        // Email Modal
+        function showEmailModal() { if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to send'); return; } document.getElementById('emailModal').classList.add('active'); }
+        function closeEmailModal() { document.getElementById('emailModal').classList.remove('active'); }
+
+        function sendEmail() {
+            const email = document.getElementById('emailTo').value;
+            const format = document.getElementById('emailFormat').value;
+            if (!email || !email.includes('@')) { showToast('error', 'Invalid Email', 'Please enter a valid email'); return; }
+            showToast('info', 'Processing...', 'Preparing report');
+            setTimeout(() => {
+                closeEmailModal();
+                if (format === 'excel') exportToExcel();
+                else if (format === 'pdf') exportToPDF();
+                else exportToCSV();
+                showToast('success', 'Report Ready!', `Report prepared for ${email}`);
+                addNotification('info', 'Email Prepared', `Report prepared for ${email}.`);
+                document.getElementById('emailTo').value = '';
+                document.getElementById('emailMessage').value = '';
+            }, 1000);
+        }
+
+        document.getElementById('emailModal').addEventListener('click', function(e) { if (e.target === this) closeEmailModal(); });
+
+        // Toast
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>', error: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>', info: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>' };
+            toast.innerHTML = `<div class="toast-icon">${icons[type]}</div><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100px)'; setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
+        // Theme & Time
+        function toggleTheme() {
+            const theme = document.body.getAttribute('data-theme');
+            document.body.setAttribute('data-theme', theme === 'dark' ? '' : 'dark');
+            localStorage.setItem('theme', theme === 'dark' ? 'light' : 'dark');
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeEmailModal(); document.getElementById('notificationDropdown').classList.remove('active'); }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }
+        });
+
+        // Init
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
+            loadData();
+            loadNotifications();
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+    </script>
+</body>
+</html>
