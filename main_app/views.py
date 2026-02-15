@@ -1,8 +1,13 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import cheque_details
+from django.db.models import Sum, Count, Q
+from datetime import date
+
+
+
 
 
 def login_view(request):
@@ -48,16 +53,19 @@ def dashboard_home(request):
 
     return render(request,"dashboard.html")
 
+
+
 def cheque_home(request):
-    if request.method=="POST":
-        cheque_number=request.POST.get("cheque_no")
-        cheque_date=request.POST.get("cheque_date")
-        cheque_bank=request.POST.get("cheque_bank")
-        account_name=request.POST.get("account_name")
-        payee_name=request.POST.get("payee_name")
-        cheque_amount=request.POST.get("cheque_amount")
-        remarks=request.POST.get("remarks")
-        cheque_entry=cheque_details(
+    if request.method == "POST":
+        cheque_number = request.POST.get("cheque_no")
+        cheque_date = request.POST.get("cheque_date")
+        cheque_bank = request.POST.get("cheque_bank")
+        account_name = request.POST.get("account_name")
+        payee_name = request.POST.get("payee_name")
+        cheque_amount = request.POST.get("cheque_amount")
+        remarks = request.POST.get("remarks")
+        
+        cheque_entry = cheque_details(
             cheque_number=cheque_number,
             cheque_date=cheque_date,
             cheque_bank=cheque_bank,
@@ -67,10 +75,77 @@ def cheque_home(request):
             remarks=remarks
         )
         cheque_entry.save()
-        return redirect("cheque")
+        messages.success(request, f'Cheque #{cheque_number} submitted successfully!')
         
+        return redirect("cheque")
+    
+    # Get all cheques
+    cheques = cheque_details.objects.all().order_by('-id')
+    
+    # Calculate stats
+    today = date.today()
+    today_count = cheque_details.objects.filter(cheque_date=today).count()
+    cleared_count = 0
+    pending_count = cheques.count()
+    total_amount = cheque_details.objects.aggregate(total=Sum('cheque_amount'))['total'] or 0
+    
+    context = {
+        'cheques': cheques,
+        'today_count': today_count,
+        'cleared_count': cleared_count,
+        'pending_count': pending_count,
+        'total_amount': total_amount,
+    }
+    
+    return render(request, "cheque.html", context)
 
-    return render(request,"cheque.html")
+
+def cheque_edit(request, id):
+    cheque = get_object_or_404(cheque_details, id=id)
+    
+    if request.method == "POST":
+        cheque.cheque_number = request.POST.get("cheque_no")
+        cheque.cheque_date = request.POST.get("cheque_date")
+        cheque.cheque_bank = request.POST.get("cheque_bank")
+        cheque.account_name = request.POST.get("account_name")
+        cheque.payee_name = request.POST.get("payee_name")
+        cheque.cheque_amount = request.POST.get("cheque_amount")
+        cheque.remarks = request.POST.get("remarks")
+        cheque.save()
+        
+        messages.success(request, f'Cheque #{cheque.cheque_number} updated successfully!')
+        return redirect("cheque")
+    
+    # Get all cheques for table display
+    cheques = cheque_details.objects.all().order_by('-id')
+    
+    # Calculate stats
+    today = date.today()
+    today_count = cheque_details.objects.filter(cheque_date=today).count()
+    cleared_count = 0
+    pending_count = cheques.count()
+    total_amount = cheque_details.objects.aggregate(total=Sum('cheque_amount'))['total'] or 0
+    
+    context = {
+        'cheques': cheques,
+        'today_count': today_count,
+        'cleared_count': cleared_count,
+        'pending_count': pending_count,
+        'total_amount': total_amount,
+        'edit_cheque': cheque,  # Pass the cheque being edited
+        'edit_mode': True,
+    }
+    
+    return render(request, "cheque.html", context)
+
+
+def cheque_delete(request, id):
+    if request.method == "POST":
+        cheque = get_object_or_404(cheque_details, id=id)
+        cheque_number = cheque.cheque_number
+        cheque.delete()
+        messages.success(request, f'Cheque #{cheque_number} deleted successfully!')
+    return redirect("cheque")
 
 def deposit_home(request):
     return render(request,"Deposit.html")
