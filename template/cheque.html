@@ -1713,45 +1713,6 @@
             font-size: 12px;
         }
 
-        /* Django Messages */
-        .django-messages {
-            margin-bottom: 24px;
-        }
-
-        .django-message {
-            padding: 16px 20px;
-            border-radius: var(--radius-md);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideInRight 0.3s ease-out;
-        }
-
-        .django-message.success {
-            background: var(--success-light);
-            border-left: 4px solid var(--success);
-            color: var(--success);
-        }
-
-        .django-message.error {
-            background: var(--error-light);
-            border-left: 4px solid var(--error);
-            color: var(--error);
-        }
-
-        .django-message.warning {
-            background: var(--warning-light);
-            border-left: 4px solid var(--warning);
-            color: var(--warning);
-        }
-
-        .django-message.info {
-            background: var(--info-light);
-            border-left: 4px solid var(--info);
-            color: var(--info);
-        }
-
         /* Responsive */
         @media (max-width: 1200px) {
             .quick-stats { grid-template-columns: repeat(2, 1fr); }
@@ -1811,7 +1772,7 @@
                 <a href="{% url 'cheque' %}" class="nav-item active">
                     <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>
                     Cheque In
-                    <span class="badge alert" id="pendingBadge">{{ pending_count|default:0 }}</span>
+                    <span class="badge alert" id="pendingBadge">0</span>
                 </a>
                 <a href="{% url 'deposit' %}" class="nav-item">
                     <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
@@ -1842,7 +1803,7 @@
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 </div>
                 <div class="sidebar-user-info">
-                    <div class="sidebar-user-name">{{ user.get_full_name|default:user.username }}</div>
+                    <div class="sidebar-user-name">John Doe</div>
                     <div class="sidebar-user-role">Administrator</div>
                 </div>
             </div>
@@ -1867,6 +1828,31 @@
                     <div class="header-date" id="currentDate">Loading...</div>
                 </div>
                 <div class="header-actions">
+                    <!-- Notification Button with Dropdown -->
+                    <div class="notification-wrapper">
+                        <button class="header-btn" id="notificationBtn" title="Notifications" onclick="toggleNotificationDropdown()">
+                            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                            <span class="badge" id="notificationBadge">0</span>
+                        </button>
+                        
+                        <!-- Notification Dropdown -->
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <h4>
+                                    Notifications
+                                    <span class="count" id="notificationCount">0</span>
+                                </h4>
+                                <div class="notification-header-actions">
+                                    <button class="notification-header-btn" onclick="markAllAsRead()">Mark all read</button>
+                                    <button class="notification-header-btn danger" onclick="clearAllNotifications()">Clear all</button>
+                                </div>
+                            </div>
+                            <div class="notification-list" id="notificationList">
+                                <!-- Notifications will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
                     <button class="header-btn theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
                         <svg class="moon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
                         <svg class="sun" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
@@ -1877,17 +1863,6 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Django Messages -->
-            {% if messages %}
-            <div class="django-messages">
-                {% for message in messages %}
-                <div class="django-message {{ message.tags }}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-
             <!-- Quick Stats -->
             <div class="quick-stats">
                 <div class="quick-stat-card">
@@ -1895,7 +1870,7 @@
                         <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>
                     </div>
                     <div class="quick-stat-content">
-                        <h4>{{ today_cheques|default:0 }}</h4>
+                        <h4 id="todayCheques">0</h4>
                         <p>Today's Cheques</p>
                     </div>
                 </div>
@@ -1904,7 +1879,7 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                     </div>
                     <div class="quick-stat-content">
-                        <h4>{{ cleared_cheques|default:0 }}</h4>
+                        <h4 id="clearedCheques">0</h4>
                         <p>Cleared</p>
                     </div>
                 </div>
@@ -1913,16 +1888,16 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                     </div>
                     <div class="quick-stat-content">
-                        <h4>{{ pending_cheques|default:0 }}</h4>
+                        <h4 id="pendingCheques">0</h4>
                         <p>Pending</p>
                     </div>
                 </div>
                 <div class="quick-stat-card">
                     <div class="quick-stat-icon purple">
-                        <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.10h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
                     </div>
                     <div class="quick-stat-content">
-                        <h4>NPR {{ total_amount|default:0|floatformat:2 }}</h4>
+                        <h4 id="totalAmount">NPR 0</h4>
                         <p>Total Amount</p>
                     </div>
                 </div>
@@ -1936,8 +1911,8 @@
                             <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>
                         </div>
                         <div>
-                            <h2>{% if edit_mode %}Edit Cheque Entry{% else %}New Cheque Entry{% endif %}</h2>
-                            <p>{% if edit_mode %}Update the cheque details below{% else %}Fill in the cheque details below to submit{% endif %}</p>
+                            <h2 id="formTitle">New Cheque Entry</h2>
+                            <p id="formSubtitle">Fill in the cheque details below to submit</p>
                         </div>
                     </div>
                     <div class="form-header-badge">
@@ -1946,21 +1921,17 @@
                     </div>
                 </div>
 
-                <!-- DJANGO FORM STARTS HERE -->
                 <form id="chequeForm" class="form-body" method="POST">
                     {% csrf_token %}
-                    
                     <!-- Edit Mode Banner -->
-                    {% if edit_mode %}
-                    <div class="edit-mode-banner active">
+                    <div class="edit-mode-banner" id="editModeBanner">
                         <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                         <div class="edit-mode-banner-content">
-                            <div class="edit-mode-banner-title">Editing Cheque #{{ cheque.cheque_no }}</div>
+                            <div class="edit-mode-banner-title">Editing Cheque #<span id="editingChequeNo"></span></div>
                             <div class="edit-mode-banner-subtitle">Make changes and click Update to save</div>
                         </div>
-                        <a href="{% url 'cheque' %}" class="btn btn-secondary">Cancel Edit</a>
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel Edit</button>
                     </div>
-                    {% endif %}
 
                     <!-- Cheque Details Section -->
                     <div class="form-section">
@@ -1978,7 +1949,7 @@
                             <div class="form-group">
                                 <label class="form-label">Cheque Number <span class="required">*</span></label>
                                 <div class="input-wrapper has-icon">
-                                    <input type="text" class="form-input" id="chequeNo" placeholder="e.g., 000123456" name="cheque_no" value="{{ cheque.cheque_no|default:'' }}" required>
+                                    <input type="text" class="form-input" id="chequeNo" placeholder="e.g., 000123456" name="cheque_no" required>
                                     <svg class="input-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
                                 </div>
                                 <span class="input-help">
@@ -1990,7 +1961,7 @@
                             <div class="form-group">
                                 <label class="form-label">Cheque Date <span class="required">*</span></label>
                                 <div class="date-input-wrapper">
-                                    <input type="date" class="form-input" id="chequeDate" name="cheque_date" value="{{ cheque.cheque_date|date:'Y-m-d'|default:'' }}" required>
+                                    <input type="date" class="form-input" id="chequeDate" name="cheque_date" required>
                                     <svg class="date-icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
                                 </div>
                             </div>
@@ -2001,21 +1972,21 @@
                                     <select class="form-select" id="chequeBank" name="cheque_bank" required>
                                         <option value="">Select cheque bank</option>
                                         <optgroup label="Class A - Commercial Banks">
-                                            <option value="Nabil Bank" {% if cheque.cheque_bank == "Nabil Bank" %}selected{% endif %}>Nabil Bank Limited</option>
-                                            <option value="Nepal Investment Mega Bank" {% if cheque.cheque_bank == "Nepal Investment Mega Bank" %}selected{% endif %}>Nepal Investment Mega Bank Limited</option>
-                                            <option value="Standard Chartered Bank" {% if cheque.cheque_bank == "Standard Chartered Bank" %}selected{% endif %}>Standard Chartered Bank Nepal Limited</option>
-                                            <option value="Himalayan Bank" {% if cheque.cheque_bank == "Himalayan Bank" %}selected{% endif %}>Himalayan Bank Limited</option>
-                                            <option value="Nepal SBI Bank" {% if cheque.cheque_bank == "Nepal SBI Bank" %}selected{% endif %}>Nepal SBI Bank Limited</option>
-                                            <option value="Nepal Bank" {% if cheque.cheque_bank == "Nepal Bank" %}selected{% endif %}>Nepal Bank Limited</option>
-                                            <option value="Rastriya Banijya Bank" {% if cheque.cheque_bank == "Rastriya Banijya Bank" %}selected{% endif %}>Rastriya Banijya Bank Limited</option>
-                                            <option value="Everest Bank" {% if cheque.cheque_bank == "Everest Bank" %}selected{% endif %}>Everest Bank Limited</option>
-                                            <option value="NIC Asia Bank" {% if cheque.cheque_bank == "NIC Asia Bank" %}selected{% endif %}>NIC Asia Bank Limited</option>
-                                            <option value="Global IME Bank" {% if cheque.cheque_bank == "Global IME Bank" %}selected{% endif %}>Global IME Bank Limited</option>
-                                            <option value="Sanima Bank" {% if cheque.cheque_bank == "Sanima Bank" %}selected{% endif %}>Sanima Bank Limited</option>
-                                            <option value="Prabhu Bank" {% if cheque.cheque_bank == "Prabhu Bank" %}selected{% endif %}>Prabhu Bank Limited</option>
-                                            <option value="NMB Bank" {% if cheque.cheque_bank == "NMB Bank" %}selected{% endif %}>NMB Bank Limited</option>
+                                            <option value="Nabil Bank">Nabil Bank Limited</option>
+                                            <option value="Nepal Investment Mega Bank">Nepal Investment Mega Bank Limited</option>
+                                            <option value="Standard Chartered Bank">Standard Chartered Bank Nepal Limited</option>
+                                            <option value="Himalayan Bank">Himalayan Bank Limited</option>
+                                            <option value="Nepal SBI Bank">Nepal SBI Bank Limited</option>
+                                            <option value="Nepal Bank">Nepal Bank Limited</option>
+                                            <option value="Rastriya Banijya Bank">Rastriya Banijya Bank Limited</option>
+                                            <option value="Everest Bank">Everest Bank Limited</option>
+                                            <option value="NIC Asia Bank">NIC Asia Bank Limited</option>
+                                            <option value="Global IME Bank">Global IME Bank Limited</option>
+                                            <option value="Sanima Bank">Sanima Bank Limited</option>
+                                            <option value="Prabhu Bank">Prabhu Bank Limited</option>
+                                            <option value="NMB Bank">NMB Bank Limited</option>
                                         </optgroup>
-                                        <option value="Other" {% if cheque.cheque_bank == "Other" %}selected{% endif %}>Other Bank</option>
+                                        <option value="Other">Other Bank</option>
                                     </select>
                                     <svg class="input-icon" viewBox="0 0 24 24"><path d="M4 10h3v7H4zm6 0h3v7h-3zm-8 9h19v3H2zm14-9h3v7h-3zm-4.5-9L2 6v2h19V6z"/></svg>
                                 </div>
@@ -2024,7 +1995,7 @@
                             <div class="form-group">
                                 <label class="form-label">Drawer / Issued By <span class="required">*</span></label>
                                 <div class="input-wrapper has-icon">
-                                    <input type="text" class="form-input" id="accountName" placeholder="Who wrote/issued the cheque" name="account_name" value="{{ cheque.account_name|default:'' }}" required>
+                                    <input type="text" class="form-input" id="accountName" placeholder="Who wrote/issued the cheque" name="account_name" required>
                                     <svg class="input-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                                 </div>
                                 <span class="input-help">
@@ -2051,7 +2022,7 @@
                             <div class="form-group full-width">
                                 <label class="form-label">Payee Name / Pay To <span class="required">*</span></label>
                                 <div class="input-wrapper has-icon">
-                                    <input type="text" class="form-input" id="payeeName" placeholder="e.g., Pioneer Software Pvt. Ltd." name="payee_name" value="{{ cheque.payee_name|default:'' }}" required>
+                                    <input type="text" class="form-input" id="payeeName" placeholder="e.g., Pioneer Software Pvt. Ltd." name="payee_name" required>
                                     <svg class="input-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                                 </div>
                                 <span class="input-help highlight">
@@ -2062,7 +2033,7 @@
                         </div>
 
                         <!-- Transfer Flow Visualization -->
-                        <div class="transfer-info-box" id="transferInfoBox" style="{% if cheque.account_name or cheque.payee_name %}display: block;{% else %}display: none;{% endif %}">
+                        <div class="transfer-info-box" id="transferInfoBox" style="display: none;">
                             <div class="transfer-label">
                                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                                 Transaction Flow Preview
@@ -2070,14 +2041,14 @@
                             <div class="transfer-flow">
                                 <div class="transfer-party">
                                     <div class="transfer-party-label">From (Drawer)</div>
-                                    <div class="transfer-party-name" id="previewDrawer">{{ cheque.account_name|default:'-' }}</div>
+                                    <div class="transfer-party-name" id="previewDrawer">-</div>
                                 </div>
                                 <div class="transfer-arrow">
                                     <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                                 </div>
                                 <div class="transfer-party">
                                     <div class="transfer-party-label">To (Payee)</div>
-                                    <div class="transfer-party-name" id="previewPayee">{{ cheque.payee_name|default:'-' }}</div>
+                                    <div class="transfer-party-name" id="previewPayee">-</div>
                                 </div>
                             </div>
                         </div>
@@ -2100,7 +2071,7 @@
                                 <label class="form-label">Amount in Figures <span class="required">*</span></label>
                                 <div class="amount-input-wrapper">
                                     <span class="amount-prefix">NPR</span>
-                                    <input type="number" class="form-input" id="chequeAmount" placeholder="0.00" step="0.01" min="0" name="cheque_amount" value="{{ cheque.cheque_amount|default:'' }}" required oninput="convertAmountToWords()">
+                                    <input type="number" class="form-input" id="chequeAmount" placeholder="0.00" step="0.01" min="0" name="cheque_amount" required oninput="convertAmountToWords()">
                                 </div>
                             </div>
 
@@ -2108,7 +2079,7 @@
                                 <label class="form-label">Amount in Words <span class="optional">(Auto-generated)</span></label>
                                 <div class="amount-words-display">
                                     <span class="label">Words:</span>
-                                    <span class="{% if cheque.amount_in_words %}words{% else %}placeholder{% endif %}" id="amountWordsText">{% if cheque.amount_in_words %}{{ cheque.amount_in_words }}{% else %}Enter amount to see in words{% endif %}</span>
+                                    <span class="placeholder" id="amountWordsText">Enter amount to see in words</span>
                                 </div>
                             </div>
                         </div>
@@ -2129,26 +2100,26 @@
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label class="form-label">Remarks / Notes <span class="optional">(Optional)</span></label>
-                                <textarea class="form-textarea" id="remarks" placeholder="Enter any additional notes... (e.g., payment for invoice #123, project name, etc.)" name="remarks">{{ cheque.remarks|default:'' }}</textarea>
+                                <textarea class="form-textarea" id="remarks" placeholder="Enter any additional notes... (e.g., payment for invoice #123, project name, etc.)" name="remarks"></textarea>
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-footer">
-                        <div class="form-footer-left">
-                            <button type="reset" class="btn btn-ghost">
-                                <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
-                                Reset Form
-                            </button>
-                        </div>
-                        <div class="form-footer-right">
-                            <button type="submit" class="btn btn-success btn-lg">
-                                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                                {% if edit_mode %}Update Cheque{% else %}Submit Cheque{% endif %}
-                            </button>
-                        </div>
-                    </div>
                 </form>
+
+                <div class="form-footer">
+                    <div class="form-footer-left">
+                        <button type="button" class="btn btn-ghost" onclick="resetForm()">
+                            <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+                            Reset Form
+                        </button>
+                    </div>
+                    <div class="form-footer-right">
+                        <button type="submit" class="btn btn-success btn-lg" id="submitBtn" onclick="submitCheque(event)">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <span id="submitBtnText">Submit Cheque</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Recent Entries -->
@@ -2156,14 +2127,14 @@
                 <div class="recent-entries-header">
                     <h3>
                         Recent Entries
-                        <span class="count">{{ cheques.count|default:0 }}</span>
+                        <span class="count" id="entriesCount">0</span>
                     </h3>
-                    <a href="#" class="btn btn-excel">
+                    <button class="btn btn-excel" onclick="exportToExcel()">
                         <svg viewBox="0 0 24 24" width="18" height="18">
                             <path fill="currentColor" d="M21.17 3.25Q21.5 3.25 21.76 3.5 22 3.74 22 4.08V19.92Q22 20.26 21.76 20.5 21.5 20.75 21.17 20.75H7.83Q7.5 20.75 7.24 20.5 7 20.26 7 19.92V17H2.83Q2.5 17 2.24 16.76 2 16.5 2 16.17V7.83Q2 7.5 2.24 7.24 2.5 7 2.83 7H7V4.08Q7 3.74 7.24 3.5 7.5 3.25 7.83 3.25M7 13.06L8.18 15.28H9.97L8 12.06L9.93 8.89H8.22L7.13 10.9L7.09 10.96L7.06 11.03Q6.8 10.5 6.5 9.96 6.25 9.43 5.97 8.89H4.16L6.05 12.08L4 15.28H5.78M13.88 19.5V17H8.25V19.5M13.88 15.75V12.63H12V15.75M13.88 11.38V8.25H12V11.38M13.88 7V4.5H8.25V7M20.75 19.5V17H15.13V19.5M20.75 15.75V12.63H15.13V15.75M20.75 11.38V8.25H15.13V11.38M20.75 7V4.5H15.13V7Z"/>
                         </svg>
                         Export to Excel
-                    </a>
+                    </button>
                 </div>
                 <div class="table-wrapper">
                     <table class="data-table">
@@ -2180,46 +2151,7 @@
                             </tr>
                         </thead>
                         <tbody id="entriesTableBody">
-                            {% if cheques %}
-                                {% for cheque in cheques %}
-                                <tr>
-                                    <td class="table-cheque-no">{{ cheque.cheque_no }}</td>
-                                    <td class="table-party">
-                                        <div class="table-party-label">Drawer</div>
-                                        <div class="table-party-name" title="{{ cheque.account_name }}">{{ cheque.account_name }}</div>
-                                    </td>
-                                    <td class="table-party">
-                                        <div class="table-party-label">Payee</div>
-                                        <div class="table-party-name" title="{{ cheque.payee_name|default:'-' }}">{{ cheque.payee_name|default:'-' }}</div>
-                                    </td>
-                                    <td>{{ cheque.cheque_bank }}</td>
-                                    <td class="table-amount">NPR {{ cheque.cheque_amount|floatformat:2 }}</td>
-                                    <td class="table-date">{{ cheque.cheque_date|date:"M d, Y" }}</td>
-                                    <td>
-                                        <span class="table-status {{ cheque.status }}">
-                                            <span class="table-status-dot"></span>
-                                            {{ cheque.get_status_display }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions">
-                                            <a href="{% url 'cheque_edit' cheque.id %}" class="table-action-btn edit" title="Edit">
-                                                <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                                            </a>
-                                            <button class="table-action-btn delete" title="Delete" >
-                                                <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                                        No cheque entries yet. Submit your first cheque above.
-                                    </td>
-                                </tr>
-                            {% endif %}
+                            <!-- Entries will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -2237,10 +2169,7 @@
             <div class="modal-message">Are you sure you want to delete cheque #<span id="deleteChequeName"></span>? This action cannot be undone.</div>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-                <form id="deleteForm" method="POST" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
             </div>
         </div>
     </div>
@@ -2249,7 +2178,165 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ==================== NUMBER TO WORDS (Client-side helper only) ====================
+        // Constants
+        const STORAGE_KEY = 'chequeTrackerData';
+        const NOTIFICATIONS_KEY = 'chequeTrackerNotifications';
+
+        // State
+        let chequeEntries = [];
+        let notifications = [];
+        let editingIndex = null;
+        let deleteIndex = null;
+
+        // ==================== NOTIFICATION SYSTEM ====================
+        
+        function loadNotifications() {
+            const saved = localStorage.getItem(NOTIFICATIONS_KEY);
+            if (saved) {
+                notifications = JSON.parse(saved);
+            }
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        function saveNotifications() {
+            localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+        }
+
+        function addNotification(data) {
+            const notification = {
+                id: Date.now() + Math.random().toString(36).substr(2, 9),
+                type: data.type || 'general',
+                category: data.category || 'info',
+                title: data.title,
+                message: data.message,
+                read: false,
+                timestamp: new Date().toISOString()
+            };
+            
+            notifications.unshift(notification);
+            
+            if (notifications.length > 50) {
+                notifications = notifications.slice(0, 50);
+            }
+            
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            
+            return notification;
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notificationList');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            
+            document.getElementById('notificationCount').textContent = unreadCount;
+            
+            if (notifications.length === 0) {
+                container.innerHTML = `
+                    <div class="notification-empty">
+                        <div class="notification-empty-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                        </div>
+                        <h5>No Notifications</h5>
+                        <p>You're all caught up!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notifications.slice(0, 10).map(notification => `
+                <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="markAsRead('${notification.id}')">
+                    <div class="notification-icon ${notification.category}">
+                        ${getNotificationIcon(notification.category)}
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">
+                            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            ${getTimeAgo(notification.timestamp)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getNotificationIcon(category) {
+            const icons = {
+                success: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+                warning: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+                info: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
+                error: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
+            };
+            return icons[category] || icons.info;
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const then = new Date(timestamp);
+            const diffMs = now - then;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            return then.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            badge.setAttribute('data-count', unreadCount);
+        }
+
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function markAsRead(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                notification.read = true;
+                saveNotifications();
+                renderNotifications();
+                updateNotificationBadge();
+            }
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(n => n.read = true);
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            showToast('success', 'All Read', 'All notifications marked as read');
+        }
+
+        function clearAllNotifications() {
+            notifications = [];
+            saveNotifications();
+            renderNotifications();
+            updateNotificationBadge();
+            showToast('success', 'Cleared', 'All notifications have been cleared');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.notification-wrapper');
+            const dropdown = document.getElementById('notificationDropdown');
+            
+            if (wrapper && !wrapper.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // ==================== NUMBER TO WORDS ====================
         
         const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
                       'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 
@@ -2322,6 +2409,30 @@
             wordsDisplay.className = 'words';
         }
 
+        function formatNepaliNumber(num) {
+            const numStr = Math.floor(num).toString();
+            let result = '';
+            let count = 0;
+            
+            for (let i = numStr.length - 1; i >= 0; i--) {
+                count++;
+                result = numStr[i] + result;
+                
+                if (count === 3 && i !== 0) {
+                    result = ',' + result;
+                } else if (count > 3 && (count - 3) % 2 === 0 && i !== 0) {
+                    result = ',' + result;
+                }
+            }
+            
+            return result;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
         // ==================== TRANSFER PREVIEW ====================
 
         function updateTransferPreview() {
@@ -2338,18 +2449,380 @@
             }
         }
 
-        // ==================== DELETE MODAL ====================
+        // ==================== DATA MANAGEMENT ====================
 
-        let deleteFormAction = '';
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                chequeEntries = JSON.parse(saved);
+            }
+            renderTable();
+            updateStats();
+            loadNotifications();
+        }
 
-        function showDeleteModal(chequeId, chequeNo) {
-            document.getElementById('deleteChequeName').textContent = chequeNo;
-            document.getElementById('deleteForm').action = `/cheque/delete/${chequeId}/`; // Update this URL pattern
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(chequeEntries));
+            updateStats();
+        }
+
+        function updateStats() {
+            const today = new Date().toDateString();
+            let todayCheques = 0;
+            let clearedCheques = 0;
+            let pendingCheques = 0;
+            let totalAmount = 0;
+
+            chequeEntries.forEach(entry => {
+                if (new Date(entry.submittedAt).toDateString() === today) {
+                    todayCheques++;
+                }
+                if (entry.status === 'cleared') clearedCheques++;
+                if (entry.status === 'pending') pendingCheques++;
+                totalAmount += parseFloat(entry.amount) || 0;
+            });
+
+            document.getElementById('todayCheques').textContent = todayCheques;
+            document.getElementById('clearedCheques').textContent = clearedCheques;
+            document.getElementById('pendingCheques').textContent = pendingCheques;
+            document.getElementById('totalAmount').textContent = 'NPR ' + formatNepaliNumber(totalAmount);
+            document.getElementById('entriesCount').textContent = chequeEntries.length;
+            document.getElementById('pendingBadge').textContent = pendingCheques;
+        }
+
+        // ==================== TABLE RENDERING ====================
+
+        function renderTable() {
+            const tbody = document.getElementById('entriesTableBody');
+            
+            if (chequeEntries.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            No cheque entries yet. Submit your first cheque above.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = chequeEntries.map((entry, index) => `
+                <tr data-index="${index}">
+                    <td class="table-cheque-no">${entry.chequeNo}</td>
+                    <td class="table-party">
+                        <div class="table-party-label">Drawer</div>
+                        <div class="table-party-name" title="${entry.accountName}">${entry.accountName}</div>
+                    </td>
+                    <td class="table-party">
+                        <div class="table-party-label">Payee</div>
+                        <div class="table-party-name" title="${entry.payeeName || '-'}">${entry.payeeName || '-'}</div>
+                    </td>
+                    <td>${entry.chequeBank}</td>
+                    <td class="table-amount">NPR ${formatNepaliNumber(entry.amount)}</td>
+                    <td class="table-date">${formatDate(entry.chequeDate)}</td>
+                    <td>
+                        <span class="table-status ${entry.status}">
+                            <span class="table-status-dot"></span>
+                            ${entry.status.charAt(0).toUpperCase() + entry.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="table-action-btn edit" title="Edit" onclick="editEntry(${index})">
+                                <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            </button>
+                            <button class="table-action-btn delete" title="Delete" onclick="showDeleteModal(${index})">
+                                <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ==================== FORM OPERATIONS ====================
+
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('chequeDate').value = today;
+        }
+
+        function submitCheque(e) {
+            e.preventDefault();
+
+            const form = document.getElementById('chequeForm');
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    isValid = false;
+                } else {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                }
+            });
+
+            if (!isValid) {
+                showToast('error', 'Validation Error', 'Please fill in all required fields');
+                return;
+            }
+
+            const formData = {
+                chequeNo: document.getElementById('chequeNo').value,
+                chequeDate: document.getElementById('chequeDate').value,
+                chequeBank: document.getElementById('chequeBank').value,
+                accountName: document.getElementById('accountName').value,
+                payeeName: document.getElementById('payeeName').value,
+                amount: parseFloat(document.getElementById('chequeAmount').value),
+                amountInWords: document.getElementById('amountWordsText').textContent,
+                remarks: document.getElementById('remarks').value,
+                status: 'pending',
+                submittedAt: new Date().toISOString()
+            };
+
+            if (editingIndex !== null) {
+                formData.submittedAt = chequeEntries[editingIndex].submittedAt;
+                chequeEntries[editingIndex] = formData;
+                
+                showToast('success', 'Cheque Updated!', `Cheque #${formData.chequeNo} has been updated successfully`, formData);
+                
+                addNotification({
+                    type: 'cheque-update',
+                    category: 'info',
+                    title: 'Cheque Updated',
+                    message: `Cheque #${formData.chequeNo} for NPR ${formatNepaliNumber(formData.amount)} has been updated.`
+                });
+                
+                cancelEdit();
+            } else {
+                chequeEntries.unshift(formData);
+                
+                showToast('success', 'Cheque Submitted!', `Cheque #${formData.chequeNo} has been submitted successfully`, formData);
+                
+                addNotification({
+                    type: 'cheque-submit',
+                    category: 'success',
+                    title: 'New Cheque Added',
+                    message: `Cheque #${formData.chequeNo} for NPR ${formatNepaliNumber(formData.amount)} from ${formData.accountName} to ${formData.payeeName} has been added.`
+                });
+            }
+
+            saveData();
+            renderTable();
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('chequeForm').reset();
+            document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(field => {
+                field.classList.remove('error', 'success');
+            });
+            document.getElementById('amountWordsText').textContent = 'Enter amount to see in words';
+            document.getElementById('amountWordsText').className = 'placeholder';
+            document.getElementById('transferInfoBox').style.display = 'none';
+            setDefaultDates();
+            
+            if (editingIndex !== null) {
+                cancelEdit();
+            }
+        }
+
+        // ==================== EDIT FUNCTIONS ====================
+
+        function editEntry(index) {
+            const entry = chequeEntries[index];
+            editingIndex = index;
+
+            document.getElementById('chequeNo').value = entry.chequeNo;
+            document.getElementById('chequeDate').value = entry.chequeDate;
+            document.getElementById('chequeBank').value = entry.chequeBank;
+            document.getElementById('accountName').value = entry.accountName;
+            document.getElementById('payeeName').value = entry.payeeName || '';
+            document.getElementById('chequeAmount').value = entry.amount;
+            document.getElementById('remarks').value = entry.remarks || '';
+            
+            convertAmountToWords();
+            updateTransferPreview();
+
+            document.getElementById('editModeBanner').classList.add('active');
+            document.getElementById('editingChequeNo').textContent = entry.chequeNo;
+            document.getElementById('formTitle').textContent = 'Edit Cheque Entry';
+            document.getElementById('formSubtitle').textContent = 'Update the cheque details below';
+            document.getElementById('submitBtnText').textContent = 'Update Cheque';
+
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+
+            showToast('warning', 'Edit Mode', `Now editing cheque #${entry.chequeNo}. Make changes and click Update.`);
+        }
+
+        function cancelEdit() {
+            editingIndex = null;
+            document.getElementById('editModeBanner').classList.remove('active');
+            document.getElementById('formTitle').textContent = 'New Cheque Entry';
+            document.getElementById('formSubtitle').textContent = 'Fill in the cheque details below to submit';
+            document.getElementById('submitBtnText').textContent = 'Submit Cheque';
+            resetForm();
+        }
+
+        // ==================== DELETE FUNCTIONS ====================
+
+        function showDeleteModal(index) {
+            deleteIndex = index;
+            const entry = chequeEntries[index];
+            document.getElementById('deleteChequeName').textContent = entry.chequeNo;
             document.getElementById('deleteModal').classList.add('active');
         }
 
         function closeDeleteModal() {
+            deleteIndex = null;
             document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        function confirmDelete() {
+            if (deleteIndex !== null) {
+                const entry = chequeEntries[deleteIndex];
+                chequeEntries.splice(deleteIndex, 1);
+                saveData();
+                renderTable();
+                
+                showToast('success', 'Cheque Deleted', `Cheque #${entry.chequeNo} has been deleted successfully`);
+                
+                addNotification({
+                    type: 'cheque-delete',
+                    category: 'warning',
+                    title: 'Cheque Deleted',
+                    message: `Cheque #${entry.chequeNo} for NPR ${formatNepaliNumber(entry.amount)} has been deleted.`
+                });
+                
+                closeDeleteModal();
+            }
+        }
+
+        // ==================== TOAST NOTIFICATION ====================
+
+        function showToast(type, title, message, data = null) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let detailsHtml = '';
+            if (data && type === 'success') {
+                detailsHtml = `
+                    <div class="toast-details">
+                        <div class="toast-details-row">
+                            <span class="toast-details-label">Cheque No:</span>
+                            <span class="toast-details-value">${data.chequeNo}</span>
+                        </div>
+                        <div class="toast-details-row">
+                            <span class="toast-details-label">From:</span>
+                            <span class="toast-details-value">${data.accountName}</span>
+                        </div>
+                        <div class="toast-details-row">
+                            <span class="toast-details-label">To:</span>
+                            <span class="toast-details-value">${data.payeeName || '-'}</span>
+                        </div>
+                        <div class="toast-details-row">
+                            <span class="toast-details-label">Amount:</span>
+                            <span class="toast-details-value">NPR ${formatNepaliNumber(data.amount)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const iconSvg = type === 'success' 
+                ? '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
+                : type === 'warning'
+                ? '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>'
+                : type === 'info'
+                ? '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
+                : '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>';
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${iconSvg}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                    ${detailsHtml}
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // ==================== EXPORT TO EXCEL ====================
+
+        function exportToExcel() {
+            if (chequeEntries.length === 0) {
+                showToast('error', 'No Data', 'There are no entries to export');
+                return;
+            }
+
+            const excelData = chequeEntries.map((entry, index) => ({
+                'S.N.': index + 1,
+                'Cheque Number': entry.chequeNo,
+                'Drawer (From)': entry.accountName,
+                'Payee (To)': entry.payeeName || '',
+                'Cheque Bank': entry.chequeBank,
+                'Amount (NPR)': entry.amount,
+                'Amount in Words': entry.amountInWords || '',
+                'Cheque Date': formatDate(entry.chequeDate),
+                'Status': entry.status.charAt(0).toUpperCase() + entry.status.slice(1),
+                'Remarks': entry.remarks || '',
+                'Submitted Date': formatDate(entry.submittedAt)
+            }));
+
+            const totalAmount = chequeEntries.reduce((sum, entry) => sum + (parseFloat(entry.amount) || 0), 0);
+            
+            excelData.push({});
+            excelData.push({
+                'S.N.': '',
+                'Cheque Number': 'TOTAL',
+                'Drawer (From)': `${chequeEntries.length} Cheques`,
+                'Payee (To)': '',
+                'Cheque Bank': '',
+                'Amount (NPR)': totalAmount,
+                'Amount in Words': '',
+                'Cheque Date': '',
+                'Status': '',
+                'Remarks': '',
+                'Submitted Date': ''
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(excelData);
+
+            ws['!cols'] = [
+                { wch: 6 }, { wch: 18 }, { wch: 25 }, { wch: 25 },
+                { wch: 20 }, { wch: 15 }, { wch: 40 },
+                { wch: 15 }, { wch: 12 }, { wch: 30 }, { wch: 18 }
+            ];
+
+            XLSX.utils.book_append_sheet(wb, ws, 'Cheque Records');
+
+            const today = new Date();
+            const dateStr = today.toISOString().split('T')[0];
+            const filename = `Cheque_Records_${dateStr}.xlsx`;
+
+            XLSX.writeFile(wb, filename);
+
+            showToast('success', 'Excel Export Successful!', `${chequeEntries.length} entries exported to ${filename}`);
+            
+            addNotification({
+                type: 'export-success',
+                category: 'success',
+                title: 'Export Completed',
+                message: `Cheque records (${chequeEntries.length} entries) exported to Excel successfully.`
+            });
         }
 
         // ==================== THEME TOGGLE ====================
@@ -2381,6 +2854,8 @@
                 document.body.setAttribute('data-theme', 'dark');
             }
 
+            loadData();
+            setDefaultDates();
             updateTime();
             setInterval(updateTime, 1000);
 
@@ -2388,33 +2863,38 @@
             document.getElementById('accountName').addEventListener('input', updateTransferPreview);
             document.getElementById('payeeName').addEventListener('input', updateTransferPreview);
 
-            // Trigger amount to words if editing
-            const amountField = document.getElementById('chequeAmount');
-            if (amountField.value) {
-                convertAmountToWords();
-            }
+            document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(field => {
+                field.addEventListener('blur', function() {
+                    if (this.hasAttribute('required')) {
+                        if (this.value.trim()) {
+                            this.classList.remove('error');
+                            this.classList.add('success');
+                        }
+                    }
+                });
 
-            // Auto-hide Django messages after 5 seconds
-            const messages = document.querySelectorAll('.django-message');
-            messages.forEach(msg => {
-                setTimeout(() => {
-                    msg.style.animation = 'slideOutRight 0.3s ease-out forwards';
-                    setTimeout(() => msg.remove(), 300);
-                }, 5000);
+                field.addEventListener('focus', function() {
+                    this.classList.remove('error');
+                });
             });
         });
 
-        // Close modal on outside click
         document.getElementById('deleteModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeDeleteModal();
             }
         });
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                submitCheque(e);
+            }
             if (e.key === 'Escape') {
                 closeDeleteModal();
+                document.getElementById('notificationDropdown').classList.remove('active');
+                if (editingIndex !== null) {
+                    cancelEdit();
+                }
             }
         });
     </script>
