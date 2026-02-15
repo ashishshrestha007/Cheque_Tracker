@@ -148,9 +148,12 @@ def cheque_delete(request, id):
     return redirect("cheque")
 
 def deposit_home(request):
-    return render(request,"Deposit.html")
+    available_cheque=cheque_details.objects.all()
+    return render(request,"Deposit.html",{"available_cheque":available_cheque})
 
 def report_home(request):
+    
+
     return render(request,"report.html")
 
 def setting_home(request):
