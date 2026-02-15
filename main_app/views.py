@@ -16,8 +16,6 @@ def login_view(request):
         else:
             messages.error(request,"Invalid username or password")
             return redirect("login")
-
-
     return render(request,"login.html")
 
 def register(request):
