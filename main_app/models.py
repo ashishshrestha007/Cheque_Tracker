@@ -13,3 +13,7 @@ class cheque_details(models.Model):
     
      def __str__(self):
          return self.cheque_number
+
+
+    
+   

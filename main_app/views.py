@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import cheque_details
 from django.db.models import Sum, Count, Q
 from datetime import date
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -48,13 +50,13 @@ def register(request):
         return redirect('login')
     return render(request,"register.html")
 
-
+@login_required
 def dashboard_home(request):
 
     return render(request,"dashboard.html")
 
 
-
+@login_required
 def cheque_home(request):
     if request.method == "POST":
         cheque_number = request.POST.get("cheque_no")
@@ -99,7 +101,7 @@ def cheque_home(request):
     
     return render(request, "cheque.html", context)
 
-
+@login_required
 def cheque_edit(request, id):
     cheque = get_object_or_404(cheque_details, id=id)
     
@@ -146,21 +148,29 @@ def cheque_delete(request, id):
         cheque.delete()
         messages.success(request, f'Cheque #{cheque_number} deleted successfully!')
     return redirect("cheque")
-
+@login_required
 def deposit_home(request):
     available_cheque=cheque_details.objects.all()
+    
     return render(request,"Deposit.html",{"available_cheque":available_cheque})
 
+
+@login_required
 def report_home(request):
     
 
     return render(request,"report.html")
-
+@login_required
 def setting_home(request):
     return render(request,"setting.html")
-
+@login_required
 def help_home(request): 
     return render(request,"help.html")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 

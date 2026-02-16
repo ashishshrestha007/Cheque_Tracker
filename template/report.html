@@ -342,7 +342,6 @@
         [data-theme="dark"] .theme-toggle .sun { display: block; }
         [data-theme="dark"] .theme-toggle .moon { display: none; }
 
-        /* Notification Dropdown */
         .notification-dropdown {
             position: absolute;
             top: calc(100% + 10px);
@@ -644,6 +643,8 @@
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 82, 204, 0.35); }
         .btn-secondary { background: var(--bg-primary); border-color: var(--border); color: var(--text-primary); }
         .btn-secondary:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
+        .btn-success { background: var(--success-gradient); color: white; }
+        .btn-success:hover { transform: translateY(-2px); }
 
         .export-btn {
             display: inline-flex;
@@ -759,16 +760,20 @@
 
         .table-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
         .table-status.pending { background: var(--warning-light); color: #B7791F; }
-        .table-status.cleared { background: var(--success-light); color: var(--success); }
-        .table-status.processing { background: var(--primary-light); color: var(--primary); }
+        .table-status.deposited { background: var(--success-light); color: var(--success); }
+        .table-status.cleared { background: var(--info-light); color: var(--info); }
         .table-status.bounced { background: var(--error-light); color: var(--error); }
         .table-status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .table-status.cleared .table-status-dot, .table-status.bounced .table-status-dot { animation: none; }
+        .table-status.deposited .table-status-dot, .table-status.cleared .table-status-dot, .table-status.bounced .table-status-dot { animation: none; }
         .table-remarks { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: 13px; }
 
-        .table-row-actions { display: flex; align-items: center; gap: 4px; opacity: 0; transition: var(--transition-fast); }
-        .data-table tbody tr:hover .table-row-actions { opacity: 1; }
+        .table-deposit-type { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: var(--radius-full); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+        .table-deposit-type.clearing { background: var(--purple-light); color: var(--purple); }
+        .table-deposit-type.normal { background: var(--success-light); color: var(--success); }
+        .table-deposit-type.not-deposited { background: var(--bg-tertiary); color: var(--text-muted); }
+
+        .table-row-actions { display: flex; align-items: center; gap: 4px; }
 
         .action-btn { width: 32px; height: 32px; border: none; background: transparent; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
         .action-btn:hover { background: var(--bg-tertiary); }
@@ -809,7 +814,7 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: var(--transition); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal { background: var(--bg-primary); border-radius: var(--radius-2xl); padding: 0; max-width: 520px; width: 90%; transform: scale(0.95) translateY(20px); transition: var(--transition); box-shadow: var(--shadow-2xl); overflow: hidden; }
+        .modal { background: var(--bg-primary); border-radius: var(--radius-2xl); padding: 0; max-width: 600px; width: 90%; transform: scale(0.95) translateY(20px); transition: var(--transition); box-shadow: var(--shadow-2xl); overflow: hidden; max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal { transform: scale(1) translateY(0); }
 
         .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); }
@@ -826,10 +831,23 @@
         .form-label .required { color: var(--error); margin-left: 3px; }
 
         .form-input, .form-textarea, .form-select { width: 100%; padding: 14px 16px; background: var(--bg-primary); border: 2px solid var(--border); border-radius: var(--radius-lg); font-family: inherit; font-size: 14px; color: var(--text-primary); transition: var(--transition); }
-        .form-textarea { min-height: 120px; resize: vertical; }
+        .form-textarea { min-height: 100px; resize: vertical; }
         .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        .form-input:disabled, .form-select:disabled { background: var(--bg-tertiary); cursor: not-allowed; }
         .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
         .modal-footer { display: flex; gap: 12px; justify-content: flex-end; padding: 20px 28px; background: var(--bg-secondary); border-top: 1px solid var(--border); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* View Details Styling */
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .detail-item { }
+        .detail-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .detail-value { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .detail-value.amount { color: var(--success); font-size: 18px; }
+        .detail-value.highlight { color: var(--primary); }
+        .detail-full { grid-column: 1 / -1; }
+        .detail-divider { grid-column: 1 / -1; border-top: 1px solid var(--border-light); margin: 10px 0; }
 
         .toast-container { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 14px; }
         .toast { display: flex; align-items: flex-start; gap: 14px; padding: 18px 22px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-2xl); min-width: 360px; max-width: 420px; animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden; }
@@ -867,6 +885,8 @@
             .filter-buttons { margin-left: 0; width: 100%; }
             .search-box { width: 100%; }
             .notification-dropdown { width: 320px; right: -60px; }
+            .form-row { grid-template-columns: 1fr; }
+            .detail-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -932,7 +952,7 @@
                     <div class="sidebar-user-role">Administrator</div>
                 </div>
             </div>
-            <a href="login.html" class="logout-btn">
+            <a href="{% url 'logout' %}" class="logout-btn">
                 <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
                 Sign Out
             </a>
@@ -945,7 +965,7 @@
         <header class="header">
             <div class="header-left">
                 <div class="header-breadcrumb">
-                    <a href="index.html">Home</a>
+                    <a href="{% url 'dashboard' %}">Home</a>
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
                     <span>Reports & Analytics</span>
                 </div>
@@ -957,14 +977,12 @@
                     <div class="header-date" id="currentDate">Loading...</div>
                 </div>
                 
-                <!-- Notification Button with Dropdown -->
                 <div class="header-btn-wrapper">
                     <button class="header-btn" id="notificationBtn" onclick="toggleNotifications()" title="Notifications">
                         <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
                         <span class="notification-badge" id="notificationBadge">3</span>
                     </button>
                     
-                    <!-- Notification Dropdown -->
                     <div class="notification-dropdown" id="notificationDropdown">
                         <div class="notification-header">
                             <h4>Notifications <span class="unread-badge" id="unreadBadge">3</span></h4>
@@ -973,9 +991,7 @@
                                 <button class="notification-action-btn" onclick="clearAllNotifications()">Clear all</button>
                             </div>
                         </div>
-                        <div class="notification-list" id="notificationList">
-                            <!-- Notifications will be populated here -->
-                        </div>
+                        <div class="notification-list" id="notificationList"></div>
                         <div class="notification-footer">
                             <span class="notification-view-all" onclick="showToast('info', 'All Notifications', 'Viewing all notifications')">View All Notifications</span>
                         </div>
@@ -1022,9 +1038,9 @@
                 <div class="summary-card green">
                     <div class="summary-icon green"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
                     <div class="summary-content">
-                        <div class="summary-label">Cleared</div>
-                        <div class="summary-value" id="clearedCheques">0</div>
-                        <div class="summary-change up" id="clearedRate"><svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>0% rate</div>
+                        <div class="summary-label">Deposited</div>
+                        <div class="summary-value" id="depositedCheques">0</div>
+                        <div class="summary-change up" id="depositedRate"><svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>0% rate</div>
                     </div>
                 </div>
                 <div class="summary-card orange">
@@ -1032,7 +1048,7 @@
                     <div class="summary-content">
                         <div class="summary-label">Pending</div>
                         <div class="summary-value" id="pendingCheques">0</div>
-                        <div class="summary-change neutral"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>Awaiting clearance</div>
+                        <div class="summary-change neutral"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>Awaiting deposit</div>
                     </div>
                 </div>
                 <div class="summary-card purple">
@@ -1065,13 +1081,22 @@
                         <select class="filter-select" id="filterStatus">
                             <option value="">All Status</option>
                             <option value="pending">Pending</option>
+                            <option value="deposited">Deposited</option>
                             <option value="cleared">Cleared</option>
-                            <option value="processing">Processing</option>
                             <option value="bounced">Bounced</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label class="filter-label">Bank</label>
+                        <label class="filter-label">Deposit Type</label>
+                        <select class="filter-select" id="filterDepositType">
+                            <option value="">All Types</option>
+                            <option value="clearing">Clearing</option>
+                            <option value="normal">Normal Deposit</option>
+                            <option value="not-deposited">Not Deposited</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Cheque Bank</label>
                         <select class="filter-select" id="filterBank">
                             <option value="">All Banks</option>
                             <option value="Nepal Bank Limited">Nepal Bank Limited</option>
@@ -1101,7 +1126,7 @@
                         <div class="report-table-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
                         <div>
                             <h3>Transaction Records <span class="count" id="reportCount">0</span></h3>
-                            <p>Complete cheque records with all details</p>
+                            <p>Complete cheque records with deposit details</p>
                         </div>
                     </div>
                     <div class="table-actions-bar">
@@ -1115,7 +1140,7 @@
                 <div class="table-controls">
                     <div class="search-box">
                         <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                        <input type="text" id="searchInput" placeholder="Search cheques, banks, names..." oninput="searchTable()">
+                        <input type="text" id="searchInput" placeholder="Search by name, cheque no, bank, amount, deposit type..." oninput="searchTable()">
                         <span class="search-shortcut">⌘K</span>
                     </div>
                     <div class="result-info">Showing <strong id="resultCount">0</strong> of <strong id="totalCount">0</strong> entries</div>
@@ -1125,12 +1150,15 @@
                         <thead>
                             <tr>
                                 <th>S.N.</th>
+                                <th>Deposit Type</th>
                                 <th>Cheque No.</th>
                                 <th>Account Holder</th>
-                                <th>Bank</th>
+                                <th>Cheque Bank</th>
                                 <th>Amount (NPR)</th>
                                 <th>Cheque Date</th>
-                                <th>Submit Date</th>
+                                <th>Deposit Date</th>
+                                <th>Deposit Bank</th>
+                                <th>Deposit Branch</th>
                                 <th>Status</th>
                                 <th>Remarks</th>
                                 <th>Actions</th>
@@ -1160,7 +1188,7 @@
                     <div class="chart-header">
                         <div class="chart-header-left">
                             <div class="chart-icon"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg></div>
-                            <div><h4>Bank-wise Distribution</h4><p>Top banks by volume</p></div>
+                            <div><h4>Deposit Type Distribution</h4><p>Clearing vs Normal Deposit</p></div>
                         </div>
                     </div>
                     <div class="chart-body"><div class="chart-container"><canvas id="bankChart"></canvas></div></div>
@@ -1185,6 +1213,42 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>Cheque Details</h3>
+                <button class="modal-close" onclick="closeViewModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            <div class="modal-body" id="viewModalBody">
+                <!-- Content populated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit Cheque</h3>
+                <button class="modal-close" onclick="closeEditModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Form populated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn btn-success" onclick="saveEdit()">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    Save Changes
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Email Modal -->
@@ -1236,6 +1300,67 @@
         let currentPage = 1;
         let rowsPerPage = 25;
         let notifications = [];
+        let currentEditIndex = null;
+
+        // ==================== DEPOSIT TYPE LOGIC ====================
+        
+        // Normalize bank name for comparison
+        function normalizeBankName(bankName) {
+            if (!bankName) return '';
+            return bankName.trim().toLowerCase()
+                .replace(/\s+/g, ' ')
+                .replace(/limited|ltd|bank/gi, '')
+                .trim();
+        }
+        
+        function getDepositType(entry) {
+            // Check if deposited - look for depositBank or selectedBank fields
+            const depositBank = entry.depositBank || entry.selectedBank || '';
+            const chequeBank = entry.chequeBank || '';
+            
+            // If no deposit bank set, it's not deposited yet
+            if (!depositBank || depositBank.trim() === '') {
+                return 'not-deposited';
+            }
+            
+            // Normalize both bank names for comparison
+            const normalizedChequeBank = normalizeBankName(chequeBank);
+            const normalizedDepositBank = normalizeBankName(depositBank);
+            
+            // If same bank = Normal Deposit, Different bank = Clearing
+            if (normalizedChequeBank === normalizedDepositBank) {
+                return 'normal';
+            } else {
+                return 'clearing';
+            }
+        }
+
+        function getDepositTypeLabel(type) {
+            switch(type) {
+                case 'clearing': return 'Clearing';
+                case 'normal': return 'Normal Deposit';
+                case 'not-deposited': return 'Not Deposited';
+                default: return 'N/A';
+            }
+        }
+
+        // Get display status — Pending if not deposited, Deposited after deposit
+        function getDisplayStatus(entry) {
+            // Check if it's deposited
+            const depositBank = entry.depositBank || entry.selectedBank || '';
+            
+            // If deposited (has deposit bank), status is "deposited"
+            if (depositBank && depositBank.trim() !== '') {
+                // Could be cleared or bounced if manually set
+                if (entry.status === 'cleared' || entry.status === 'bounced') {
+                    return entry.status;
+                }
+                return 'deposited';
+            }
+            
+            // Not deposited yet = pending
+            return 'pending';
+        }
 
         // ==================== NOTIFICATIONS ====================
         
@@ -1244,10 +1369,9 @@
             if (saved) {
                 notifications = JSON.parse(saved);
             } else {
-                // Default notifications
                 notifications = [
-                    { id: 1, type: 'success', title: 'Cheque Cleared', message: 'Cheque #CH-2024-001 from Nepal Bank has been cleared successfully.', time: new Date(Date.now() - 2*60*60*1000).toISOString(), read: false },
-                    { id: 2, type: 'warning', title: 'Pending Approval', message: '3 cheques are pending approval for deposit.', time: new Date(Date.now() - 5*60*60*1000).toISOString(), read: false },
+                    { id: 1, type: 'success', title: 'Cheque Deposited', message: 'Cheque #CH-2024-001 has been deposited successfully.', time: new Date(Date.now() - 2*60*60*1000).toISOString(), read: false },
+                    { id: 2, type: 'warning', title: 'Pending Deposit', message: '3 cheques are pending for deposit.', time: new Date(Date.now() - 5*60*60*1000).toISOString(), read: false },
                     { id: 3, type: 'info', title: 'Daily Report Ready', message: 'Your daily cheque report is ready to download.', time: new Date(Date.now() - 24*60*60*1000).toISOString(), read: false }
                 ];
                 saveNotifications();
@@ -1384,7 +1508,6 @@
             updateNotificationBadge();
         }
 
-        // Close notification dropdown when clicking outside
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('notificationDropdown');
             const btn = document.getElementById('notificationBtn');
@@ -1402,6 +1525,10 @@
             updateStats();
             renderTable();
             renderCharts();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(chequeEntries));
         }
 
         function formatNepaliNumber(num) {
@@ -1424,16 +1551,16 @@
 
         function updateStats() {
             const total = filteredEntries.length;
-            const cleared = filteredEntries.filter(e => e.status === 'cleared').length;
-            const pending = filteredEntries.filter(e => e.status === 'pending').length;
+            const deposited = filteredEntries.filter(e => getDisplayStatus(e) === 'deposited').length;
+            const pending = filteredEntries.filter(e => getDisplayStatus(e) === 'pending').length;
             const totalAmount = filteredEntries.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
-            const clearRate = total > 0 ? ((cleared / total) * 100).toFixed(1) : 0;
+            const depositRate = total > 0 ? ((deposited / total) * 100).toFixed(1) : 0;
 
             document.getElementById('totalCheques').textContent = total;
-            document.getElementById('clearedCheques').textContent = cleared;
+            document.getElementById('depositedCheques').textContent = deposited;
             document.getElementById('pendingCheques').textContent = pending;
             document.getElementById('totalAmount').textContent = 'NPR ' + formatNepaliNumber(totalAmount);
-            document.getElementById('clearedRate').innerHTML = `<svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>${clearRate}% rate`;
+            document.getElementById('depositedRate').innerHTML = `<svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>${depositRate}% deposited`;
             document.getElementById('reportCount').textContent = total;
             document.getElementById('resultCount').textContent = total;
             document.getElementById('totalCount').textContent = chequeEntries.length;
@@ -1447,27 +1574,40 @@
             const pageData = filteredEntries.slice(start, start + rowsPerPage);
             
             if (filteredEntries.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10"><div class="no-data"><div class="no-data-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><h4>No Records Found</h4><p>No cheque entries match your criteria.</p><button class="btn btn-primary" onclick="resetFilters()">Clear Filters</button></div></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="13"><div class="no-data"><div class="no-data-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><h4>No Records Found</h4><p>No cheque entries match your criteria.</p><button class="btn btn-primary" onclick="resetFilters()">Clear Filters</button></div></td></tr>`;
                 return;
             }
 
             tbody.innerHTML = pageData.map((e, i) => {
                 const idx = start + i + 1;
-                const initials = (e.chequeBank || 'NA').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                const globalIdx = start + i; // Global index for edit/view
+                const depositType = getDepositType(e);
+                const depositTypeLabel = getDepositTypeLabel(depositType);
+                const displayStatus = getDisplayStatus(e);
+                const chequeInitials = (e.chequeBank || 'NA').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                
+                // Get deposit bank and branch - check multiple possible field names
+                const depositBank = e.depositBank || e.selectedBank || '-';
+                const depositBranch = e.depositBranch || e.selectedBranch || '-';
+                const depositDate = e.depositDate || e.submittedAt || '';
+                
                 return `<tr>
                     <td class="table-sn">${idx}</td>
+                    <td><span class="table-deposit-type ${depositType}">${depositTypeLabel}</span></td>
                     <td class="table-cheque-no">${e.chequeNo || '-'}</td>
                     <td class="table-name">${e.accountName || '-'}</td>
-                    <td><div class="table-bank"><div class="bank-logo">${initials}</div><span>${e.chequeBank || '-'}</span></div></td>
+                    <td><div class="table-bank"><div class="bank-logo">${chequeInitials}</div><span>${e.chequeBank || '-'}</span></div></td>
                     <td class="table-amount">NPR ${formatNepaliNumber(e.amount || 0)}</td>
                     <td class="table-date">${formatDate(e.chequeDate)}</td>
-                    <td class="table-date">${formatDate(e.submittedAt)}</td>
-                    <td><span class="table-status ${e.status || 'pending'}"><span class="table-status-dot"></span>${(e.status || 'pending').charAt(0).toUpperCase() + (e.status || 'pending').slice(1)}</span></td>
+                    <td class="table-date">${formatDate(depositDate)}</td>
+                    <td style="font-size:13px;color:var(--text-secondary);">${depositBank}</td>
+                    <td style="font-size:13px;color:var(--text-secondary);">${depositBranch}</td>
+                    <td><span class="table-status ${displayStatus}"><span class="table-status-dot"></span>${displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1)}</span></td>
                     <td class="table-remarks" title="${e.remarks || ''}">${e.remarks || '-'}</td>
                     <td><div class="table-row-actions">
-                        <button class="action-btn view" title="View"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
-                        <button class="action-btn edit" title="Edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
-                        <button class="action-btn delete" title="Delete"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+                        <button class="action-btn view" title="View Details" onclick="viewEntry(${globalIdx})"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
+                        <button class="action-btn edit" title="Edit" onclick="editEntry(${globalIdx})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+                        <button class="action-btn delete" title="Delete" onclick="deleteEntry(${globalIdx})"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
                     </div></td>
                 </tr>`;
             }).join('');
@@ -1490,10 +1630,237 @@
 
         function goToPage(page) { currentPage = page; renderTable(); }
 
-        // Charts
+        // ==================== VIEW ENTRY ====================
+        
+        function viewEntry(index) {
+            const entry = chequeEntries[index];
+            if (!entry) return;
+            
+            const depositType = getDepositType(entry);
+            const depositTypeLabel = getDepositTypeLabel(depositType);
+            const displayStatus = getDisplayStatus(entry);
+            const depositBank = entry.depositBank || entry.selectedBank || '-';
+            const depositBranch = entry.depositBranch || entry.selectedBranch || '-';
+            const depositDate = entry.depositDate || entry.submittedAt || '';
+            
+            document.getElementById('viewModalBody').innerHTML = `
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Cheque Number</div>
+                        <div class="detail-value highlight">${entry.chequeNo || '-'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Deposit Type</div>
+                        <div class="detail-value"><span class="table-deposit-type ${depositType}">${depositTypeLabel}</span></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Account Holder</div>
+                        <div class="detail-value">${entry.accountName || '-'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value"><span class="table-status ${displayStatus}"><span class="table-status-dot"></span>${displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1)}</span></div>
+                    </div>
+                    <div class="detail-divider"></div>
+                    <div class="detail-item">
+                        <div class="detail-label">Cheque Bank</div>
+                        <div class="detail-value">${entry.chequeBank || '-'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Cheque Date</div>
+                        <div class="detail-value">${formatDate(entry.chequeDate)}</div>
+                    </div>
+                    <div class="detail-item detail-full">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value amount">NPR ${formatNepaliNumber(entry.amount || 0)}</div>
+                    </div>
+                    <div class="detail-divider"></div>
+                    <div class="detail-item">
+                        <div class="detail-label">Deposit Bank</div>
+                        <div class="detail-value">${depositBank}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Deposit Branch</div>
+                        <div class="detail-value">${depositBranch}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Deposit Date</div>
+                        <div class="detail-value">${formatDate(depositDate)}</div>
+                    </div>
+                    <div class="detail-item detail-full">
+                        <div class="detail-label">Remarks</div>
+                        <div class="detail-value">${entry.remarks || '-'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Entry Created</div>
+                        <div class="detail-value">${formatDate(entry.submittedAt || entry.createdAt)}</div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('viewModal').classList.add('active');
+        }
+        
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        // ==================== EDIT ENTRY ====================
+        
+        function editEntry(index) {
+            const entry = chequeEntries[index];
+            if (!entry) return;
+            
+            currentEditIndex = index;
+            const displayStatus = getDisplayStatus(entry);
+            const depositBank = entry.depositBank || entry.selectedBank || '';
+            const depositBranch = entry.depositBranch || entry.selectedBranch || '';
+            const depositDate = entry.depositDate || entry.submittedAt || '';
+            
+            document.getElementById('editModalBody').innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Cheque Number</label>
+                        <input type="text" class="form-input" id="editChequeNo" value="${entry.chequeNo || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Holder</label>
+                        <input type="text" class="form-input" id="editAccountName" value="${entry.accountName || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Cheque Bank</label>
+                        <select class="form-select" id="editChequeBank">
+                            <option value="">Select Bank</option>
+                            <option value="Nepal Bank Limited" ${entry.chequeBank === 'Nepal Bank Limited' ? 'selected' : ''}>Nepal Bank Limited</option>
+                            <option value="Nabil Bank" ${entry.chequeBank === 'Nabil Bank' ? 'selected' : ''}>Nabil Bank</option>
+                            <option value="Himalayan Bank" ${entry.chequeBank === 'Himalayan Bank' ? 'selected' : ''}>Himalayan Bank</option>
+                            <option value="Global IME Bank" ${entry.chequeBank === 'Global IME Bank' ? 'selected' : ''}>Global IME Bank</option>
+                            <option value="NIC Asia Bank" ${entry.chequeBank === 'NIC Asia Bank' ? 'selected' : ''}>NIC Asia Bank</option>
+                            <option value="Prabhu Bank" ${entry.chequeBank === 'Prabhu Bank' ? 'selected' : ''}>Prabhu Bank</option>
+                            <option value="Mega Bank" ${entry.chequeBank === 'Mega Bank' ? 'selected' : ''}>Mega Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount (NPR)</label>
+                        <input type="number" class="form-input" id="editAmount" value="${entry.amount || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Cheque Date</label>
+                        <input type="date" class="form-input" id="editChequeDate" value="${entry.chequeDate || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="editStatus">
+                            <option value="pending" ${displayStatus === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="deposited" ${displayStatus === 'deposited' ? 'selected' : ''}>Deposited</option>
+                            <option value="cleared" ${displayStatus === 'cleared' ? 'selected' : ''}>Cleared</option>
+                            <option value="bounced" ${displayStatus === 'bounced' ? 'selected' : ''}>Bounced</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Deposit Bank</label>
+                        <select class="form-select" id="editDepositBank">
+                            <option value="">Not Deposited</option>
+                            <option value="Nepal Bank Limited" ${depositBank === 'Nepal Bank Limited' ? 'selected' : ''}>Nepal Bank Limited</option>
+                            <option value="Nabil Bank" ${depositBank === 'Nabil Bank' ? 'selected' : ''}>Nabil Bank</option>
+                            <option value="Himalayan Bank" ${depositBank === 'Himalayan Bank' ? 'selected' : ''}>Himalayan Bank</option>
+                            <option value="Global IME Bank" ${depositBank === 'Global IME Bank' ? 'selected' : ''}>Global IME Bank</option>
+                            <option value="NIC Asia Bank" ${depositBank === 'NIC Asia Bank' ? 'selected' : ''}>NIC Asia Bank</option>
+                            <option value="Prabhu Bank" ${depositBank === 'Prabhu Bank' ? 'selected' : ''}>Prabhu Bank</option>
+                            <option value="Mega Bank" ${depositBank === 'Mega Bank' ? 'selected' : ''}>Mega Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deposit Branch</label>
+                        <input type="text" class="form-input" id="editDepositBranch" value="${depositBranch}" placeholder="Enter branch name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Deposit Date</label>
+                    <input type="date" class="form-input" id="editDepositDate" value="${depositDate ? depositDate.split('T')[0] : ''}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Remarks</label>
+                    <textarea class="form-textarea" id="editRemarks" placeholder="Add remarks...">${entry.remarks || ''}</textarea>
+                </div>
+            `;
+            
+            document.getElementById('editModal').classList.add('active');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentEditIndex = null;
+        }
+        
+        function saveEdit() {
+            if (currentEditIndex === null) return;
+            
+            const entry = chequeEntries[currentEditIndex];
+            
+            // Update entry with new values
+            entry.chequeNo = document.getElementById('editChequeNo').value;
+            entry.accountName = document.getElementById('editAccountName').value;
+            entry.chequeBank = document.getElementById('editChequeBank').value;
+            entry.amount = parseFloat(document.getElementById('editAmount').value) || 0;
+            entry.chequeDate = document.getElementById('editChequeDate').value;
+            entry.status = document.getElementById('editStatus').value;
+            entry.remarks = document.getElementById('editRemarks').value;
+            
+            // Update deposit info
+            const depositBank = document.getElementById('editDepositBank').value;
+            const depositBranch = document.getElementById('editDepositBranch').value;
+            const depositDate = document.getElementById('editDepositDate').value;
+            
+            entry.depositBank = depositBank;
+            entry.selectedBank = depositBank; // Also update alternate field
+            entry.depositBranch = depositBranch;
+            entry.selectedBranch = depositBranch;
+            entry.depositDate = depositDate;
+            
+            // Save to localStorage
+            saveData();
+            
+            // Refresh the view
+            filteredEntries = [...chequeEntries];
+            updateStats();
+            renderTable();
+            renderCharts();
+            
+            closeEditModal();
+            showToast('success', 'Entry Updated', 'Cheque details have been updated successfully');
+            addNotification('success', 'Entry Updated', `Cheque #${entry.chequeNo} has been updated.`);
+        }
+
+        // ==================== DELETE ENTRY ====================
+        
+        function deleteEntry(index) {
+            const entry = chequeEntries[index];
+            if (!entry) return;
+            
+            if (confirm(`Are you sure you want to delete cheque #${entry.chequeNo || 'Unknown'}?`)) {
+                chequeEntries.splice(index, 1);
+                saveData();
+                filteredEntries = [...chequeEntries];
+                updateStats();
+                renderTable();
+                renderCharts();
+                showToast('success', 'Entry Deleted', 'Cheque entry has been deleted');
+                addNotification('info', 'Entry Deleted', `Cheque entry has been removed from records.`);
+            }
+        }
+
+        // ==================== CHARTS ====================
+        
         function renderCharts() {
             renderStatusChart();
-            renderBankChart();
+            renderDepositTypeChart();
             renderTrendChart();
             renderAmountChart();
         }
@@ -1501,17 +1868,23 @@
         function renderStatusChart() {
             const ctx = document.getElementById('statusChart');
             if (charts.statusChart) charts.statusChart.destroy();
-            const data = { pending: filteredEntries.filter(e => e.status === 'pending').length, cleared: filteredEntries.filter(e => e.status === 'cleared').length, processing: filteredEntries.filter(e => e.status === 'processing').length, bounced: filteredEntries.filter(e => e.status === 'bounced').length };
-            charts.statusChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Pending', 'Cleared', 'Processing', 'Bounced'], datasets: [{ data: [data.pending, data.cleared, data.processing, data.bounced], backgroundColor: ['#FF991F', '#00875A', '#0052CC', '#DE350B'], borderWidth: 0, borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, font: { size: 12 } } } } } });
+            const data = {
+                pending: filteredEntries.filter(e => getDisplayStatus(e) === 'pending').length,
+                deposited: filteredEntries.filter(e => getDisplayStatus(e) === 'deposited').length,
+                cleared: filteredEntries.filter(e => getDisplayStatus(e) === 'cleared').length,
+                bounced: filteredEntries.filter(e => getDisplayStatus(e) === 'bounced').length
+            };
+            charts.statusChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Pending', 'Deposited', 'Cleared', 'Bounced'], datasets: [{ data: [data.pending, data.deposited, data.cleared, data.bounced], backgroundColor: ['#FF991F', '#00875A', '#0065FF', '#DE350B'], borderWidth: 0, borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, font: { size: 12 } } } } } });
         }
 
-        function renderBankChart() {
+        function renderDepositTypeChart() {
             const ctx = document.getElementById('bankChart');
             if (charts.bankChart) charts.bankChart.destroy();
-            const bankData = {};
-            filteredEntries.forEach(e => { const b = e.chequeBank || 'Unknown'; bankData[b] = (bankData[b] || 0) + 1; });
-            const sorted = Object.entries(bankData).sort((a, b) => b[1] - a[1]).slice(0, 6);
-            charts.bankChart = new Chart(ctx, { type: 'bar', data: { labels: sorted.map(b => b[0].length > 12 ? b[0].substring(0, 12) + '...' : b[0]), datasets: [{ data: sorted.map(b => b[1]), backgroundColor: '#0052CC', borderRadius: 6, barThickness: 32 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
+            const clearing = filteredEntries.filter(e => getDepositType(e) === 'clearing').length;
+            const normal = filteredEntries.filter(e => getDepositType(e) === 'normal').length;
+            const notDeposited = filteredEntries.filter(e => getDepositType(e) === 'not-deposited').length;
+            
+            charts.bankChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Clearing', 'Normal Deposit', 'Not Deposited'], datasets: [{ data: [clearing, normal, notDeposited], backgroundColor: ['#6554C0', '#00875A', '#97A0AF'], borderWidth: 0, borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, font: { size: 12 } } } } } });
         }
 
         function renderTrendChart() {
@@ -1526,21 +1899,35 @@
         function renderAmountChart() {
             const ctx = document.getElementById('amountChart');
             if (charts.amountChart) charts.amountChart.destroy();
-            const amounts = { pending: filteredEntries.filter(e => e.status === 'pending').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0), cleared: filteredEntries.filter(e => e.status === 'cleared').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0), processing: filteredEntries.filter(e => e.status === 'processing').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0) };
-            charts.amountChart = new Chart(ctx, { type: 'bar', data: { labels: ['Pending', 'Cleared', 'Processing'], datasets: [{ data: [amounts.pending, amounts.cleared, amounts.processing], backgroundColor: ['#FF991F', '#00875A', '#0052CC'], borderRadius: 6, barThickness: 48 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'NPR ' + formatNepaliNumber(v) }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
+            const amounts = {
+                pending: filteredEntries.filter(e => getDisplayStatus(e) === 'pending').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0),
+                deposited: filteredEntries.filter(e => getDisplayStatus(e) === 'deposited').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0),
+                cleared: filteredEntries.filter(e => getDisplayStatus(e) === 'cleared').reduce((s, e) => s + (parseFloat(e.amount) || 0), 0)
+            };
+            charts.amountChart = new Chart(ctx, { type: 'bar', data: { labels: ['Pending', 'Deposited', 'Cleared'], datasets: [{ data: [amounts.pending, amounts.deposited, amounts.cleared], backgroundColor: ['#FF991F', '#00875A', '#0065FF'], borderRadius: 6, barThickness: 48 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'NPR ' + formatNepaliNumber(v) }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
         }
 
-        // Filters
+        // ==================== FILTERS ====================
+        
         function applyFilters() {
             const dateFrom = document.getElementById('dateFrom').value;
             const dateTo = document.getElementById('dateTo').value;
             const status = document.getElementById('filterStatus').value;
+            const depositTypeFilter = document.getElementById('filterDepositType').value;
             const bank = document.getElementById('filterBank').value;
+            
             filteredEntries = chequeEntries.filter(e => {
                 let m = true;
                 if (dateFrom && new Date(e.chequeDate) < new Date(dateFrom)) m = false;
                 if (dateTo && new Date(e.chequeDate) > new Date(dateTo)) m = false;
-                if (status && e.status !== status) m = false;
+                                if (status) {
+                    const displayStatus = getDisplayStatus(e);
+                    if (displayStatus !== status) m = false;
+                }
+                if (depositTypeFilter) {
+                    const dt = getDepositType(e);
+                    if (dt !== depositTypeFilter) m = false;
+                }
                 if (bank && e.chequeBank !== bank) m = false;
                 return m;
             });
@@ -1554,6 +1941,7 @@
             document.getElementById('dateFrom').value = '';
             document.getElementById('dateTo').value = '';
             document.getElementById('filterStatus').value = '';
+            document.getElementById('filterDepositType').value = '';
             document.getElementById('filterBank').value = '';
             document.getElementById('searchInput').value = '';
             filteredEntries = [...chequeEntries];
@@ -1564,19 +1952,89 @@
 
         function generateReport() { applyFilters(); showToast('success', 'Report Generated', 'Your report is ready'); addNotification('success', 'Report Generated', `Report with ${filteredEntries.length} entries generated.`); }
 
+        // ==================== ENHANCED SEARCH ====================
+        
         function searchTable() {
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
-            filteredEntries = !term ? [...chequeEntries] : chequeEntries.filter(e => (e.chequeNo && e.chequeNo.toLowerCase().includes(term)) || (e.accountName && e.accountName.toLowerCase().includes(term)) || (e.chequeBank && e.chequeBank.toLowerCase().includes(term)) || (e.remarks && e.remarks.toLowerCase().includes(term)));
+            if (!term) {
+                filteredEntries = [...chequeEntries];
+            } else {
+                filteredEntries = chequeEntries.filter(e => {
+                    const depositType = getDepositTypeLabel(getDepositType(e)).toLowerCase();
+                    const displayStatus = getDisplayStatus(e).toLowerCase();
+                    const depositBank = (e.depositBank || e.selectedBank || '').toLowerCase();
+                    const depositBranch = (e.depositBranch || e.selectedBranch || '').toLowerCase();
+                    const amountStr = (e.amount || '').toString();
+                    
+                    return (
+                        (e.chequeNo && e.chequeNo.toLowerCase().includes(term)) ||
+                        (e.accountName && e.accountName.toLowerCase().includes(term)) ||
+                        (e.chequeBank && e.chequeBank.toLowerCase().includes(term)) ||
+                        (e.remarks && e.remarks.toLowerCase().includes(term)) ||
+                        depositType.includes(term) ||
+                        displayStatus.includes(term) ||
+                        depositBank.includes(term) ||
+                        depositBranch.includes(term) ||
+                        amountStr.includes(term) ||
+                        (term === 'clearing' && getDepositType(e) === 'clearing') ||
+                        (term === 'normal' && getDepositType(e) === 'normal') ||
+                        ((term === 'not deposited' || term === 'notdeposited' || term === 'pending') && getDepositType(e) === 'not-deposited')
+                    );
+                });
+            }
             currentPage = 1;
             updateStats(); renderTable(); renderCharts();
         }
 
-        // Export Functions
+        // ==================== EXPORT FUNCTIONS ====================
+        
+        function buildExportData() {
+            return filteredEntries.map((e, i) => {
+                const depositType = getDepositTypeLabel(getDepositType(e));
+                const displayStatus = getDisplayStatus(e);
+                const depositBank = e.depositBank || e.selectedBank || '';
+                const depositBranch = e.depositBranch || e.selectedBranch || '';
+                const depositDate = e.depositDate || e.submittedAt || '';
+                
+                return {
+                    'S.N.': i + 1,
+                    'Deposit Type': depositType,
+                    'Payer Account Name': e.accountName || '',
+                    'Cheque Number': e.chequeNo || '',
+                    'Amount (NPR)': e.amount || 0,
+                    'Cheque Date': formatDate(e.chequeDate),
+                    'Cheque Deposit Date': formatDate(depositDate),
+                    'Deposit Bank': depositBank,
+                    'Deposit Branch': depositBranch,
+                    'Cheque Bank': e.chequeBank || '',
+                    'Status': displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1),
+                    'Remarks': e.remarks || ''
+                };
+            });
+        }
+
         function exportToExcel() {
             if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to export'); return; }
-            const data = filteredEntries.map((e, i) => ({ 'S.N.': i + 1, 'Cheque Number': e.chequeNo || '', 'Account Holder': e.accountName || '', 'Bank': e.chequeBank || '', 'Amount (NPR)': e.amount || 0, 'Cheque Date': formatDate(e.chequeDate), 'Submit Date': formatDate(e.submittedAt), 'Status': (e.status || 'pending').toUpperCase(), 'Remarks': e.remarks || '' }));
+            const data = buildExportData();
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data), 'Cheque Report');
+            const ws = XLSX.utils.json_to_sheet(data);
+            
+            ws['!cols'] = [
+                { wch: 5 },   // S.N.
+                { wch: 16 },  // Deposit Type
+                { wch: 25 },  // Payer Account Name
+                { wch: 18 },  // Cheque Number
+                { wch: 15 },  // Amount
+                { wch: 15 },  // Cheque Date
+                { wch: 18 },  // Cheque Deposit Date
+                { wch: 22 },  // Deposit Bank
+                { wch: 20 },  // Deposit Branch
+                { wch: 22 },  // Cheque Bank
+                { wch: 12 },  // Status
+                { wch: 25 },  // Remarks
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, 'Cheque Report');
             const filename = `ChequeTracker_Report_${new Date().toISOString().split('T')[0]}.xlsx`;
             XLSX.writeFile(wb, filename);
             showToast('success', 'Excel Exported', `Downloaded ${filename}`);
@@ -1588,14 +2046,61 @@
             try {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+                
+                // Header
                 doc.setFillColor(0, 82, 204); doc.rect(0, 0, 297, 32, 'F');
                 doc.setTextColor(255, 255, 255); doc.setFontSize(24); doc.setFont('helvetica', 'bold');
                 doc.text('ChequeTracker Pro Report', 14, 18);
                 doc.setFontSize(11); doc.setFont('helvetica', 'normal');
                 doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 27);
+                
+                // Summary line
+                const clearing = filteredEntries.filter(e => getDepositType(e) === 'clearing').length;
+                const normal = filteredEntries.filter(e => getDepositType(e) === 'normal').length;
+                const notDep = filteredEntries.filter(e => getDepositType(e) === 'not-deposited').length;
+                doc.text(`Total: ${filteredEntries.length} | Clearing: ${clearing} | Normal Deposit: ${normal} | Not Deposited: ${notDep}`, 160, 27);
+                
                 doc.setTextColor(23, 43, 77);
-                const tableData = filteredEntries.map((e, i) => [i + 1, e.chequeNo || '-', (e.accountName || '-').substring(0, 25), (e.chequeBank || '-').substring(0, 20), 'NPR ' + formatNepaliNumber(e.amount || 0), formatDate(e.chequeDate), (e.status || 'pending').toUpperCase()]);
-                doc.autoTable({ startY: 40, head: [['S.N.', 'Cheque No.', 'Account Holder', 'Bank', 'Amount', 'Date', 'Status']], body: tableData, theme: 'striped', headStyles: { fillColor: [0, 82, 204], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center', fontSize: 9 }, bodyStyles: { fontSize: 8, textColor: [23, 43, 77] }, alternateRowStyles: { fillColor: [245, 247, 250] }, margin: { left: 14, right: 14 } });
+                
+                const tableData = filteredEntries.map((e, i) => {
+                    const depositType = getDepositTypeLabel(getDepositType(e));
+                    const displayStatus = getDisplayStatus(e);
+                    const depositBank = e.depositBank || e.selectedBank || '-';
+                    const depositBranch = e.depositBranch || e.selectedBranch || '-';
+                    const depositDate = e.depositDate || e.submittedAt || '';
+                    
+                    return [
+                        i + 1,
+                        depositType,
+                        (e.accountName || '-').substring(0, 20),
+                        e.chequeNo || '-',
+                        'NPR ' + formatNepaliNumber(e.amount || 0),
+                        formatDate(e.chequeDate),
+                        formatDate(depositDate),
+                        (depositBank || '-').substring(0, 18),
+                        (depositBranch || '-').substring(0, 15),
+                        (e.chequeBank || '-').substring(0, 18),
+                        displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1),
+                        (e.remarks || '-').substring(0, 20)
+                    ];
+                });
+                
+                doc.autoTable({
+                    startY: 40,
+                    head: [['S.N.', 'Type', 'Payer Name', 'Cheque No.', 'Amount', 'Cheque Date', 'Deposit Date', 'Deposit Bank', 'Branch', 'Cheque Bank', 'Status', 'Remarks']],
+                    body: tableData,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 82, 204], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center', fontSize: 7 },
+                    bodyStyles: { fontSize: 6.5, textColor: [23, 43, 77] },
+                    alternateRowStyles: { fillColor: [245, 247, 250] },
+                    margin: { left: 8, right: 8 },
+                    columnStyles: {
+                        0: { cellWidth: 8 },
+                        1: { cellWidth: 18 },
+                        4: { halign: 'right' }
+                    }
+                });
+                
                 const filename = `ChequeTracker_Report_${new Date().toISOString().split('T')[0]}.pdf`;
                 doc.save(filename);
                 showToast('success', 'PDF Exported', `Downloaded ${filename}`);
@@ -1605,8 +2110,30 @@
 
         function exportToCSV() {
             if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to export'); return; }
-            const headers = ['S.N.', 'Cheque No.', 'Account Holder', 'Bank', 'Amount', 'Cheque Date', 'Submit Date', 'Status', 'Remarks'];
-            const csv = [headers.join(','), ...filteredEntries.map((e, i) => [i + 1, `"${e.chequeNo || ''}"`, `"${e.accountName || ''}"`, `"${e.chequeBank || ''}"`, e.amount || 0, `"${formatDate(e.chequeDate)}"`, `"${formatDate(e.submittedAt)}"`, `"${e.status || 'pending'}"`, `"${e.remarks || ''}"`].join(','))].join('\n');
+            const headers = ['S.N.', 'Deposit Type', 'Payer Account Name', 'Cheque Number', 'Amount (NPR)', 'Cheque Date', 'Cheque Deposit Date', 'Deposit Bank', 'Deposit Branch', 'Cheque Bank', 'Status', 'Remarks'];
+            const csv = [headers.join(','), ...filteredEntries.map((e, i) => {
+                const depositType = getDepositTypeLabel(getDepositType(e));
+                const displayStatus = getDisplayStatus(e);
+                const depositBank = e.depositBank || e.selectedBank || '';
+                const depositBranch = e.depositBranch || e.selectedBranch || '';
+                const depositDate = e.depositDate || e.submittedAt || '';
+                
+                return [
+                    i + 1,
+                    `"${depositType}"`,
+                    `"${e.accountName || ''}"`,
+                    `"${e.chequeNo || ''}"`,
+                    e.amount || 0,
+                    `"${formatDate(e.chequeDate)}"`,
+                    `"${formatDate(depositDate)}"`,
+                    `"${depositBank}"`,
+                    `"${depositBranch}"`,
+                    `"${e.chequeBank || ''}"`,
+                    `"${displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1)}"`,
+                    `"${e.remarks || ''}"`
+                ].join(',');
+            })].join('\n');
+            
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             const filename = `ChequeTracker_Report_${new Date().toISOString().split('T')[0]}.csv`;
@@ -1615,7 +2142,8 @@
             addNotification('success', 'CSV Export', `Report "${filename}" exported successfully.`);
         }
 
-        // Email Modal
+        // ==================== EMAIL MODAL ====================
+        
         function showEmailModal() { if (!filteredEntries.length) { showToast('error', 'No Data', 'Nothing to send'); return; } document.getElementById('emailModal').classList.add('active'); }
         function closeEmailModal() { document.getElementById('emailModal').classList.remove('active'); }
 
@@ -1637,8 +2165,11 @@
         }
 
         document.getElementById('emailModal').addEventListener('click', function(e) { if (e.target === this) closeEmailModal(); });
+        document.getElementById('viewModal').addEventListener('click', function(e) { if (e.target === this) closeViewModal(); });
+        document.getElementById('editModal').addEventListener('click', function(e) { if (e.target === this) closeEditModal(); });
 
-        // Toast
+        // ==================== TOAST ====================
+        
         function showToast(type, title, message) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1649,7 +2180,8 @@
             setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100px)'; setTimeout(() => toast.remove(), 300); }, 4000);
         }
 
-        // Theme & Time
+        // ==================== THEME & TIME ====================
+        
         function toggleTheme() {
             const theme = document.body.getAttribute('data-theme');
             document.body.setAttribute('data-theme', theme === 'dark' ? '' : 'dark');
@@ -1662,13 +2194,20 @@
             document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         }
 
-        // Keyboard Shortcuts
+        // ==================== KEYBOARD SHORTCUTS ====================
+        
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') { closeEmailModal(); document.getElementById('notificationDropdown').classList.remove('active'); }
+            if (e.key === 'Escape') { 
+                closeEmailModal(); 
+                closeViewModal();
+                closeEditModal();
+                document.getElementById('notificationDropdown').classList.remove('active'); 
+            }
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }
         });
 
-        // Init
+        // ==================== INIT ====================
+        
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');

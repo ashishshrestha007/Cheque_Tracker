@@ -12,4 +12,7 @@ urlpatterns=[
     path("help/",views.help_home,name="help"),
     path("report/",views.report_home,name="report"),
     path("setting/",views.setting_home,name="setting"),
+    path("logout/",views.logout_view,name="logout"),
+
+    
 ]
