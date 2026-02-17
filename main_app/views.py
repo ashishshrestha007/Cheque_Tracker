@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import cheque_details
+from .models import cheque_details,cheque_deposit
 from django.db.models import Sum, Count, Q
 from datetime import date
 from django.contrib.auth.decorators import login_required
@@ -154,6 +154,34 @@ def deposit_home(request):
     
     return render(request,"Deposit.html",{"available_cheque":available_cheque})
 
+
+@login_required
+def deposit_form(request):
+    if request.method == "POST":
+        cheque_number   = request.POST.get("cheque_number")
+        account_name    = request.POST.get("account_name")
+        cheque_bank     = request.POST.get("cheque_bank")
+        cheque_amount   = request.POST.get("cheque_amount")
+        deposit_bank    = request.POST.get("deposit_bank")
+        branch_name     = request.POST.get("branch_name")
+        deposit_date    = request.POST.get("deposit_date")
+        deposit_slip_no = request.POST.get("deposit_slip_no")
+
+        new_deposit = cheque_deposit(
+            cheque_number   = cheque_number,
+            account_name    = account_name,
+            cheque_bank     = cheque_bank,
+            cheque_amount   = cheque_amount,
+            deposit_bank    = deposit_bank,
+            branch_name     = branch_name,
+            deposit_date    = deposit_date,
+            deposit_slip_no = deposit_slip_no,
+        )
+        new_deposit.save()
+
+        messages.success(request, f'Cheque #{cheque_number} deposited successfully!')
+
+    return redirect('deposit')
 
 @login_required
 def report_home(request):

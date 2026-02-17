@@ -12,8 +12,6 @@
             --primary-hover: #0065FF;
             --primary-light: rgba(0, 82, 204, 0.08);
             --accent: #0065FF;
-            --accent-hover: #2684FF;
-            --accent-light: rgba(0, 101, 255, 0.1);
             --text-primary: #172B4D;
             --text-secondary: #5E6C84;
             --text-muted: #97A0AF;
@@ -21,7 +19,6 @@
             --bg-secondary: #F4F5F7;
             --bg-tertiary: #EBECF0;
             --border: #DFE1E6;
-            --border-focus: #0052CC;
             --success: #00875A;
             --success-light: rgba(0, 135, 90, 0.1);
             --error: #DE350B;
@@ -29,28 +26,22 @@
             --warning: #FF991F;
             --warning-light: rgba(255, 153, 31, 0.1);
             --info: #0065FF;
-            --info-light: rgba(0, 101, 255, 0.1);
-            --shadow-sm: 0 1px 2px rgba(9, 30, 66, 0.08);
-            --shadow-md: 0 4px 8px rgba(9, 30, 66, 0.1);
-            --shadow-lg: 0 8px 16px rgba(9, 30, 66, 0.12);
-            --shadow-xl: 0 16px 32px rgba(9, 30, 66, 0.15);
+            --shadow-sm: 0 1px 2px rgba(9,30,66,0.08);
+            --shadow-md: 0 4px 8px rgba(9,30,66,0.1);
+            --shadow-lg: 0 8px 16px rgba(9,30,66,0.12);
+            --shadow-xl: 0 16px 32px rgba(9,30,66,0.15);
             --radius-sm: 4px;
             --radius-md: 8px;
             --radius-lg: 12px;
             --radius-xl: 16px;
             --transition: all 0.2s ease;
-            --transition-slow: all 0.3s ease;
             --header-bg: linear-gradient(135deg, #0052CC 0%, #0747A6 100%);
             --sidebar-width: 260px;
         }
-
         [data-theme="dark"] {
             --primary: #4C9AFF;
             --primary-hover: #79B8FF;
-            --primary-light: rgba(76, 154, 255, 0.12);
-            --accent: #4C9AFF;
-            --accent-hover: #79B8FF;
-            --accent-light: rgba(76, 154, 255, 0.12);
+            --primary-light: rgba(76,154,255,0.12);
             --text-primary: #E6E8EB;
             --text-secondary: #B8C1CC;
             --text-muted: #8C95A0;
@@ -58,643 +49,609 @@
             --bg-secondary: #0D1117;
             --bg-tertiary: #21262D;
             --border: #30363D;
-            --border-focus: #4C9AFF;
-            --success-light: rgba(0, 135, 90, 0.2);
-            --error-light: rgba(222, 53, 11, 0.2);
-            --warning-light: rgba(255, 153, 31, 0.2);
-            --info-light: rgba(0, 101, 255, 0.2);
+            --success-light: rgba(0,135,90,0.2);
+            --error-light: rgba(222,53,11,0.2);
+            --warning-light: rgba(255,153,31,0.2);
             --header-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { height: 100%; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-secondary); min-height: 100vh; color: var(--text-primary); transition: var(--transition); -webkit-font-smoothing: antialiased; }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        /* ===== SIDEBAR ===== */
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: var(--sidebar-width); background: var(--header-bg); padding: 24px 0; z-index: 100; overflow: hidden; }
+        .sidebar::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size:20px 20px; pointer-events:none; }
+        .sidebar-shapes { position:absolute; top:0;left:0;right:0;bottom:0; overflow:hidden; pointer-events:none; }
+        .sidebar-circle { position:absolute; border-radius:50%; background:linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border:1px solid rgba(255,255,255,0.05); }
+        .sidebar-circle-1 { width:150px;height:150px;top:-50px;right:-50px; animation:float1 20s ease-in-out infinite; }
+        .sidebar-circle-2 { width:100px;height:100px;bottom:20%;left:-30px; animation:float2 25s ease-in-out infinite; }
+        .sidebar-circle-3 { width:80px;height:80px;bottom:-20px;right:20px; animation:float3 18s ease-in-out infinite; }
+        @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,20px)}}
+        @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-15px)}}
+        @keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(-15px,-10px)}}
+        .sidebar-logo { display:flex;align-items:center;gap:12px;padding:0 24px;margin-bottom:32px;position:relative;z-index:1; }
+        .sidebar-logo .logo-icon { width:42px;height:42px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center; }
+        .sidebar-logo .logo-icon svg { width:22px;height:22px;fill:white; }
+        .sidebar-logo .logo-text { display:flex;flex-direction:column; }
+        .sidebar-logo .logo-text span:first-child { font-size:18px;font-weight:700;color:white;letter-spacing:-0.3px; }
+        .sidebar-logo .logo-text span:last-child { font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase; }
+        .sidebar-nav { padding:0 12px;position:relative;z-index:1; }
+        .nav-section { margin-bottom:24px; }
+        .nav-section-title { font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;padding:0 12px;margin-bottom:8px; }
+        .nav-item { display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--radius-md);color:rgba(255,255,255,0.7);text-decoration:none;font-size:14px;font-weight:500;transition:var(--transition);margin-bottom:4px; }
+        .nav-item:hover { background:rgba(255,255,255,0.1);color:white; }
+        .nav-item.active { background:rgba(255,255,255,0.15);color:white; }
+        .nav-item svg { width:20px;height:20px;fill:currentColor;flex-shrink:0; }
+        .nav-item .badge { margin-left:auto;background:rgba(255,255,255,0.2);color:white;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px; }
+        .nav-item .badge.alert { background:var(--error); }
+        .sidebar-footer { position:absolute;bottom:24px;left:12px;right:12px;z-index:1; }
+        .sidebar-user { display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.1);border-radius:var(--radius-lg);margin-bottom:12px; }
+        .sidebar-user-avatar { width:40px;height:40px;background:linear-gradient(135deg, #4C9AFF 0%, #00C7E6 100%);border-radius:10px;display:flex;align-items:center;justify-content:center; }
+        .sidebar-user-avatar svg { width:20px;height:20px;fill:white; }
+        .sidebar-user-info { flex:1;min-width:0; }
+        .sidebar-user-name { font-size:13px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+        .sidebar-user-role { font-size:11px;color:rgba(255,255,255,0.6); }
+        .logout-btn { display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);color:rgba(255,255,255,0.8);font-size:13px;font-weight:500;cursor:pointer;transition:var(--transition);text-decoration:none; }
+        .logout-btn:hover { background:rgba(255,255,255,0.15);color:white; }
+        .logout-btn svg { width:18px;height:18px;fill:currentColor; }
+
+        /* ===== MAIN ===== */
+        .main-wrapper { margin-left:var(--sidebar-width);min-height:100vh; }
+        .header { background:var(--bg-primary);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50; }
+        .header-left { display:flex;flex-direction:column; }
+        .header-title { font-size:24px;font-weight:700;color:var(--text-primary);letter-spacing:-0.5px; }
+        .header-subtitle { font-size:13px;color:var(--text-secondary);margin-top:2px; }
+        .header-right { display:flex;align-items:center;gap:16px; }
+        .header-datetime { text-align:right;padding-right:16px;border-right:1px solid var(--border); }
+        .header-time { font-size:20px;font-weight:700;color:var(--text-primary); }
+        .header-date { font-size:12px;color:var(--text-secondary); }
+        .header-actions { display:flex;align-items:center;gap:8px; }
+        .header-btn { width:40px;height:40px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--bg-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);position:relative; }
+        .header-btn:hover { background:var(--bg-secondary); }
+        .header-btn svg { width:20px;height:20px;fill:var(--text-secondary); }
+        .header-btn .badge { position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;background:var(--error);color:white;font-size:10px;font-weight:700;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px; }
+        .theme-toggle .sun { display:none; }
+        [data-theme="dark"] .theme-toggle .sun { display:block; }
+        [data-theme="dark"] .theme-toggle .moon { display:none; }
+
+        .main-content { padding:24px 32px;max-width:1400px;margin:0 auto; }
+
+        /* ===== QUICK STATS ===== */
+        .quick-stats { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px; }
+        .quick-stat-card { background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;align-items:center;gap:16px;transition:var(--transition); }
+        .quick-stat-card:hover { box-shadow:var(--shadow-md);transform:translateY(-2px); }
+        .quick-stat-icon { width:48px;height:48px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center; }
+        .quick-stat-icon svg { width:24px;height:24px;fill:white; }
+        .quick-stat-icon.blue { background:linear-gradient(135deg,#0052CC,#0747A6); }
+        .quick-stat-icon.green { background:linear-gradient(135deg,#00875A,#006644); }
+        .quick-stat-icon.orange { background:linear-gradient(135deg,#FF991F,#FF8B00); }
+        .quick-stat-icon.purple { background:linear-gradient(135deg,#6554C0,#5243AA); }
+        .quick-stat-content h4 { font-size:22px;font-weight:800;color:var(--text-primary); }
+        .quick-stat-content p { font-size:12px;color:var(--text-muted);margin-top:2px; }
+
+        /* ===== STEP INDICATOR ===== */
+        .step-indicator { display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:32px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px 40px; }
+        .step { display:flex;align-items:center;gap:12px; }
+        .step-number { width:40px;height:40px;border-radius:50%;background:var(--bg-tertiary);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--text-muted);transition:var(--transition); }
+        .step.active .step-number { background:var(--primary);border-color:var(--primary);color:white; }
+        .step.completed .step-number { background:var(--success);border-color:var(--success);color:white; }
+        .step-info { display:flex;flex-direction:column; }
+        .step-title { font-size:14px;font-weight:600;color:var(--text-muted);transition:var(--transition); }
+        .step.active .step-title, .step.completed .step-title { color:var(--text-primary); }
+        .step-subtitle { font-size:12px;color:var(--text-muted); }
+        .step-connector { width:80px;height:2px;background:var(--border);margin:0 20px; }
+        .step-connector.active { background:var(--primary); }
+
+        /* ===== DEPOSIT MODE TABS ===== */
+        .deposit-mode-tabs { display:flex;gap:0;margin-bottom:24px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden; }
+        .deposit-mode-tab { flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:18px 24px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-muted);border:none;background:transparent;transition:var(--transition);border-bottom:3px solid transparent;font-family:inherit; }
+        .deposit-mode-tab:hover { background:var(--bg-secondary);color:var(--text-primary); }
+        .deposit-mode-tab.active { color:var(--primary);border-bottom-color:var(--primary);background:var(--primary-light); }
+        .deposit-mode-tab svg { width:20px;height:20px;fill:currentColor; }
+        .deposit-mode-tab .tab-badge { background:var(--primary);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px; }
+
+        /* ===== CONTENT LAYOUT ===== */
+        .content-layout { display:grid;grid-template-columns:1fr 440px;gap:24px; }
+
+        /* ===== PENDING CHEQUES ===== */
+        .pending-cheques-section { background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden; }
+        .section-header { display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:var(--bg-secondary);border-bottom:1px solid var(--border); }
+        .section-header-left { display:flex;align-items:center;gap:16px; }
+        .section-header-icon { width:44px;height:44px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center; }
+        .section-header-icon svg { width:22px;height:22px;fill:white; }
+        .section-header-icon.blue { background:linear-gradient(135deg,#0052CC,#0747A6); }
+        .section-header-icon.green { background:linear-gradient(135deg,#00875A,#006644); }
+        .section-header-icon.orange { background:linear-gradient(135deg,#FF991F,#FF8B00); }
+        .section-header h3 { font-size:16px;font-weight:700;color:var(--text-primary); }
+        .section-header p { font-size:12px;color:var(--text-muted);margin-top:2px; }
+        .section-header-right { display:flex;align-items:center;gap:12px; }
+        .select-all-wrapper { display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:var(--transition); }
+        .select-all-wrapper:hover { border-color:var(--primary); }
+        .select-all-wrapper input[type="checkbox"] { width:18px;height:18px;cursor:pointer;accent-color:var(--primary); }
+        .select-all-wrapper label { font-size:13px;font-weight:500;color:var(--text-primary);cursor:pointer; }
+        .cheque-list { max-height:600px;overflow-y:auto; }
+        .cheque-item { display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--border);transition:var(--transition);cursor:pointer; }
+        .cheque-item:hover { background:var(--bg-secondary); }
+        .cheque-item.selected { background:var(--primary-light);border-left:3px solid var(--primary); }
+        .cheque-item:last-child { border-bottom:none; }
+        .cheque-checkbox { width:22px;height:22px;cursor:pointer;accent-color:var(--primary);flex-shrink:0; }
+        .cheque-info { flex:1;display:grid;grid-template-columns:1fr 1fr 1fr 130px;gap:16px;align-items:center; }
+        .cheque-detail { display:flex;flex-direction:column;gap:2px; }
+        .cheque-detail-label { font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px; }
+        .cheque-detail-value { font-size:13px;font-weight:600;color:var(--text-primary); }
+        .cheque-detail-value.highlight { color:var(--primary); }
+        .cheque-detail-value.amount { color:var(--success);font-size:14px;font-weight:700; }
+        .empty-state { padding:60px 24px;text-align:center; }
+        .empty-state-icon { width:80px;height:80px;border-radius:50%;background:var(--bg-secondary);display:flex;align-items:center;justify-content:center;margin:0 auto 20px; }
+        .empty-state-icon svg { width:40px;height:40px;fill:var(--text-muted); }
+        .empty-state h4 { font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px; }
+        .empty-state p { font-size:13px;color:var(--text-muted); }
+
+        /* ===== DEPOSIT FORM ===== */
+        .deposit-form-section { background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;position:sticky;top:100px; }
+        .deposit-form-header { background:linear-gradient(135deg,#00875A 0%,#006644 100%);padding:20px 24px; }
+        .deposit-form-header h3 { font-size:16px;font-weight:700;color:white;display:flex;align-items:center;gap:10px; }
+        .deposit-form-header h3 svg { width:20px;height:20px;fill:white; }
+        .deposit-form-header p { font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px; }
+        .deposit-form-header.multi-bank { background:linear-gradient(135deg,#6554C0 0%,#5243AA 100%); }
+
+        /* ===== SELECTED SUMMARY ===== */
+        .selected-summary { padding:16px 24px;background:var(--bg-secondary);border-bottom:1px solid var(--border); }
+        .selected-summary-title { font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px; }
+        .selected-stats { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+        .selected-stat { background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px;text-align:center; }
+        .selected-stat-value { font-size:20px;font-weight:800;color:var(--primary); }
+        .selected-stat-value.amount { color:var(--success);font-size:15px; }
+        .selected-stat-label { font-size:11px;color:var(--text-muted);margin-top:3px; }
+
+        /* ===== SELECTED CHEQUES BREAKDOWN TABLE ===== */
+        .selected-cheques-breakdown {
+            border-top: 1px solid var(--border);
             background: var(--bg-secondary);
-            min-height: 100vh;
-            color: var(--text-primary);
-            transition: var(--transition);
-            -webkit-font-smoothing: antialiased;
         }
-
-        .sidebar {
-            position: fixed; left: 0; top: 0; bottom: 0;
-            width: var(--sidebar-width);
-            background: var(--header-bg);
-            padding: 24px 0; z-index: 100; overflow: hidden;
-        }
-        .sidebar::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 20px 20px; pointer-events: none;
-        }
-        .sidebar-shapes { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; }
-        .sidebar-circle { position: absolute; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.05); }
-        .sidebar-circle-1 { width: 150px; height: 150px; top: -50px; right: -50px; animation: float1 20s ease-in-out infinite; }
-        .sidebar-circle-2 { width: 100px; height: 100px; bottom: 20%; left: -30px; animation: float2 25s ease-in-out infinite; }
-        .sidebar-circle-3 { width: 80px; height: 80px; bottom: -20px; right: 20px; animation: float3 18s ease-in-out infinite; }
-        @keyframes float1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-10px, 20px); } }
-        @keyframes float2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, -15px); } }
-        @keyframes float3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-15px, -10px); } }
-
-        .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 0 24px; margin-bottom: 32px; position: relative; z-index: 1; }
-        .sidebar-logo .logo-icon { width: 42px; height: 42px; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .sidebar-logo .logo-icon svg { width: 22px; height: 22px; fill: white; }
-        .sidebar-logo .logo-text { display: flex; flex-direction: column; }
-        .sidebar-logo .logo-text span:first-child { font-size: 18px; font-weight: 700; color: white; letter-spacing: -0.3px; }
-        .sidebar-logo .logo-text span:last-child { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; }
-        .sidebar-nav { padding: 0 12px; position: relative; z-index: 1; }
-        .nav-section { margin-bottom: 24px; }
-        .nav-section-title { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1.5px; padding: 0 12px; margin-bottom: 8px; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 500; transition: var(--transition); margin-bottom: 4px; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
-        .nav-item.active { background: rgba(255,255,255,0.15); color: white; }
-        .nav-item svg { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
-        .nav-item .badge { margin-left: auto; background: rgba(255,255,255,0.2); color: white; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
-        .nav-item .badge.alert { background: var(--error); }
-        .sidebar-footer { position: absolute; bottom: 24px; left: 12px; right: 12px; z-index: 1; }
-        .sidebar-user { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.1); border-radius: var(--radius-lg); margin-bottom: 12px; }
-        .sidebar-user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #4C9AFF 0%, #00C7E6 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .sidebar-user-avatar svg { width: 20px; height: 20px; fill: white; }
-        .sidebar-user-info { flex: 1; min-width: 0; }
-        .sidebar-user-name { font-size: 13px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .sidebar-user-role { font-size: 11px; color: rgba(255,255,255,0.6); }
-        .logout-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 500; cursor: pointer; transition: var(--transition); text-decoration: none; }
-        .logout-btn:hover { background: rgba(255,255,255,0.15); color: white; }
-        .logout-btn svg { width: 18px; height: 18px; fill: currentColor; }
-
-        .main-wrapper { margin-left: var(--sidebar-width); min-height: 100vh; }
-
-        .header { background: var(--bg-primary); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
-        .header-left { display: flex; flex-direction: column; }
-        .header-title { font-size: 24px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
-        .header-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
-        .header-right { display: flex; align-items: center; gap: 16px; }
-        .header-datetime { text-align: right; padding-right: 16px; border-right: 1px solid var(--border); }
-        .header-time { font-size: 20px; font-weight: 700; color: var(--text-primary); }
-        .header-date { font-size: 12px; color: var(--text-secondary); }
-        .header-actions { display: flex; align-items: center; gap: 8px; }
-        .header-btn { width: 40px; height: 40px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--bg-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); position: relative; }
-        .header-btn:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
-        .header-btn svg { width: 20px; height: 20px; fill: var(--text-secondary); }
-        .header-btn .badge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; background: var(--error); color: white; font-size: 10px; font-weight: 700; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
-        .header-btn .badge:empty, .header-btn .badge[data-count="0"] { display: none; }
-        .theme-toggle .sun { display: none; }
-        [data-theme="dark"] .theme-toggle .sun { display: block; }
-        [data-theme="dark"] .theme-toggle .moon { display: none; }
-
-        .notification-wrapper { position: relative; }
-        .notification-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 380px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: var(--transition); z-index: 1000; overflow: hidden; }
-        .notification-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
-        .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg-secondary); }
-        .notification-header h4 { font-size: 14px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-        .notification-header h4 .count { background: var(--error); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
-        .notification-header-actions { display: flex; gap: 8px; }
-        .notification-header-btn { padding: 6px 12px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: var(--transition); }
-        .notification-header-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
-        .notification-header-btn.danger:hover { background: var(--error-light); color: var(--error); border-color: var(--error); }
-        .notification-list { max-height: 400px; overflow-y: auto; }
-        .notification-item { display: flex; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
-        .notification-item:hover { background: var(--bg-secondary); }
-        .notification-item.unread { background: var(--primary-light); border-left: 3px solid var(--primary); }
-        .notification-item.unread:hover { background: rgba(0, 82, 204, 0.12); }
-        .notification-item:last-child { border-bottom: none; }
-        .notification-icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .notification-icon svg { width: 20px; height: 20px; fill: white; }
-        .notification-icon.success { background: linear-gradient(135deg, #00875A, #006644); }
-        .notification-icon.warning { background: linear-gradient(135deg, #FF991F, #FF8B00); }
-        .notification-icon.info { background: linear-gradient(135deg, #0052CC, #0747A6); }
-        .notification-icon.error { background: linear-gradient(135deg, #DE350B, #BF2600); }
-        .notification-content { flex: 1; min-width: 0; }
-        .notification-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-        .notification-message { font-size: 12px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .notification-time { font-size: 10px; color: var(--text-muted); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
-        .notification-time svg { width: 12px; height: 12px; fill: var(--text-muted); }
-        .notification-empty { padding: 40px 20px; text-align: center; }
-        .notification-empty-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-        .notification-empty-icon svg { width: 30px; height: 30px; fill: var(--text-muted); }
-        .notification-empty h5 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-        .notification-empty p { font-size: 12px; color: var(--text-muted); }
-        .notification-footer { padding: 12px 20px; border-top: 1px solid var(--border); text-align: center; }
-        .notification-footer a { font-size: 12px; font-weight: 600; color: var(--primary); text-decoration: none; }
-
-        .main-content { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
-
-        .quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .quick-stat-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; display: flex; align-items: center; gap: 16px; transition: var(--transition); }
-        .quick-stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .quick-stat-icon { width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
-        .quick-stat-icon svg { width: 24px; height: 24px; fill: white; }
-        .quick-stat-icon.blue { background: linear-gradient(135deg, #0052CC, #0747A6); }
-        .quick-stat-icon.green { background: linear-gradient(135deg, #00875A, #006644); }
-        .quick-stat-icon.orange { background: linear-gradient(135deg, #FF991F, #FF8B00); }
-        .quick-stat-icon.purple { background: linear-gradient(135deg, #6554C0, #5243AA); }
-        .quick-stat-content h4 { font-size: 22px; font-weight: 800; color: var(--text-primary); }
-        .quick-stat-content p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-        .step-indicator { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 32px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 24px 40px; }
-        .step { display: flex; align-items: center; gap: 12px; }
-        .step-number { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-tertiary); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: var(--text-muted); transition: var(--transition); }
-        .step.active .step-number { background: var(--primary); border-color: var(--primary); color: white; }
-        .step.completed .step-number { background: var(--success); border-color: var(--success); color: white; }
-        .step-info { display: flex; flex-direction: column; }
-        .step-title { font-size: 14px; font-weight: 600; color: var(--text-muted); transition: var(--transition); }
-        .step.active .step-title, .step.completed .step-title { color: var(--text-primary); }
-        .step-subtitle { font-size: 12px; color: var(--text-muted); }
-        .step-connector { width: 80px; height: 2px; background: var(--border); margin: 0 20px; }
-        .step-connector.active { background: var(--primary); }
-
-        /* Deposit Mode Tabs */
-        .deposit-mode-tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 24px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-        }
-        .deposit-mode-tab {
-            flex: 1;
+        .breakdown-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 18px 24px;
+            justify-content: space-between;
+            padding: 12px 20px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            border: none;
-            background: transparent;
+            user-select: none;
             transition: var(--transition);
-            border-bottom: 3px solid transparent;
-            font-family: inherit;
         }
-        .deposit-mode-tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
-        .deposit-mode-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--primary-light); }
-        .deposit-mode-tab svg { width: 20px; height: 20px; fill: currentColor; }
-        .deposit-mode-tab .tab-badge {
+        .breakdown-header:hover { background: var(--bg-tertiary); }
+        .breakdown-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .breakdown-header-left svg { width: 16px; height: 16px; fill: currentColor; }
+        .breakdown-count-pill {
             background: var(--primary);
             color: white;
             font-size: 10px;
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 10px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+        .breakdown-toggle-icon {
+            width: 20px; height: 20px;
+            fill: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+        .breakdown-toggle-icon.open { transform: rotate(180deg); }
+
+        .breakdown-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+        .breakdown-body.open { max-height: 320px; overflow-y: auto; }
+
+        .breakdown-empty {
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
         }
 
-        /* Content Layout */
-        .content-layout { display: grid; grid-template-columns: 1fr 420px; gap: 24px; }
-
-        .pending-cheques-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
-        .section-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; background: var(--bg-secondary); border-bottom: 1px solid var(--border); }
-        .section-header-left { display: flex; align-items: center; gap: 16px; }
-        .section-header-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
-        .section-header-icon svg { width: 22px; height: 22px; fill: white; }
-        .section-header-icon.blue { background: linear-gradient(135deg, #0052CC, #0747A6); }
-        .section-header-icon.green { background: linear-gradient(135deg, #00875A, #006644); }
-        .section-header-icon.orange { background: linear-gradient(135deg, #FF991F, #FF8B00); }
-        .section-header-icon.purple { background: linear-gradient(135deg, #6554C0, #5243AA); }
-        .section-header h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
-        .section-header p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-        .section-header-right { display: flex; align-items: center; gap: 12px; }
-
-        .select-all-wrapper { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition); }
-        .select-all-wrapper:hover { border-color: var(--primary); }
-        .select-all-wrapper input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
-        .select-all-wrapper label { font-size: 13px; font-weight: 500; color: var(--text-primary); cursor: pointer; }
-
-        .cheque-list { max-height: 500px; overflow-y: auto; }
-        .cheque-item { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--border); transition: var(--transition); cursor: pointer; }
-        .cheque-item:hover { background: var(--bg-secondary); }
-        .cheque-item.selected { background: var(--primary-light); border-left: 3px solid var(--primary); }
-        .cheque-item:last-child { border-bottom: none; }
-        .cheque-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); flex-shrink: 0; }
-        .cheque-info { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr 120px; gap: 16px; align-items: center; }
-        .cheque-detail { display: flex; flex-direction: column; gap: 2px; }
-        .cheque-detail-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .cheque-detail-value { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-        .cheque-detail-value.highlight { color: var(--primary); }
-        .cheque-detail-value.amount { color: var(--success); font-size: 14px; font-weight: 700; }
-
-        /* Bank Assignment Tag on cheque item */
-        .cheque-bank-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            border-radius: 20px;
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .breakdown-table thead tr {
+            background: var(--bg-tertiary);
+        }
+        .breakdown-table th {
+            padding: 8px 14px;
             font-size: 10px;
             font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-top: 4px;
+            letter-spacing: 0.5px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
         }
-        .cheque-bank-tag.bank-a { background: #E3F2FD; color: #1565C0; }
-        .cheque-bank-tag.bank-b { background: #F3E5F5; color: #7B1FA2; }
-        .cheque-bank-tag.bank-c { background: #E8F5E9; color: #2E7D32; }
-        .cheque-bank-tag.bank-d { background: #FFF3E0; color: #E65100; }
-        .cheque-bank-tag.bank-e { background: #FCE4EC; color: #C62828; }
+        .breakdown-table td {
+            padding: 9px 14px;
+            font-size: 12px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+        }
+        .breakdown-table tbody tr:hover { background: var(--bg-primary); }
+        .breakdown-table tbody tr:last-child td { border-bottom: none; }
+        .breakdown-cheque-no { font-weight: 700; color: var(--primary); }
+        .breakdown-amount { font-weight: 700; color: var(--success); white-space: nowrap; }
+        .breakdown-bank { font-size: 11px; color: var(--text-secondary); }
+        .breakdown-name { font-size: 12px; font-weight: 500; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .breakdown-remove-btn {
+            width: 22px; height: 22px;
+            border: none;
+            background: var(--error-light);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+            padding: 0;
+        }
+        .breakdown-remove-btn svg { width: 12px; height: 12px; fill: var(--error); }
+        .breakdown-remove-btn:hover { background: var(--error); }
+        .breakdown-remove-btn:hover svg { fill: white; }
 
-        [data-theme="dark"] .cheque-bank-tag.bank-a { background: rgba(21,101,192,0.2); color: #64B5F6; }
-        [data-theme="dark"] .cheque-bank-tag.bank-b { background: rgba(123,31,162,0.2); color: #CE93D8; }
-        [data-theme="dark"] .cheque-bank-tag.bank-c { background: rgba(46,125,50,0.2); color: #81C784; }
-        [data-theme="dark"] .cheque-bank-tag.bank-d { background: rgba(230,81,0,0.2); color: #FFB74D; }
-        [data-theme="dark"] .cheque-bank-tag.bank-e { background: rgba(198,40,40,0.2); color: #EF9A9A; }
+        .breakdown-total-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, rgba(0,135,90,0.08) 0%, rgba(0,135,90,0.04) 100%);
+            border-top: 2px solid var(--success);
+        }
+        .breakdown-total-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .breakdown-total-label svg { width: 14px; height: 14px; fill: var(--success); }
+        .breakdown-total-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--success);
+        }
 
-        .empty-state { padding: 60px 24px; text-align: center; }
-        .empty-state-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
-        .empty-state-icon svg { width: 40px; height: 40px; fill: var(--text-muted); }
-        .empty-state h4 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
-        .empty-state p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
-
-        /* Deposit Form Section */
-        .deposit-form-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; position: sticky; top: 100px; }
-        .deposit-form-header { background: linear-gradient(135deg, #00875A 0%, #006644 100%); padding: 20px 24px; }
-        .deposit-form-header h3 { font-size: 16px; font-weight: 700; color: white; display: flex; align-items: center; gap: 10px; }
-        .deposit-form-header h3 svg { width: 20px; height: 20px; fill: white; }
-        .deposit-form-header p { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; }
-        .deposit-form-header.multi-bank { background: linear-gradient(135deg, #6554C0 0%, #5243AA 100%); }
-
-        .selected-summary { padding: 20px 24px; background: var(--bg-secondary); border-bottom: 1px solid var(--border); }
-        .selected-summary-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-        .selected-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .selected-stat { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; text-align: center; }
-        .selected-stat-value { font-size: 20px; font-weight: 800; color: var(--primary); }
-        .selected-stat-value.amount { color: var(--success); font-size: 16px; }
-        .selected-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-
-        .deposit-form { padding: 24px; }
-        .form-group { margin-bottom: 20px; }
+        /* ===== FORM ===== */
+        .deposit-form { padding: 20px 24px; }
+        .form-group { margin-bottom: 16px; }
         .form-group:last-child { margin-bottom: 0; }
-        .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
-        .form-label .required { color: var(--error); font-weight: 700; }
+        .form-label { display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:7px; }
+        .form-label .required { color:var(--error);font-weight:700; }
         .form-input, .form-select, .form-textarea {
-            width: 100%; height: 48px; padding: 0 16px;
-            background: var(--bg-primary); border: 2px solid var(--border);
-            border-radius: var(--radius-md); font-family: inherit;
-            font-size: 14px; font-weight: 500; color: var(--text-primary);
-            transition: var(--transition); outline: none;
+            width:100%;height:44px;padding:0 14px;
+            background:var(--bg-primary);border:2px solid var(--border);
+            border-radius:var(--radius-md);font-family:inherit;
+            font-size:14px;font-weight:500;color:var(--text-primary);
+            transition:var(--transition);outline:none;
         }
-        .form-textarea { height: auto; min-height: 80px; padding: 12px 16px; resize: vertical; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2397A0AF'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 12px center; background-size: 24px; padding-right: 44px; cursor: pointer;
-        }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-textarea { height:auto;min-height:72px;padding:10px 14px;resize:vertical; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light); }
+        .form-select { appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2397A0AF'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:24px;padding-right:44px;cursor:pointer; }
+        .form-row { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+        .form-divider { height: 1px; background: var(--border); margin: 4px 0 18px; }
 
-        /* File Upload */
-        .file-upload-area {
+        /* ===== FORM SECTION DIVIDER ===== */
+        .form-section-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .form-section-divider span {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
+        }
+        .form-section-divider small {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: italic;
+            white-space: nowrap;
+        }
+        .form-section-divider::before,
+        .form-section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .form-section-divider::after { display: none; }
+
+        /* Autofilled input highlight */
+        .form-input.autofilled {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .form-input.autofilled:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* ===== CHEQUE DETAIL AUTOFILL SECTION ===== */
+        .cheque-autofill-section {
+            background: var(--bg-secondary);
             border: 2px dashed var(--border);
             border-radius: var(--radius-lg);
-            padding: 24px;
-            text-align: center;
-            cursor: pointer;
+            padding: 20px;
+            margin-bottom: 20px;
             transition: var(--transition);
             position: relative;
-            overflow: hidden;
-            background: var(--bg-secondary);
         }
-        .file-upload-area:hover, .file-upload-area.dragover {
+        .cheque-autofill-section.has-data {
+            border-style: solid;
             border-color: var(--primary);
             background: var(--primary-light);
         }
-        .file-upload-area input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; cursor: pointer;
+        .cheque-autofill-section.has-data .autofill-placeholder { display: none; }
+        .cheque-autofill-section:not(.has-data) .autofill-fields { display: none; }
+
+        .autofill-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 8px 0;
+            text-align: center;
         }
-        .file-upload-icon {
-            width: 56px; height: 56px;
+        .autofill-placeholder-icon {
+            width: 48px; height: 48px;
             border-radius: 50%;
             background: var(--bg-tertiary);
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 12px;
         }
-        .file-upload-icon svg { width: 28px; height: 28px; fill: var(--text-muted); }
-        .file-upload-area h5 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-        .file-upload-area h5 span { color: var(--primary); }
-        .file-upload-area p { font-size: 12px; color: var(--text-muted); }
+        .autofill-placeholder-icon svg { width: 24px; height: 24px; fill: var(--text-muted); }
+        .autofill-placeholder h5 { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .autofill-placeholder p { font-size: 12px; color: var(--text-muted); }
 
-        /* Uploaded File Preview */
-        .uploaded-files { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .uploaded-file-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 14px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            transition: var(--transition);
+        .autofill-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
         }
-        .uploaded-file-item:hover { border-color: var(--primary); }
-        .uploaded-file-thumb {
-            width: 44px; height: 44px;
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            flex-shrink: 0;
-            background: var(--bg-tertiary);
-            display: flex; align-items: center; justify-content: center;
+        .autofill-section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
-        .uploaded-file-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .uploaded-file-thumb svg { width: 22px; height: 22px; fill: var(--text-muted); }
-        .uploaded-file-info { flex: 1; min-width: 0; }
-        .uploaded-file-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .uploaded-file-size { font-size: 11px; color: var(--text-muted); }
-        .uploaded-file-remove {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: var(--error-light);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
-            flex-shrink: 0;
-        }
-        .uploaded-file-remove:hover { background: var(--error); }
-        .uploaded-file-remove svg { width: 14px; height: 14px; fill: var(--error); }
-        .uploaded-file-remove:hover svg { fill: white; }
-
-        /* Multi Bank Deposit */
-        .multi-bank-groups { display: flex; flex-direction: column; gap: 16px; }
-        .bank-group {
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        .bank-group:focus-within { border-color: var(--primary); }
-        .bank-group-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 16px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-        }
-        .bank-group-title {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 14px; font-weight: 700; color: var(--text-primary);
-        }
-        .bank-group-color {
-            width: 14px; height: 14px;
-            border-radius: 4px;
-        }
-        .bank-group-color.c0 { background: #1565C0; }
-        .bank-group-color.c1 { background: #7B1FA2; }
-        .bank-group-color.c2 { background: #2E7D32; }
-        .bank-group-color.c3 { background: #E65100; }
-        .bank-group-color.c4 { background: #C62828; }
-
-        .bank-group-remove {
-            width: 28px; height: 28px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--bg-primary);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
-        }
-        .bank-group-remove:hover { background: var(--error-light); border-color: var(--error); }
-        .bank-group-remove svg { width: 16px; height: 16px; fill: var(--text-muted); }
-        .bank-group-remove:hover svg { fill: var(--error); }
-
-        .bank-group-body { padding: 16px; }
-        .bank-group-body .form-group { margin-bottom: 14px; }
-        .bank-group-body .form-input,
-        .bank-group-body .form-select { height: 42px; font-size: 13px; }
-        .bank-group-body .form-label { font-size: 12px; margin-bottom: 6px; }
-
-        .bank-group-cheques {
-            padding: 12px 16px;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-        }
-        .bank-group-cheques-title {
-            font-size: 11px; font-weight: 700; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
-        }
-        .bank-group-cheque-list { display: flex; flex-wrap: wrap; gap: 6px; min-height: 36px; }
-        .bank-group-cheque-chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 5px 12px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
+        .autofill-section-label svg { width: 14px; height: 14px; fill: var(--primary); }
+        .autofill-source-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
             border-radius: 20px;
-            font-size: 12px; font-weight: 600;
-            color: var(--text-primary);
-            cursor: default;
+            letter-spacing: 0.3px;
         }
-        .bank-group-cheque-chip .chip-amount {
+        .autofill-source-tag svg { width: 10px; height: 10px; fill: white; }
+
+        .autofill-fields { display: flex; flex-direction: column; gap: 12px; }
+        .autofill-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .autofill-field-group { display: flex; flex-direction: column; gap: 5px; }
+        .autofill-field-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .autofill-field-label .edit-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
+        }
+        .autofill-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            background: var(--bg-primary);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+            outline: none;
+        }
+        .autofill-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .autofill-input.amount-input {
             color: var(--success);
+            font-size: 14px;
             font-weight: 700;
         }
-        .bank-group-cheque-chip .chip-remove {
-            width: 16px; height: 16px;
-            border-radius: 50%;
-            border: none;
-            background: var(--error-light);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            padding: 0;
+        .autofill-input.cheque-no-input {
+            color: var(--primary);
+            font-weight: 700;
         }
-        .bank-group-cheque-chip .chip-remove svg { width: 10px; height: 10px; fill: var(--error); }
-        .bank-group-cheque-chip .chip-remove:hover { background: var(--error); }
-        .bank-group-cheque-chip .chip-remove:hover svg { fill: white; }
-
-        .bank-group-drop-zone {
-            min-height: 36px;
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-md);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; color: var(--text-muted);
-            padding: 8px;
-            transition: var(--transition);
-        }
-        .bank-group-drop-zone.highlight { border-color: var(--primary); background: var(--primary-light); }
-
-        .bank-group-total {
-            padding: 10px 16px;
+        .autofill-input[readonly] {
             background: var(--bg-tertiary);
-            border-top: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between;
-            font-size: 13px;
-        }
-        .bank-group-total-label { color: var(--text-muted); font-weight: 600; }
-        .bank-group-total-value { color: var(--success); font-weight: 800; font-size: 15px; }
-
-        .add-bank-group-btn {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 14px;
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-lg);
-            background: transparent;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 13px; font-weight: 600;
+            cursor: not-allowed;
             color: var(--text-muted);
+        }
+
+        .clear-autofill-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--error-light);
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--error);
+            cursor: pointer;
             transition: var(--transition);
         }
-        .add-bank-group-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-        .add-bank-group-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .clear-autofill-btn:hover { background: var(--error); color: white; }
+        .clear-autofill-btn svg { width: 13px; height: 13px; fill: currentColor; }
 
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            height: 48px; padding: 0 24px;
-            border-radius: var(--radius-md); font-family: inherit;
-            font-size: 14px; font-weight: 600; cursor: pointer;
-            transition: var(--transition); border: 2px solid transparent; text-decoration: none;
-        }
-        .btn svg { width: 18px; height: 18px; fill: currentColor; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,82,204,0.4); }
-        .btn-secondary { background: var(--bg-primary); border-color: var(--border); color: var(--text-primary); }
-        .btn-secondary:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
-        .btn-success { background: linear-gradient(135deg, #00875A 0%, #006644 100%); color: white; width: 100%; }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,135,90,0.4); }
-        .btn-success:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-        .btn-multi { background: linear-gradient(135deg, #6554C0 0%, #5243AA 100%); color: white; width: 100%; }
-        .btn-multi:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(101,84,192,0.4); }
-        .btn-multi:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-        .btn-excel { background: linear-gradient(135deg, #217346 0%, #185C37 100%); color: white; }
-        .btn-excel:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(33,115,70,0.4); }
-        .form-actions { margin-top: 24px; }
+        /* ===== FILE UPLOAD ===== */
+        .file-upload-area { border:2px dashed var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;background:var(--bg-secondary); }
+        .file-upload-area:hover, .file-upload-area.dragover { border-color:var(--primary);background:var(--primary-light); }
+        .file-upload-area input[type="file"] { position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer; }
+        .file-upload-icon { width:48px;height:48px;border-radius:50%;background:var(--bg-tertiary);display:flex;align-items:center;justify-content:center;margin:0 auto 10px; }
+        .file-upload-icon svg { width:24px;height:24px;fill:var(--text-muted); }
+        .file-upload-area h5 { font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px; }
+        .file-upload-area h5 span { color:var(--primary); }
+        .file-upload-area p { font-size:11px;color:var(--text-muted); }
+        .uploaded-files { margin-top:10px;display:flex;flex-direction:column;gap:7px; }
+        .uploaded-file-item { display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-md);transition:var(--transition); }
+        .uploaded-file-item:hover { border-color:var(--primary); }
+        .uploaded-file-thumb { width:40px;height:40px;border-radius:var(--radius-sm);overflow:hidden;flex-shrink:0;background:var(--bg-tertiary);display:flex;align-items:center;justify-content:center; }
+        .uploaded-file-thumb img { width:100%;height:100%;object-fit:cover; }
+        .uploaded-file-thumb svg { width:20px;height:20px;fill:var(--text-muted); }
+        .uploaded-file-info { flex:1;min-width:0; }
+        .uploaded-file-name { font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+        .uploaded-file-size { font-size:11px;color:var(--text-muted); }
+        .uploaded-file-remove { width:26px;height:26px;border-radius:50%;border:none;background:var(--error-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0; }
+        .uploaded-file-remove:hover { background:var(--error); }
+        .uploaded-file-remove svg { width:13px;height:13px;fill:var(--error); }
+        .uploaded-file-remove:hover svg { fill:white; }
 
-        .deposit-history-section { margin-top: 24px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
-        .table-wrapper { overflow-x: auto; }
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th, .data-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid var(--border); }
-        .data-table th { background: var(--bg-secondary); font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .data-table td { font-size: 13px; color: var(--text-primary); }
-        .data-table tbody tr:hover { background: var(--bg-secondary); }
-        .data-table tbody tr:last-child td { border-bottom: none; }
-        .deposit-id { font-weight: 700; color: var(--primary); }
-        .deposit-amount { font-weight: 700; color: var(--success); }
-        .deposit-cheques-count { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .table-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .table-status.processing { background: var(--info-light); color: var(--info); }
-        .table-status.completed { background: var(--success-light); color: var(--success); }
-        .cheque-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-        .table-actions { display: flex; gap: 8px; }
-        .table-action-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-        .table-action-btn:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
-        .table-action-btn svg { width: 16px; height: 16px; fill: var(--text-muted); }
-        .table-action-btn:hover svg { fill: var(--text-primary); }
-        .table-action-btn.view:hover { border-color: var(--primary); background: var(--primary-light); }
-        .table-action-btn.view:hover svg { fill: var(--primary); }
-        .has-slip-icon { display: inline-flex; align-items: center; gap: 4px; color: var(--success); font-size: 12px; font-weight: 600; }
-        .has-slip-icon svg { width: 16px; height: 16px; fill: var(--success); }
-        .no-slip-icon { color: var(--text-muted); font-size: 12px; }
+        /* ===== BUTTONS ===== */
+        .btn { display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:var(--radius-md);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition);border:2px solid transparent;text-decoration:none; }
+        .btn svg { width:18px;height:18px;fill:currentColor; }
+        .btn-success { background:linear-gradient(135deg,#00875A 0%,#006644 100%);color:white;width:100%; }
+        .btn-success:hover { transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,135,90,0.4); }
+        .btn-success:disabled { opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none; }
+        .btn-excel { background:linear-gradient(135deg,#217346 0%,#185C37 100%);color:white; }
+        .btn-excel:hover { transform:translateY(-2px);box-shadow:0 4px 12px rgba(33,115,70,0.4); }
+        .form-actions { margin-top:20px; }
 
-        .footer { padding: 20px 32px; border-top: 1px solid var(--border); text-align: center; }
-        .footer p { font-size: 12px; color: var(--text-muted); }
+        /* ===== HISTORY TABLE ===== */
+        .deposit-history-section { margin-top:24px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden; }
+        .table-wrapper { overflow-x:auto; }
+        .data-table { width:100%;border-collapse:collapse; }
+        .data-table th, .data-table td { padding:14px 20px;text-align:left;border-bottom:1px solid var(--border); }
+        .data-table th { background:var(--bg-secondary);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px; }
+        .data-table td { font-size:13px;color:var(--text-primary); }
+        .data-table tbody tr:hover { background:var(--bg-secondary); }
+        .data-table tbody tr:last-child td { border-bottom:none; }
+        .deposit-id { font-weight:700;color:var(--primary); }
+        .deposit-amount { font-weight:700;color:var(--success); }
+        .deposit-cheques-count { display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--primary-light);color:var(--primary);border-radius:20px;font-size:12px;font-weight:600; }
+        .table-status { display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600; }
+        .table-status.processing { background:rgba(0,101,255,0.1);color:var(--info); }
+        .table-status.completed { background:var(--success-light);color:var(--success); }
+        .cheque-status-dot { width:6px;height:6px;border-radius:50%;background:currentColor; }
+        .table-actions { display:flex;gap:8px; }
+        .table-action-btn { width:32px;height:32px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition); }
+        .table-action-btn:hover { background:var(--bg-secondary); }
+        .table-action-btn svg { width:16px;height:16px;fill:var(--text-muted); }
+        .table-action-btn.view:hover { border-color:var(--primary);background:var(--primary-light); }
+        .table-action-btn.view:hover svg { fill:var(--primary); }
+        .has-slip-icon { display:inline-flex;align-items:center;gap:4px;color:var(--success);font-size:12px;font-weight:600; }
+        .has-slip-icon svg { width:16px;height:16px;fill:var(--success); }
+        .no-slip-icon { color:var(--text-muted);font-size:12px; }
 
-        .toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast { display: flex; align-items: flex-start; gap: 12px; padding: 16px 20px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); min-width: 380px; max-width: 450px; animation: slideInRight 0.3s ease-out; }
-        @keyframes slideInRight { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes slideOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(100px); } }
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.error { border-left: 4px solid var(--error); }
-        .toast.warning { border-left: 4px solid var(--warning); }
-        .toast.info { border-left: 4px solid var(--info); }
-        .toast-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .toast-icon svg { width: 22px; height: 22px; fill: white; }
-        .toast.success .toast-icon { background: linear-gradient(135deg, #00875A, #006644); }
-        .toast.error .toast-icon { background: linear-gradient(135deg, #DE350B, #BF2600); }
-        .toast.warning .toast-icon { background: linear-gradient(135deg, #FF991F, #FF8B00); }
-        .toast.info .toast-icon { background: linear-gradient(135deg, #0052CC, #0747A6); }
-        .toast-content { flex: 1; }
-        .toast-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-        .toast-message { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-        .toast-close { width: 28px; height: 28px; border-radius: var(--radius-sm); border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0; }
-        .toast-close:hover { background: var(--bg-secondary); }
-        .toast-close svg { width: 16px; height: 16px; fill: var(--text-muted); }
+        /* ===== TOAST ===== */
+        .toast-container { position:fixed;top:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:12px; }
+        .toast { display:flex;align-items:flex-start;gap:12px;padding:16px 20px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-xl);min-width:340px;max-width:420px;animation:slideInRight 0.3s ease-out; }
+        @keyframes slideInRight{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100px)}}
+        .toast.success { border-left:4px solid var(--success); }
+        .toast.error { border-left:4px solid var(--error); }
+        .toast.warning { border-left:4px solid var(--warning); }
+        .toast-icon { width:40px;height:40px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+        .toast-icon svg { width:20px;height:20px;fill:white; }
+        .toast.success .toast-icon { background:linear-gradient(135deg,#00875A,#006644); }
+        .toast.error .toast-icon { background:linear-gradient(135deg,#DE350B,#BF2600); }
+        .toast.warning .toast-icon { background:linear-gradient(135deg,#FF991F,#FF8B00); }
+        .toast-content { flex:1; }
+        .toast-title { font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:3px; }
+        .toast-message { font-size:12px;color:var(--text-muted);line-height:1.5; }
+        .toast-close { width:26px;height:26px;border-radius:var(--radius-sm);border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+        .toast-close:hover { background:var(--bg-secondary); }
+        .toast-close svg { width:15px;height:15px;fill:var(--text-muted); }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: var(--transition); }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal { background: var(--bg-primary); border-radius: var(--radius-xl); max-width: 750px; width: 90%; max-height: 85vh; overflow: hidden; transform: scale(0.9); transition: var(--transition); }
-        .modal-overlay.active .modal { transform: scale(1); }
-        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; background: linear-gradient(135deg, #00875A 0%, #006644 100%); }
-        .modal-header h3 { font-size: 18px; font-weight: 700; color: white; }
-        .modal-close { width: 36px; height: 36px; border-radius: var(--radius-md); border: none; background: rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-        .modal-close:hover { background: rgba(255,255,255,0.3); }
-        .modal-close svg { width: 20px; height: 20px; fill: white; }
-        .modal-body { padding: 24px; max-height: calc(85vh - 130px); overflow-y: auto; }
-        .modal-section { margin-bottom: 24px; }
-        .modal-section:last-child { margin-bottom: 0; }
-        .modal-section-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
-        .modal-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        .modal-info-item { background: var(--bg-secondary); padding: 12px 16px; border-radius: var(--radius-md); }
-        .modal-info-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .modal-info-value { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-top: 4px; }
-        .modal-info-value.highlight { color: var(--primary); }
-        .modal-info-value.amount { color: var(--success); font-size: 18px; font-weight: 700; }
-        .modal-cheques-list { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
-        .modal-cheque-item { display: grid; grid-template-columns: 1fr 1fr 1fr 100px; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
-        .modal-cheque-item:last-child { border-bottom: none; }
-        .modal-cheque-item.header { background: var(--bg-secondary); font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .modal-slip-preview { margin-top: 16px; }
-        .modal-slip-preview img {
-            max-width: 100%; border-radius: var(--radius-md);
-            border: 1px solid var(--border); cursor: pointer;
-            transition: var(--transition);
-        }
-        .modal-slip-preview img:hover { box-shadow: var(--shadow-lg); transform: scale(1.02); }
-        .modal-slip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-        .modal-slip-thumb {
-            border-radius: var(--radius-md); overflow: hidden;
-            border: 1px solid var(--border); cursor: pointer;
-            transition: var(--transition); aspect-ratio: 4/3;
-        }
-        .modal-slip-thumb:hover { box-shadow: var(--shadow-md); border-color: var(--primary); }
-        .modal-slip-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        /* ===== MODAL ===== */
+        .modal-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10000;opacity:0;visibility:hidden;transition:var(--transition); }
+        .modal-overlay.active { opacity:1;visibility:visible; }
+        .modal { background:var(--bg-primary);border-radius:var(--radius-xl);max-width:720px;width:90%;max-height:85vh;overflow:hidden;transform:scale(0.9);transition:var(--transition); }
+        .modal-overlay.active .modal { transform:scale(1); }
+        .modal-header { display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:linear-gradient(135deg,#00875A 0%,#006644 100%); }
+        .modal-header h3 { font-size:18px;font-weight:700;color:white; }
+        .modal-close { width:36px;height:36px;border-radius:var(--radius-md);border:none;background:rgba(255,255,255,0.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition); }
+        .modal-close:hover { background:rgba(255,255,255,0.3); }
+        .modal-close svg { width:20px;height:20px;fill:white; }
+        .modal-body { padding:24px;max-height:calc(85vh - 130px);overflow-y:auto; }
+        .modal-section { margin-bottom:24px; }
+        .modal-section:last-child { margin-bottom:0; }
+        .modal-section-title { font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border); }
+        .modal-info-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:14px; }
+        .modal-info-item { background:var(--bg-secondary);padding:12px 16px;border-radius:var(--radius-md); }
+        .modal-info-label { font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px; }
+        .modal-info-value { font-size:14px;font-weight:600;color:var(--text-primary);margin-top:4px; }
+        .modal-info-value.highlight { color:var(--primary); }
+        .modal-info-value.amount { color:var(--success);font-size:18px;font-weight:700; }
+        .modal-cheques-list { border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden; }
+        .modal-cheque-item { display:grid;grid-template-columns:1fr 1fr 1fr 100px;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);font-size:13px; }
+        .modal-cheque-item:last-child { border-bottom:none; }
+        .modal-cheque-item.header { background:var(--bg-secondary);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px; }
+        .modal-slip-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px; }
+        .modal-slip-thumb { border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:var(--transition);aspect-ratio:4/3; }
+        .modal-slip-thumb:hover { box-shadow:var(--shadow-md);border-color:var(--primary); }
+        .modal-slip-thumb img { width:100%;height:100%;object-fit:cover; }
 
-        /* Image Preview Modal */
-        .image-preview-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 20000; opacity: 0; visibility: hidden; transition: var(--transition);
-            cursor: zoom-out;
-        }
-        .image-preview-overlay.active { opacity: 1; visibility: visible; }
-        .image-preview-overlay img { max-width: 90%; max-height: 90%; object-fit: contain; border-radius: var(--radius-md); }
-        .image-preview-close {
-            position: absolute; top: 20px; right: 20px;
-            width: 44px; height: 44px; border-radius: 50%;
-            background: rgba(255,255,255,0.2); border: none;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        .image-preview-close svg { width: 24px; height: 24px; fill: white; }
+        /* ===== IMAGE PREVIEW ===== */
+        .image-preview-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:20000;opacity:0;visibility:hidden;transition:var(--transition);cursor:zoom-out; }
+        .image-preview-overlay.active { opacity:1;visibility:visible; }
+        .image-preview-overlay img { max-width:90%;max-height:90%;object-fit:contain;border-radius:var(--radius-md); }
+        .image-preview-close { position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center; }
+        .image-preview-close svg { width:24px;height:24px;fill:white; }
 
-        @media (max-width: 1200px) {
-            .content-layout { grid-template-columns: 1fr; }
-            .deposit-form-section { position: static; }
-            .quick-stats { grid-template-columns: repeat(2, 1fr); }
-            .cheque-info { grid-template-columns: 1fr 1fr; gap: 12px; }
-        }
-        @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); }
-            .main-wrapper { margin-left: 0; }
-        }
-        @media (max-width: 768px) {
-            .header { padding: 12px 16px; }
-            .header-datetime { display: none; }
-            .main-content { padding: 16px; }
-            .quick-stats { grid-template-columns: 1fr; }
-            .step-indicator { flex-direction: column; gap: 16px; padding: 20px; }
-            .step-connector { width: 2px; height: 30px; margin: 0; }
-            .cheque-info { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
-            .modal-info-grid { grid-template-columns: 1fr; }
-            .modal-cheque-item { grid-template-columns: 1fr 1fr; }
-            .notification-dropdown { width: 320px; right: -60px; }
-            .deposit-mode-tabs { flex-direction: column; }
-        }
+        .footer { padding:20px 32px;border-top:1px solid var(--border);text-align:center; }
+        .footer p { font-size:12px;color:var(--text-muted); }
+
+        @media(max-width:1200px){.content-layout{grid-template-columns:1fr}.deposit-form-section{position:static}.quick-stats{grid-template-columns:repeat(2,1fr)}.cheque-info{grid-template-columns:1fr 1fr;gap:12px}}
+        @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.main-wrapper{margin-left:0}}
+        @media(max-width:768px){.header{padding:12px 16px}.header-datetime{display:none}.main-content{padding:16px}.quick-stats{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.cheque-info{grid-template-columns:1fr}.deposit-mode-tabs{flex-direction:column}}
     </style>
 </head>
 <body>
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-shapes">
             <div class="sidebar-circle sidebar-circle-1"></div>
@@ -732,7 +689,7 @@
         <header class="header">
             <div class="header-left">
                 <h1 class="header-title">Deposit Cheques</h1>
-                <p class="header-subtitle">Select cheques, assign banks, upload slips & record deposits</p>
+                <p class="header-subtitle">Select cheques, assign banks, upload slips &amp; record deposits</p>
             </div>
             <div class="header-right">
                 <div class="header-datetime">
@@ -740,23 +697,6 @@
                     <div class="header-date" id="currentDate">Loading...</div>
                 </div>
                 <div class="header-actions">
-                    <div class="notification-wrapper">
-                        <button class="header-btn" id="notificationBtn" onclick="toggleNotificationDropdown()">
-                            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-                            <span class="badge" id="notificationBadge">0</span>
-                        </button>
-                        <div class="notification-dropdown" id="notificationDropdown">
-                            <div class="notification-header">
-                                <h4>Notifications <span class="count" id="notificationCount">0</span></h4>
-                                <div class="notification-header-actions">
-                                    <button class="notification-header-btn" onclick="markAllAsRead()">Mark all read</button>
-                                    <button class="notification-header-btn danger" onclick="clearAllNotifications()">Clear all</button>
-                                </div>
-                            </div>
-                            <div class="notification-list" id="notificationList"></div>
-                            <div class="notification-footer"><a href="#" onclick="event.preventDefault()">View all notifications</a></div>
-                        </div>
-                    </div>
                     <button class="header-btn theme-toggle" onclick="toggleTheme()">
                         <svg class="moon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
                         <svg class="sun" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
@@ -766,10 +706,11 @@
         </header>
 
         <main class="main-content">
+            <!-- Quick Stats -->
             <div class="quick-stats">
                 <div class="quick-stat-card">
                     <div class="quick-stat-icon orange"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-                    <div class="quick-stat-content"><h4 id="statPending">0</h4><p>Pending Cheques</p></div>
+                    <div class="quick-stat-content"><h4 id="statPending">{{ available_cheque|length }}</h4><p>Pending Cheques</p></div>
                 </div>
                 <div class="quick-stat-card">
                     <div class="quick-stat-icon blue"><svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg></div>
@@ -785,6 +726,7 @@
                 </div>
             </div>
 
+            <!-- Step Indicator -->
             <div class="step-indicator">
                 <div class="step completed">
                     <div class="step-number"><svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
@@ -793,7 +735,7 @@
                 <div class="step-connector active"></div>
                 <div class="step active">
                     <div class="step-number">2</div>
-                    <div class="step-info"><div class="step-title">Bank Deposit</div><div class="step-subtitle">Select & deposit cheques</div></div>
+                    <div class="step-info"><div class="step-title">Bank Deposit</div><div class="step-subtitle">Select &amp; deposit cheques</div></div>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step">
@@ -816,13 +758,13 @@
             </div>
 
             <!-- Content Layout -->
-            <div class="content-layout" id="contentLayout">
-                <!-- Pending Cheques Section -->
+            <div class="content-layout">
+                <!-- LEFT: Pending Cheques -->
                 <div class="pending-cheques-section">
                     <div class="section-header">
                         <div class="section-header-left">
                             <div class="section-header-icon orange"><svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg></div>
-                            <div><h3>Pending Cheques</h3><p id="chequeListSubtitle">Select cheques to deposit at a single bank</p></div>
+                            <div><h3>Pending Cheques</h3><p id="chequeListSubtitle">Select cheques to deposit</p></div>
                         </div>
                         <div class="section-header-right">
                             <div class="select-all-wrapper">
@@ -831,51 +773,109 @@
                             </div>
                         </div>
                     </div>
-                    {% for cheque in available_cheque %}
+
                     <div class="cheque-list" id="chequeList">
-                            <div class="cheque-item">
-                                 <span class="cheque-checkbox"><li></li></span>
+                        {% if available_cheque %}
+                            {% for cheque in available_cheque %}
+                            <div class="cheque-item"
+                                 data-id="{{ cheque.id }}"
+                                 data-cheque-no="{{ cheque.cheque_number }}"
+                                 data-account-name="{{ cheque.account_name }}"
+                                 data-cheque-bank="{{ cheque.cheque_bank }}"
+                                 data-amount="{{ cheque.cheque_amount }}"
+                                 onclick="toggleChequeSelection(this)">
+                                <input type="checkbox" class="cheque-checkbox" onclick="event.stopPropagation()">
                                 <div class="cheque-info">
                                     <div class="cheque-detail">
                                         <span class="cheque-detail-label">Cheque No</span>
                                         <span class="cheque-detail-value highlight">{{ cheque.cheque_number }}</span>
-                                        
                                     </div>
                                     <div class="cheque-detail">
-                                        <span class="cheque-detail-label">Issue By</span>
+                                        <span class="cheque-detail-label">Issued By</span>
                                         <span class="cheque-detail-value">{{ cheque.account_name }}</span>
                                     </div>
                                     <div class="cheque-detail">
-                                        <span class="cheque-detail-label">Bank name</span>
+                                        <span class="cheque-detail-label">Cheque Bank</span>
                                         <span class="cheque-detail-value">{{ cheque.cheque_bank }}</span>
                                     </div>
                                     <div class="cheque-detail">
                                         <span class="cheque-detail-label">Amount</span>
-                                        <span class="cheque-detail-value amount">{{ cheque.cheque_amount }}</span>
+                                        <span class="cheque-detail-value amount">NPR {{ cheque.cheque_amount }}</span>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg></div>
+                                <h4>No Pending Cheques</h4>
+                                <p>All cheques have been deposited or none have been added yet.</p>
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endfor%}
                 </div>
 
-                <!-- Single Bank Deposit Form -->
+                <!-- RIGHT: Deposit Form -->
                 <div class="deposit-form-section" id="singleBankForm">
                     <div class="deposit-form-header">
                         <h3><svg viewBox="0 0 24 24"><path d="M4 10h3v7H4zm6 0h3v7h-3zm-8 9h19v3H2zm14-9h3v7h-3zm-4.5-9L2 6v2h19V6z"/></svg>Deposit Details</h3>
-                        <p>Enter bank details & upload deposit slip</p>
+                        <p>Enter bank details &amp; upload deposit slip</p>
                     </div>
+
+                    <!-- Summary Stats -->
                     <div class="selected-summary">
                         <div class="selected-summary-title">Selected Cheques Summary</div>
                         <div class="selected-stats">
-                            <div class="selected-stat"><div class="selected-stat-value" id="selectedCount">0</div><div class="selected-stat-label">Cheques Selected</div></div>
-                            <div class="selected-stat"><div class="selected-stat-value amount" id="selectedAmount">NPR 0</div><div class="selected-stat-label">Total Amount</div></div>
+                            <div class="selected-stat">
+                                <div class="selected-stat-value" id="selectedCount">0</div>
+                                <div class="selected-stat-label">Cheques Selected</div>
+                            </div>
+                            <div class="selected-stat">
+                                <div class="selected-stat-value amount" id="selectedAmount">NPR 0</div>
+                                <div class="selected-stat-label">Total Amount</div>
+                            </div>
                         </div>
                     </div>
-                    <form class="deposit-form" id="depositForm" onsubmit="handleSingleDeposit(event)">
+
+                    <!-- Deposit Form Fields -->
+                    <form class="deposit-form" id="depositForm" action="{% url 'deposit_form' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Cheque Info Fields (auto-filled + editable) -->
+                        <div class="form-section-divider">
+                            <span>Cheque Information</span>
+                            <small>Click a cheque on the left to auto-fill</small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Cheque No.</label>
+                                <input type="text" name="cheque_number" class="form-input" id="field_chequeNo" placeholder="Click a cheque →">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Issued By</label>
+                                <input type="text" name="account_name" class="form-input" id="field_issuedBy" placeholder="Account name">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Cheque Bank</label>
+                                <input type="text" name="cheque_bank" class="form-input" id="field_chequeBank" placeholder="Cheque bank name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount (NPR)</label>
+                                <input type="number" name="cheque_amount" class="form-input" id="field_amount" placeholder="0.00" min="0" step="0.01">
+                            </div>
+                        </div>
+
+                        <!-- Deposit Info Fields -->
+                        <div class="form-section-divider" style="margin-top: 8px;">
+                            <span>Deposit Information</span>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label">Deposit Bank <span class="required">*</span></label>
-                            <select class="form-select" id="depositBank" required>
+                            <select name="deposit_bank" class="form-select" id="depositBank" required>
                                 <option value="">Select deposit bank</option>
                                 <optgroup label="Class A - Commercial Banks">
                                     <option value="Nabil Bank">Nabil Bank Limited</option>
@@ -907,16 +907,16 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Branch Name <span class="required">*</span></label>
-                            <input type="text" class="form-input" id="branchName" placeholder="e.g., Kathmandu Main Branch" required>
+                            <input type="text" class="form-input" name="branch_name" id="branchName" placeholder="e.g., Kathmandu Main Branch" required>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Deposit Date <span class="required">*</span></label>
-                                <input type="date" class="form-input" id="depositDate" required>
+                                <input type="date" class="form-input" name="deposit_date" id="depositDate" required>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Deposit Slip No.</label>
-                                <input type="text" class="form-input" id="depositSlipNo" placeholder="e.g., DS-12345">
+                                <input type="text" class="form-input" name="deposit_slip_no" id="depositSlipNo" placeholder="e.g., DS-12345">
                             </div>
                         </div>
                         <div class="form-group">
@@ -924,16 +924,16 @@
                             <input type="text" class="form-input" id="accountNumber" placeholder="Your account number">
                         </div>
 
-                        <!-- Deposit Slip Upload -->
+                        <!-- File Upload -->
                         <div class="form-group">
                             <label class="form-label">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                                 Upload Deposit Slip
                             </label>
                             <div class="file-upload-area" id="singleUploadArea">
-                                <input type="file" accept="image/*,.pdf" multiple id="singleFileInput" onchange="handleFileUpload(event, 'single')">
+                                <input type="file" accept="image/*,.pdf" multiple id="singleFileInput" onchange="handleFileUpload(event)">
                                 <div class="file-upload-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></div>
-                                <h5><span>Click to upload</span> or drag & drop</h5>
+                                <h5><span>Click to upload</span> or drag &amp; drop</h5>
                                 <p>PNG, JPG, JPEG, PDF (Max 5MB each)</p>
                             </div>
                             <div class="uploaded-files" id="singleUploadedFiles"></div>
@@ -950,48 +950,6 @@
                             </button>
                         </div>
                     </form>
-                </div>
-
-                <!-- Multi-Bank Deposit Form -->
-                <div class="deposit-form-section" id="multiBankForm" style="display:none;">
-                    <div class="deposit-form-header multi-bank">
-                        <h3><svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>Multi-Bank Deposit</h3>
-                        <p>Split cheques across different deposit banks</p>
-                    </div>
-                    <div class="selected-summary">
-                        <div class="selected-summary-title">Selected Cheques Summary</div>
-                        <div class="selected-stats">
-                            <div class="selected-stat"><div class="selected-stat-value" id="multiSelectedCount">0</div><div class="selected-stat-label">Cheques Selected</div></div>
-                            <div class="selected-stat"><div class="selected-stat-value amount" id="multiSelectedAmount">NPR 0</div><div class="selected-stat-label">Total Amount</div></div>
-                        </div>
-                        <div id="multiAssignmentStatus" style="margin-top:12px;font-size:12px;color:var(--text-muted);text-align:center;"></div>
-                    </div>
-                    <div class="deposit-form" id="multiBankFormBody">
-                        <div class="form-row" style="margin-bottom:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Deposit Date <span class="required">*</span></label>
-                                <input type="date" class="form-input" id="multiDepositDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Remarks</label>
-                                <input type="text" class="form-input" id="multiRemarks" placeholder="Optional remarks">
-                            </div>
-                        </div>
-
-                        <div class="multi-bank-groups" id="bankGroupsContainer"></div>
-
-                        <button type="button" class="add-bank-group-btn" onclick="addBankGroup()" style="margin-top:16px;">
-                            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                            Add Another Bank
-                        </button>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-multi" id="submitMultiDeposit" onclick="handleMultiDeposit()" disabled>
-                                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                                Record All Deposits
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -1024,7 +982,9 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="depositHistoryBody"></tbody>
+                        <tbody id="depositHistoryBody">
+                            <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">No deposit records yet.</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -1032,13 +992,10 @@
         <footer class="footer"><p>© 2026 ChequeTracker. All rights reserved.</p></footer>
     </div>
 
-    <!-- View Deposit Modal -->
+    <!-- View Modal -->
     <div class="modal-overlay" id="viewModal">
         <div class="modal">
-            <div class="modal-header">
-                <h3>Deposit Details</h3>
-                <button class="modal-close" onclick="closeViewModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-            </div>
+            <div class="modal-header"><h3>Deposit Details</h3><button class="modal-close" onclick="closeViewModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button></div>
             <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
@@ -1052,767 +1009,415 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        const CHEQUES_KEY = 'chequeTrackerData';
-        const DEPOSITS_KEY = 'chequeDepositsData';
-        const NOTIFICATIONS_KEY = 'chequeTrackerNotifications';
+    // ==================== STATE ====================
+    const DEPOSITS_KEY = 'chequeDepositsData_v2';
+    let depositRecords = JSON.parse(localStorage.getItem(DEPOSITS_KEY) || '[]');
+    let selectedCheques = new Map(); // id -> {chequeNo, accountName, chequeBank, amount}
+    let singleUploadedFiles = [];
 
-        let chequeEntries = [];
-        let depositRecords = [];
-        let notifications = [];
-        let selectedCheques = new Set();
-        let depositMode = 'single'; // 'single' or 'multi'
-        let bankGroups = []; // for multi-bank: [{bank, branch, slipNo, accountNo, chequeIndices:[], files:[]}]
-        let singleUploadedFiles = []; // [{name, size, dataUrl}]
-
-        const BANK_COLORS = ['bank-a','bank-b','bank-c','bank-d','bank-e'];
-        const COLOR_CLASSES = ['c0','c1','c2','c3','c4'];
-
-        // ==================== BANK OPTIONS HTML ====================
-        const bankOptionsHTML = `
-            <option value="">Select deposit bank</option>
-            <optgroup label="Class A - Commercial Banks">
-                <option value="Nabil Bank">Nabil Bank Limited</option>
-                <option value="Nepal Investment Mega Bank">Nepal Investment Mega Bank Limited</option>
-                <option value="Standard Chartered Bank">Standard Chartered Bank Nepal Limited</option>
-                <option value="Himalayan Bank">Himalayan Bank Limited</option>
-                <option value="Nepal SBI Bank">Nepal SBI Bank Limited</option>
-                <option value="Nepal Bank">Nepal Bank Limited</option>
-                <option value="Rastriya Banijya Bank">Rastriya Banijya Bank Limited</option>
-                <option value="Everest Bank">Everest Bank Limited</option>
-                <option value="NIC Asia Bank">NIC Asia Bank Limited</option>
-                <option value="Machhapuchchhre Bank">Machhapuchchhre Bank Limited</option>
-                <option value="Kumari Bank">Kumari Bank Limited</option>
-                <option value="Laxmi Sunrise Bank">Laxmi Sunrise Bank Limited</option>
-                <option value="Siddhartha Bank">Siddhartha Bank Limited</option>
-                <option value="Global IME Bank">Global IME Bank Limited</option>
-                <option value="Citizens Bank">Citizens Bank International Limited</option>
-                <option value="Prime Commercial Bank">Prime Commercial Bank Limited</option>
-                <option value="NMB Bank">NMB Bank Limited</option>
-                <option value="Prabhu Bank">Prabhu Bank Limited</option>
-                <option value="Sanima Bank">Sanima Bank Limited</option>
-            </optgroup>
-            <optgroup label="Class B - Development Banks">
-                <option value="Kamana Sewa Bikas Bank">Kamana Sewa Bikas Bank Limited</option>
-                <option value="Muktinath Bikas Bank">Muktinath Bikas Bank Limited</option>
-                <option value="Lumbini Bikas Bank">Lumbini Bikas Bank Limited</option>
-            </optgroup>`;
-
-        // ==================== HELPERS ====================
-        function formatNepaliNumber(num) {
-            const n = Math.floor(num).toString();
-            let r = '', c = 0;
-            for (let i = n.length - 1; i >= 0; i--) {
-                c++;
-                r = n[i] + r;
-                if (c === 3 && i !== 0) r = ',' + r;
-                else if (c > 3 && (c - 3) % 2 === 0 && i !== 0) r = ',' + r;
-            }
-            return r;
+    // ==================== HELPERS ====================
+    function formatNPR(num) {
+        const n = Math.floor(parseFloat(num) || 0).toString();
+        let r = '', c = 0;
+        for (let i = n.length - 1; i >= 0; i--) {
+            c++;
+            r = n[i] + r;
+            if (c === 3 && i !== 0) r = ',' + r;
+            else if (c > 3 && (c - 3) % 2 === 0 && i !== 0) r = ',' + r;
         }
-        function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
-        function generateDepositId() {
-            const d = new Date();
-            return `DEP-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`;
-        }
-        function formatFileSize(bytes) {
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
-            return (bytes/1048576).toFixed(1) + ' MB';
-        }
+        return 'NPR ' + r;
+    }
+    function formatDate(d) { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
+    function formatFileSize(b) { if(b<1024)return b+'B'; if(b<1048576)return(b/1024).toFixed(1)+'KB'; return(b/1048576).toFixed(1)+'MB'; }
+    function generateDepositId() { const d=new Date(); return `DEP-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`; }
 
-        // ==================== MODE SWITCHING ====================
-        function switchDepositMode(mode) {
-            depositMode = mode;
-            document.getElementById('tabSingle').classList.toggle('active', mode === 'single');
-            document.getElementById('tabMulti').classList.toggle('active', mode === 'multi');
-            document.getElementById('singleBankForm').style.display = mode === 'single' ? '' : 'none';
-            document.getElementById('multiBankForm').style.display = mode === 'multi' ? '' : 'none';
-            document.getElementById('chequeListSubtitle').textContent = mode === 'single'
-                ? 'Select cheques to deposit at a single bank'
-                : 'Select cheques, then assign them to different banks below';
+    // ==================== CHEQUE SELECTION + AUTOFILL ====================
+    let lastSelectedId = null;
 
-            if (mode === 'multi' && bankGroups.length === 0) {
-                addBankGroup();
-            }
-            renderPendingCheques();
-            updateSelectedSummary();
-        }
+    function toggleChequeSelection(el) {
+        const cb = el.querySelector('.cheque-checkbox');
+        const id = el.dataset.id;
+        const data = {
+            chequeNo:    el.dataset.chequeNo,
+            accountName: el.dataset.accountName,
+            chequeBank:  el.dataset.chequeBank,
+            amount:      parseFloat(el.dataset.amount) || 0
+        };
 
-        // ==================== FILE UPLOAD ====================
-        function handleFileUpload(e, context, groupIndex) {
-            const files = Array.from(e.target.files);
-            files.forEach(file => {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast('error', 'File Too Large', `${file.name} exceeds 5MB limit.`);
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    const fileData = { name: file.name, size: file.size, dataUrl: ev.target.result, type: file.type };
-                    if (context === 'single') {
-                        singleUploadedFiles.push(fileData);
-                        renderUploadedFiles('single');
-                    } else if (context === 'multi' && groupIndex !== undefined) {
-                        bankGroups[groupIndex].files.push(fileData);
-                        renderBankGroups();
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-            e.target.value = '';
-        }
-
-        function removeUploadedFile(context, fileIndex, groupIndex) {
-            if (context === 'single') {
-                singleUploadedFiles.splice(fileIndex, 1);
-                renderUploadedFiles('single');
-            } else {
-                bankGroups[groupIndex].files.splice(fileIndex, 1);
-                renderBankGroups();
-            }
-        }
-
-        function renderUploadedFiles(context) {
-            const container = document.getElementById('singleUploadedFiles');
-            const files = singleUploadedFiles;
-            if (files.length === 0) { container.innerHTML = ''; return; }
-            container.innerHTML = files.map((f, i) => `
-                <div class="uploaded-file-item">
-                    <div class="uploaded-file-thumb">
-                        ${f.type && f.type.startsWith('image/') ? `<img src="${f.dataUrl}" alt="${f.name}" onclick="previewImage('${f.dataUrl}')" style="cursor:zoom-in">` : `<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>`}
-                    </div>
-                    <div class="uploaded-file-info">
-                        <div class="uploaded-file-name">${f.name}</div>
-                        <div class="uploaded-file-size">${formatFileSize(f.size)}</div>
-                    </div>
-                    <button class="uploaded-file-remove" onclick="removeUploadedFile('single',${i})" title="Remove">
-                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function previewImage(src) {
-            document.getElementById('previewImage').src = src;
-            document.getElementById('imagePreview').classList.add('active');
-        }
-        function closeImagePreview() { document.getElementById('imagePreview').classList.remove('active'); }
-
-        // Drag & drop
-        function setupDragDrop(areaId, context, groupIndex) {
-            const area = document.getElementById(areaId);
-            if (!area) return;
-            ['dragenter','dragover'].forEach(ev => area.addEventListener(ev, e => { e.preventDefault(); area.classList.add('dragover'); }));
-            ['dragleave','drop'].forEach(ev => area.addEventListener(ev, e => { e.preventDefault(); area.classList.remove('dragover'); }));
-            area.addEventListener('drop', e => {
-                const dt = e.dataTransfer;
-                if (dt.files.length) {
-                    const input = area.querySelector('input[type="file"]');
-                    input.files = dt.files;
-                    handleFileUpload({target: input}, context, groupIndex);
-                }
-            });
-        }
-
-        // ==================== MULTI-BANK GROUPS ====================
-        function addBankGroup() {
-            if (bankGroups.length >= 5) {
-                showToast('warning', 'Maximum Reached', 'You can add up to 5 bank groups.');
-                return;
-            }
-            bankGroups.push({ bank: '', branch: '', slipNo: '', accountNo: '', chequeIndices: [], files: [] });
-            renderBankGroups();
-        }
-
-        function removeBankGroup(idx) {
-            if (bankGroups.length <= 1) {
-                showToast('warning', 'Cannot Remove', 'At least one bank group is required.');
-                return;
-            }
-            // Unassign cheques
-            bankGroups[idx].chequeIndices.forEach(ci => {
-                // nothing special, just remove assignment
-            });
-            bankGroups.splice(idx, 1);
-            renderBankGroups();
-            renderPendingCheques();
-            updateSelectedSummary();
-        }
-
-        function updateBankGroupField(idx, field, value) {
-            bankGroups[idx][field] = value;
-        }
-
-        function assignChequeToGroup(chequeIndex, groupIndex) {
-            // Remove from other groups
-            bankGroups.forEach((g, gi) => {
-                const pos = g.chequeIndices.indexOf(chequeIndex);
-                if (pos !== -1) g.chequeIndices.splice(pos, 1);
-            });
-            bankGroups[groupIndex].chequeIndices.push(chequeIndex);
-            renderBankGroups();
-            renderPendingCheques();
-            updateSelectedSummary();
-        }
-
-        function unassignChequeFromGroup(chequeIndex, groupIndex) {
-            const pos = bankGroups[groupIndex].chequeIndices.indexOf(chequeIndex);
-            if (pos !== -1) bankGroups[groupIndex].chequeIndices.splice(pos, 1);
-            renderBankGroups();
-            renderPendingCheques();
-            updateSelectedSummary();
-        }
-
-        function getAssignedGroupIndex(chequeIndex) {
-            for (let i = 0; i < bankGroups.length; i++) {
-                if (bankGroups[i].chequeIndices.includes(chequeIndex)) return i;
-            }
-            return -1;
-        }
-
-        function renderBankGroups() {
-            const container = document.getElementById('bankGroupsContainer');
-            container.innerHTML = bankGroups.map((group, gi) => {
-                const colorClass = COLOR_CLASSES[gi % COLOR_CLASSES.length];
-                const bankColorClass = BANK_COLORS[gi % BANK_COLORS.length];
-                let groupTotal = 0;
-                group.chequeIndices.forEach(ci => { groupTotal += parseFloat(chequeEntries[ci]?.amount || 0); });
-
-                const unassignedSelected = [...selectedCheques].filter(ci => getAssignedGroupIndex(ci) === -1);
-
-                return `
-                <div class="bank-group">
-                    <div class="bank-group-header">
-                        <div class="bank-group-title">
-                            <div class="bank-group-color ${colorClass}"></div>
-                            Bank ${gi + 1} ${group.bank ? `— ${group.bank}` : ''}
-                        </div>
-                        <button class="bank-group-remove" onclick="removeBankGroup(${gi})" title="Remove bank group">
-                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                        </button>
-                    </div>
-                    <div class="bank-group-body">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Deposit Bank <span class="required">*</span></label>
-                                <select class="form-select" onchange="updateBankGroupField(${gi},'bank',this.value);renderBankGroups();">
-                                    ${bankOptionsHTML.replace(`value="${group.bank}"`, `value="${group.bank}" selected`)}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Branch <span class="required">*</span></label>
-                                <input type="text" class="form-input" value="${group.branch}" placeholder="Branch name" onchange="updateBankGroupField(${gi},'branch',this.value)">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Slip No.</label>
-                                <input type="text" class="form-input" value="${group.slipNo}" placeholder="DS-XXXXX" onchange="updateBankGroupField(${gi},'slipNo',this.value)">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Account No.</label>
-                                <input type="text" class="form-input" value="${group.accountNo}" placeholder="Account number" onchange="updateBankGroupField(${gi},'accountNo',this.value)">
-                            </div>
-                        </div>
-                        <!-- Upload for this group -->
-                        <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label" style="font-size:12px;">
-                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-                                Deposit Slip
-                            </label>
-                            <div class="file-upload-area" id="multiUpload_${gi}" style="padding:16px;">
-                                <input type="file" accept="image/*,.pdf" multiple onchange="handleFileUpload(event,'multi',${gi})">
-                                <p style="margin:0;font-size:12px;color:var(--text-muted);">
-                                    <span style="color:var(--primary);font-weight:600;">Click</span> or drag to upload slip
-                                </p>
-                            </div>
-                            ${group.files.length > 0 ? `
-                                <div class="uploaded-files" style="margin-top:8px;">
-                                    ${group.files.map((f, fi) => `
-                                        <div class="uploaded-file-item">
-                                            <div class="uploaded-file-thumb">
-                                                ${f.type && f.type.startsWith('image/') ? `<img src="${f.dataUrl}" onclick="previewImage('${f.dataUrl}')" style="cursor:zoom-in">` : `<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>`}
-                                            </div>
-                                            <div class="uploaded-file-info">
-                                                <div class="uploaded-file-name">${f.name}</div>
-                                                <div class="uploaded-file-size">${formatFileSize(f.size)}</div>
-                                            </div>
-                                            <button class="uploaded-file-remove" onclick="removeUploadedFile('multi',${fi},${gi})">
-                                                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                                            </button>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                    <div class="bank-group-cheques">
-                        <div class="bank-group-cheques-title">Assigned Cheques (${group.chequeIndices.length})</div>
-                        <div class="bank-group-cheque-list">
-                            ${group.chequeIndices.length === 0 ? `
-                                <div style="width:100%;text-align:center;font-size:12px;color:var(--text-muted);padding:8px 0;">
-                                    Click cheques on the left to assign to this bank
-                                </div>
-                            ` : group.chequeIndices.map(ci => {
-                                const ch = chequeEntries[ci];
-                                if (!ch) return '';
-                                return `
-                                <div class="bank-group-cheque-chip">
-                                    ${ch.chequeNo}
-                                    <span class="chip-amount">₹${formatNepaliNumber(ch.amount)}</span>
-                                    <button class="chip-remove" onclick="event.stopPropagation();unassignChequeFromGroup(${ci},${gi})">
-                                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                                    </button>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                    </div>
-                    <div class="bank-group-total">
-                        <span class="bank-group-total-label">Subtotal</span>
-                        <span class="bank-group-total-value">NPR ${formatNepaliNumber(groupTotal)}</span>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        // ==================== DATA ====================
-        function loadData() {
-            const sc = localStorage.getItem(CHEQUES_KEY);
-            const sd = localStorage.getItem(DEPOSITS_KEY);
-            if (sc) chequeEntries = JSON.parse(sc);
-            if (sd) depositRecords = JSON.parse(sd);
-            renderPendingCheques(); renderDepositHistory(); updateStats(); setDefaultDate(); loadNotifications();
-            setupDragDrop('singleUploadArea', 'single');
-        }
-        function saveData() {
-            localStorage.setItem(CHEQUES_KEY, JSON.stringify(chequeEntries));
-            localStorage.setItem(DEPOSITS_KEY, JSON.stringify(depositRecords));
-        }
-        function setDefaultDate() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('depositDate').value = today;
-            document.getElementById('multiDepositDate').value = today;
-        }
-
-        // ==================== RENDER CHEQUES ====================
-       /* function renderPendingCheques() {
-            const container = document.getElementById('chequeList');
-            const pending = chequeEntries.filter(c => c.status === 'pending');
-            if (pending.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg></div>
-                        <h4>No Pending Cheques</h4>
-                        <p>All cheques have been deposited.</p>
-                    </div>`;
-                return;
-            }
-            container.innerHTML = pending.map(cheque => {
-                const idx = chequeEntries.indexOf(cheque);
-                const isSel = selectedCheques.has(idx);
-                const assignedGroup = getAssignedGroupIndex(idx);
-                const bankTag = (depositMode === 'multi' && assignedGroup !== -1) ?
-                    `<div class="cheque-bank-tag ${BANK_COLORS[assignedGroup % BANK_COLORS.length]}">Bank ${assignedGroup+1}${bankGroups[assignedGroup]?.bank ? ': ' + bankGroups[assignedGroup].bank : ''}</div>` : '';
-
-                return `
-                <div class="cheque-item ${isSel ? 'selected' : ''}" onclick="handleChequeClick(${idx}, event)">
-                    <input type="checkbox" class="cheque-checkbox" ${isSel ? 'checked' : ''} data-index="${idx}" onclick="event.stopPropagation()">
-                    <div class="cheque-info">
-                        <div class="cheque-detail">
-                            <span class="cheque-detail-label">Cheque No</span>
-                            <span class="cheque-detail-value highlight">${cheque.chequeNo}</span>
-                            ${bankTag}
-                        </div>
-                        <div class="cheque-detail">
-                            <span class="cheque-detail-label">Account Name</span>
-                            <span class="cheque-detail-value">${cheque.accountName}</span>
-                        </div>
-                        <div class="cheque-detail">
-                            <span class="cheque-detail-label">Bank</span>
-                            <span class="cheque-detail-value">${cheque.chequeBank}</span>
-                        </div>
-                        <div class="cheque-detail">
-                            <span class="cheque-detail-label">Amount</span>
-                            <span class="cheque-detail-value amount">NPR ${formatNepaliNumber(cheque.amount)}</span>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-        }*/
-
-        function handleChequeClick(idx, event) {
-            const cb = event.currentTarget.querySelector('.cheque-checkbox');
-            if (event.target !== cb) cb.checked = !cb.checked;
-
-            if (selectedCheques.has(idx)) {
-                selectedCheques.delete(idx);
-                // Also unassign from multi-bank groups
-                if (depositMode === 'multi') {
-                    bankGroups.forEach(g => {
-                        const pos = g.chequeIndices.indexOf(idx);
-                        if (pos !== -1) g.chequeIndices.splice(pos, 1);
-                    });
-                }
-            } else {
-                selectedCheques.add(idx);
-                // In multi mode, auto-assign to first group that has fewest cheques
-                if (depositMode === 'multi' && bankGroups.length > 0) {
-                    let minGroup = 0;
-                    let minCount = bankGroups[0].chequeIndices.length;
-                    bankGroups.forEach((g, i) => {
-                        if (g.chequeIndices.length < minCount) { minCount = g.chequeIndices.length; minGroup = i; }
-                    });
-                    bankGroups[minGroup].chequeIndices.push(idx);
-                }
-            }
-            updateSelectedSummary();
-            renderPendingCheques();
-            if (depositMode === 'multi') renderBankGroups();
-            updateSelectAllCheckbox();
-        }
-
-        function toggleSelectAll() {
-            const sa = document.getElementById('selectAll');
-            const pending = chequeEntries.filter(c => c.status === 'pending');
-            if (sa.checked) {
-                pending.forEach(c => {
-                    const idx = chequeEntries.indexOf(c);
-                    selectedCheques.add(idx);
-                });
-                if (depositMode === 'multi') {
-                    // distribute evenly
-                    const selected = [...selectedCheques];
-                    bankGroups.forEach(g => g.chequeIndices = []);
-                    selected.forEach((ci, i) => {
-                        bankGroups[i % bankGroups.length].chequeIndices.push(ci);
-                    });
-                }
-            } else {
-                selectedCheques.clear();
-                bankGroups.forEach(g => g.chequeIndices = []);
-            }
-            updateSelectedSummary();
-            renderPendingCheques();
-            if (depositMode === 'multi') renderBankGroups();
-        }
-
-        function updateSelectAllCheckbox() {
-            const sa = document.getElementById('selectAll');
-            const pending = chequeEntries.filter(c => c.status === 'pending');
-            sa.checked = pending.length > 0 && pending.every(c => selectedCheques.has(chequeEntries.indexOf(c)));
-        }
-
-        function updateSelectedSummary() {
-            const count = selectedCheques.size;
-            let total = 0;
-            selectedCheques.forEach(i => { total += parseFloat(chequeEntries[i]?.amount || 0); });
-
-            document.getElementById('selectedCount').textContent = count;
-            document.getElementById('selectedAmount').textContent = 'NPR ' + formatNepaliNumber(total);
-            document.getElementById('multiSelectedCount').textContent = count;
-            document.getElementById('multiSelectedAmount').textContent = 'NPR ' + formatNepaliNumber(total);
-            document.getElementById('submitDeposit').disabled = count === 0;
-
-            // Multi: check all selected are assigned
-            if (depositMode === 'multi') {
-                const assignedCount = bankGroups.reduce((s, g) => s + g.chequeIndices.length, 0);
-                const unassigned = count - assignedCount;
-                const statusEl = document.getElementById('multiAssignmentStatus');
-                if (count === 0) {
-                    statusEl.innerHTML = '<span style="color:var(--text-muted)">Select cheques from the left</span>';
-                } else if (unassigned > 0) {
-                    statusEl.innerHTML = `<span style="color:var(--warning);font-weight:600;">⚠ ${unassigned} cheque(s) not assigned to any bank</span>`;
+        if (selectedCheques.has(id)) {
+            // Deselecting
+            selectedCheques.delete(id);
+            el.classList.remove('selected');
+            cb.checked = false;
+            // If this was the one filling the form, clear or fill from next selected
+            if (lastSelectedId === id) {
+                lastSelectedId = null;
+                if (selectedCheques.size > 0) {
+                    const [nextId, nextData] = selectedCheques.entries().next().value;
+                    autofillFields(nextId, nextData);
                 } else {
-                    statusEl.innerHTML = `<span style="color:var(--success);font-weight:600;">✓ All cheques assigned</span>`;
+                    clearFields();
                 }
-                document.getElementById('submitMultiDeposit').disabled = count === 0 || unassigned > 0;
             }
+        } else {
+            // Selecting — always autofill with clicked cheque
+            selectedCheques.set(id, data);
+            el.classList.add('selected');
+            cb.checked = true;
+            autofillFields(id, data);
         }
 
-        function updateStats() {
-            const pending = chequeEntries.filter(c => c.status === 'pending').length;
-            const deposited = depositRecords.length;
-            const cleared = chequeEntries.filter(c => c.status === 'cleared').length;
-            let totalDep = 0;
-            depositRecords.forEach(d => { totalDep += parseFloat(d.totalAmount) || 0; });
-            document.getElementById('statPending').textContent = pending;
-            document.getElementById('statDeposited').textContent = deposited;
-            document.getElementById('statCleared').textContent = cleared;
-            document.getElementById('statTotalAmount').textContent = 'NPR ' + formatNepaliNumber(totalDep);
-            document.getElementById('pendingBadge').textContent = pending;
+        updateSummary();
+        updateSelectAllCheckbox();
+    }
+
+    function autofillFields(id, data) {
+        lastSelectedId = id;
+        const fields = [
+            { el: document.getElementById('field_chequeNo'),   val: data.chequeNo    },
+            { el: document.getElementById('field_issuedBy'),   val: data.accountName },
+            { el: document.getElementById('field_chequeBank'), val: data.chequeBank  },
+            { el: document.getElementById('field_amount'),     val: data.amount      },
+        ];
+        fields.forEach(({ el, val }) => {
+            if (!el) return;
+            el.value = val || '';
+            el.classList.add('autofilled');
+        });
+    }
+
+    function clearFields() {
+        ['field_chequeNo','field_issuedBy','field_chequeBank','field_amount'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.value = '';
+            el.classList.remove('autofilled');
+        });
+        lastSelectedId = null;
+    }
+
+    function deselectCheque(id) {
+        selectedCheques.delete(id);
+        const el = document.querySelector(`.cheque-item[data-id="${id}"]`);
+        if (el) {
+            el.classList.remove('selected');
+            el.querySelector('.cheque-checkbox').checked = false;
         }
-
-        // ==================== SINGLE DEPOSIT ====================
-        function handleSingleDeposit(e) {
-            e.preventDefault();
-            if (selectedCheques.size === 0) { showToast('error','No Cheques','Select at least one cheque.'); return; }
-            const bank = document.getElementById('depositBank').value;
-            const branch = document.getElementById('branchName').value;
-            const date = document.getElementById('depositDate').value;
-            const slip = document.getElementById('depositSlipNo').value;
-            const acc = document.getElementById('accountNumber').value;
-            const remarks = document.getElementById('depositRemarks').value;
-            if (!bank || !branch || !date) { showToast('error','Missing Info','Fill all required fields.'); return; }
-
-            const chequesData = []; let total = 0;
-            selectedCheques.forEach(i => {
-                const c = chequeEntries[i];
-                chequesData.push({ chequeNo: c.chequeNo, accountName: c.accountName, chequeBank: c.chequeBank, amount: c.amount, chequeDate: c.chequeDate });
-                total += parseFloat(c.amount) || 0;
-                chequeEntries[i].status = 'processing';
-                chequeEntries[i].depositedAt = new Date().toISOString();
-            });
-
-            depositRecords.unshift({
-                depositId: generateDepositId(), depositBank: bank, branchName: branch, depositDate: date,
-                depositSlipNo: slip, accountNumber: acc, remarks, cheques: chequesData, totalAmount: total,
-                status: 'processing', createdAt: new Date().toISOString(),
-                slipImages: singleUploadedFiles.map(f => ({ name: f.name, dataUrl: f.dataUrl, type: f.type }))
-            });
-
-            saveData();
-            selectedCheques.clear(); singleUploadedFiles = [];
-            updateSelectedSummary(); renderPendingCheques(); renderDepositHistory(); updateStats();
-            document.getElementById('depositForm').reset(); setDefaultDate();
-            renderUploadedFiles('single');
-            addNotification({ type:'deposit-success', category:'success', title:'Deposit Recorded!', message:`${chequesData.length} cheque(s) totaling NPR ${formatNepaliNumber(total)} deposited at ${bank}.` });
-            showToast('success','Deposit Recorded!',`${chequesData.length} cheques totaling NPR ${formatNepaliNumber(total)} recorded.`);
-        }
-
-        // ==================== MULTI-BANK DEPOSIT ====================
-        function handleMultiDeposit() {
-            const date = document.getElementById('multiDepositDate').value;
-            const remarks = document.getElementById('multiRemarks').value;
-            if (!date) { showToast('error','Missing Date','Please select a deposit date.'); return; }
-
-            // Validate all groups
-            let totalCheques = 0;
-            for (let i = 0; i < bankGroups.length; i++) {
-                const g = bankGroups[i];
-                if (g.chequeIndices.length === 0) continue; // skip empty groups
-                if (!g.bank) { showToast('error','Missing Bank',`Bank ${i+1}: Select a deposit bank.`); return; }
-                if (!g.branch) { showToast('error','Missing Branch',`Bank ${i+1}: Enter a branch name.`); return; }
-                totalCheques += g.chequeIndices.length;
-            }
-            if (totalCheques === 0) { showToast('error','No Cheques Assigned','Assign cheques to at least one bank group.'); return; }
-
-            let depositsCreated = 0;
-            bankGroups.forEach((g, gi) => {
-                if (g.chequeIndices.length === 0) return;
-                const chequesData = []; let total = 0;
-                g.chequeIndices.forEach(ci => {
-                    const c = chequeEntries[ci];
-                    chequesData.push({ chequeNo: c.chequeNo, accountName: c.accountName, chequeBank: c.chequeBank, amount: c.amount, chequeDate: c.chequeDate });
-                    total += parseFloat(c.amount) || 0;
-                    chequeEntries[ci].status = 'processing';
-                    chequeEntries[ci].depositedAt = new Date().toISOString();
-                });
-                depositRecords.unshift({
-                    depositId: generateDepositId(), depositBank: g.bank, branchName: g.branch, depositDate: date,
-                    depositSlipNo: g.slipNo, accountNumber: g.accountNo, remarks, cheques: chequesData, totalAmount: total,
-                    status: 'processing', createdAt: new Date().toISOString(),
-                    slipImages: g.files.map(f => ({ name: f.name, dataUrl: f.dataUrl, type: f.type }))
-                });
-                depositsCreated++;
-            });
-
-            saveData();
-            selectedCheques.clear();
-            bankGroups = []; addBankGroup();
-            document.getElementById('multiDepositDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('multiRemarks').value = '';
-            updateSelectedSummary(); renderPendingCheques(); renderBankGroups(); renderDepositHistory(); updateStats();
-            addNotification({ type:'multi-deposit-success', category:'success', title:'Multi-Bank Deposit Done!', message:`${depositsCreated} deposit(s) with ${totalCheques} cheques recorded across multiple banks.` });
-            showToast('success','Multi-Bank Deposit Recorded!',`${depositsCreated} deposits with ${totalCheques} cheques created.`);
-        }
-
-        // ==================== DEPOSIT HISTORY ====================
-        function renderDepositHistory() {
-            const tbody = document.getElementById('depositHistoryBody');
-            if (depositRecords.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">No deposit records yet.</td></tr>`;
+        if (lastSelectedId === id) {
+            if (selectedCheques.size > 0) {
+                const [nextId, nextData] = selectedCheques.entries().next().value;
+                autofillFields(nextId, nextData);
+            } else {
+                clearFields();
                 return;
             }
-            tbody.innerHTML = depositRecords.map((d, i) => `
-                <tr>
-                    <td class="deposit-id">${d.depositId}</td>
-                    <td>${d.depositBank}</td>
-                    <td>${d.branchName}</td>
-                    <td><span class="deposit-cheques-count"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg>${d.cheques.length}</span></td>
-                    <td class="deposit-amount">NPR ${formatNepaliNumber(d.totalAmount)}</td>
-                    <td>${formatDate(d.depositDate)}</td>
-                    <td>${d.slipImages && d.slipImages.length > 0 ? `<span class="has-slip-icon"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>${d.slipImages.length}</span>` : `<span class="no-slip-icon">—</span>`}</td>
-                    <td><span class="table-status ${d.status}"><span class="cheque-status-dot"></span>${d.status.charAt(0).toUpperCase()+d.status.slice(1)}</span></td>
-                    <td><div class="table-actions"><button class="table-action-btn view" onclick="viewDeposit(${i})"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button></div></td>
-                </tr>
-            `).join('');
         }
+        updateSummary();
+        updateSelectAllCheckbox();
+    }
 
-        // ==================== VIEW MODAL ====================
-        function viewDeposit(i) {
-            const d = depositRecords[i];
-            document.getElementById('modalBody').innerHTML = `
-                <div class="modal-section">
-                    <div class="modal-section-title">Deposit Information</div>
-                    <div class="modal-info-grid">
-                        <div class="modal-info-item"><div class="modal-info-label">Deposit ID</div><div class="modal-info-value highlight">${d.depositId}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Date</div><div class="modal-info-value">${formatDate(d.depositDate)}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Bank</div><div class="modal-info-value">${d.depositBank}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Branch</div><div class="modal-info-value">${d.branchName}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Slip No.</div><div class="modal-info-value">${d.depositSlipNo || 'N/A'}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Account</div><div class="modal-info-value">${d.accountNumber || 'N/A'}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Cheques</div><div class="modal-info-value">${d.cheques.length}</div></div>
-                        <div class="modal-info-item"><div class="modal-info-label">Total</div><div class="modal-info-value amount">NPR ${formatNepaliNumber(d.totalAmount)}</div></div>
-                    </div>
-                    ${d.remarks ? `<div class="modal-info-item" style="margin-top:16px;"><div class="modal-info-label">Remarks</div><div class="modal-info-value">${d.remarks}</div></div>` : ''}
-                </div>
-                ${d.slipImages && d.slipImages.length > 0 ? `
-                <div class="modal-section">
-                    <div class="modal-section-title">Deposit Slip(s)</div>
-                    <div class="modal-slip-grid">
-                        ${d.slipImages.map(s => `
-                            <div class="modal-slip-thumb" onclick="previewImage('${s.dataUrl}')">
-                                ${s.type && s.type.startsWith('image/') ? `<img src="${s.dataUrl}" alt="${s.name}">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:var(--bg-secondary);"><svg viewBox="0 0 24 24" width="40" height="40" fill="var(--text-muted)"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg></div>`}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>` : ''}
-                <div class="modal-section">
-                    <div class="modal-section-title">Cheques in this Deposit</div>
-                    <div class="modal-cheques-list">
-                        <div class="modal-cheque-item header"><span>Cheque No.</span><span>Account</span><span>Bank</span><span>Amount</span></div>
-                        ${d.cheques.map(c => `
-                            <div class="modal-cheque-item">
-                                <span style="font-weight:600;color:var(--primary);">${c.chequeNo}</span>
-                                <span>${c.accountName}</span>
-                                <span>${c.chequeBank}</span>
-                                <span style="font-weight:700;color:var(--success);">NPR ${formatNepaliNumber(c.amount)}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>`;
-            document.getElementById('viewModal').classList.add('active');
-        }
-        function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
-
-        // ==================== EXPORT ====================
-        function exportDepositsToExcel() {
-            if (!depositRecords.length) { showToast('error','No Data','Nothing to export.'); return; }
-            const data = [];
-            depositRecords.forEach(d => {
-                d.cheques.forEach(c => {
-                    data.push({
-                        'Deposit ID': d.depositId, 'Deposit Bank': d.depositBank, 'Branch': d.branchName,
-                        'Deposit Date': formatDate(d.depositDate), 'Slip No.': d.depositSlipNo || '',
-                        'Account': d.accountNumber || '', 'Cheque No.': c.chequeNo,
-                        'Account Holder': c.accountName, 'Cheque Bank': c.chequeBank,
-                        'Amount': c.amount, 'Cheque Date': formatDate(c.chequeDate),
-                        'Status': d.status.charAt(0).toUpperCase() + d.status.slice(1),
-                        'Has Slip': d.slipImages && d.slipImages.length > 0 ? 'Yes' : 'No',
-                        'Remarks': d.remarks || ''
+    function toggleSelectAll() {
+        const sa = document.getElementById('selectAll');
+        const items = document.querySelectorAll('.cheque-item[data-id]');
+        if (sa.checked) {
+            items.forEach(el => {
+                const id = el.dataset.id;
+                if (!selectedCheques.has(id)) {
+                    selectedCheques.set(id, {
+                        chequeNo:    el.dataset.chequeNo,
+                        accountName: el.dataset.accountName,
+                        chequeBank:  el.dataset.chequeBank,
+                        amount:      parseFloat(el.dataset.amount) || 0
                     });
-                });
+                    el.classList.add('selected');
+                    el.querySelector('.cheque-checkbox').checked = true;
+                }
             });
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(data);
-            ws['!cols'] = Array(14).fill({ wch: 18 });
-            XLSX.utils.book_append_sheet(wb, ws, 'Deposits');
-            const fn = `Deposits_${new Date().toISOString().split('T')[0]}.xlsx`;
-            XLSX.writeFile(wb, fn);
-            showToast('success','Exported',`Saved as ${fn}`);
-        }
-
-        // ==================== NOTIFICATIONS ====================
-        function loadNotifications() {
-            const s = localStorage.getItem(NOTIFICATIONS_KEY);
-            if (s) notifications = JSON.parse(s);
-            generateAutoNotifications(); renderNotifications(); updateNotificationBadge();
-        }
-        function saveNotifications() { localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications)); }
-        function generateAutoNotifications() {
-            const pending = chequeEntries.filter(c => c.status === 'pending');
-            if (pending.length > 0 && !notifications.find(n => n.type === 'pending-reminder' && !n.read)) {
-                addNotification({ type:'pending-reminder', category:'warning', title:'Pending Cheques', message:`${pending.length} cheque(s) waiting to be deposited.`, persistent:true });
+            // Autofill with the first item if none loaded yet
+            if (items.length > 0 && !lastSelectedId) {
+                const first = items[0];
+                autofillFields(first.dataset.id, {
+                    chequeNo:    first.dataset.chequeNo,
+                    accountName: first.dataset.accountName,
+                    chequeBank:  first.dataset.chequeBank,
+                    amount:      parseFloat(first.dataset.amount) || 0
+                });
             }
+        } else {
+            items.forEach(el => {
+                el.classList.remove('selected');
+                el.querySelector('.cheque-checkbox').checked = false;
+            });
+            selectedCheques.clear();
+            clearFields();
+            return;
         }
-        function addNotification(data) {
-            const n = { id: Date.now()+Math.random().toString(36).substr(2,9), type:data.type||'general', category:data.category||'info', title:data.title, message:data.message, read:false, timestamp:new Date().toISOString(), persistent:data.persistent||false };
-            notifications.unshift(n);
-            if (notifications.length > 50) notifications = notifications.slice(0,50);
-            saveNotifications(); renderNotifications(); updateNotificationBadge();
-            return n;
-        }
-        function renderNotifications() {
-            const c = document.getElementById('notificationList');
-            const u = notifications.filter(n => !n.read).length;
-            document.getElementById('notificationCount').textContent = u;
-            if (!notifications.length) {
-                c.innerHTML = `<div class="notification-empty"><div class="notification-empty-icon"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><h5>No Notifications</h5><p>You're all caught up!</p></div>`;
-                return;
-            }
-            const icons = { success:'<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>', warning:'<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>', info:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>', error:'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' };
-            c.innerHTML = notifications.slice(0,10).map(n => {
-                const ago = getTimeAgo(n.timestamp);
-                return `<div class="notification-item ${n.read?'':'unread'}" onclick="markAsRead('${n.id}')"><div class="notification-icon ${n.category}">${icons[n.category]||icons.info}</div><div class="notification-content"><div class="notification-title">${n.title}</div><div class="notification-message">${n.message}</div><div class="notification-time"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>${ago}</div></div></div>`;
-            }).join('');
-        }
-        function getTimeAgo(ts) {
-            const d = Date.now() - new Date(ts).getTime();
-            const m = Math.floor(d/60000), h = Math.floor(d/3600000), dy = Math.floor(d/86400000);
-            if (m<1) return 'Just now'; if (m<60) return m+'m ago'; if (h<24) return h+'h ago'; if (dy<7) return dy+'d ago';
-            return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-        }
-        function updateNotificationBadge() {
-            const u = notifications.filter(n=>!n.read).length;
-            const b = document.getElementById('notificationBadge');
-            b.textContent = u > 9 ? '9+' : u;
-            b.setAttribute('data-count', u);
-        }
-        function toggleNotificationDropdown() { document.getElementById('notificationDropdown').classList.toggle('active'); }
-        function markAsRead(id) { const n = notifications.find(x=>x.id===id); if(n){n.read=true;saveNotifications();renderNotifications();updateNotificationBadge();}}
-        function markAllAsRead() { notifications.forEach(n=>n.read=true);saveNotifications();renderNotifications();updateNotificationBadge();showToast('success','Done','All read.');}
-        function clearAllNotifications() { notifications=[];saveNotifications();renderNotifications();updateNotificationBadge();showToast('success','Cleared','All notifications cleared.');}
+        updateSummary();
+    }
 
-        document.addEventListener('click', e => {
-            const w = document.querySelector('.notification-wrapper');
-            if (w && !w.contains(e.target)) document.getElementById('notificationDropdown').classList.remove('active');
+    function updateSelectAllCheckbox() {
+        const sa = document.getElementById('selectAll');
+        const items = document.querySelectorAll('.cheque-item[data-id]');
+        sa.checked = items.length > 0 && [...items].every(el => selectedCheques.has(el.dataset.id));
+    }
+
+    // ==================== SUMMARY ====================
+    function updateSummary() {
+        const count = selectedCheques.size;
+        let total = 0;
+        selectedCheques.forEach(d => total += d.amount);
+        document.getElementById('selectedCount').textContent = count;
+        document.getElementById('selectedAmount').textContent = formatNPR(total);
+        document.getElementById('submitDeposit').disabled = count === 0;
+    }
+
+
+    // ==================== FILE UPLOAD ====================
+    function handleFileUpload(e) {
+        Array.from(e.target.files).forEach(file => {
+            if (file.size > 5 * 1024 * 1024) { showToast('error', 'File Too Large', `${file.name} exceeds 5MB.`); return; }
+            const reader = new FileReader();
+            reader.onload = ev => { singleUploadedFiles.push({ name:file.name, size:file.size, dataUrl:ev.target.result, type:file.type }); renderUploadedFiles(); };
+            reader.readAsDataURL(file);
+        });
+        e.target.value = '';
+    }
+    function removeUploadedFile(i) { singleUploadedFiles.splice(i, 1); renderUploadedFiles(); }
+    function renderUploadedFiles() {
+        const c = document.getElementById('singleUploadedFiles');
+        if (!singleUploadedFiles.length) { c.innerHTML = ''; return; }
+        c.innerHTML = singleUploadedFiles.map((f,i) => `
+            <div class="uploaded-file-item">
+                <div class="uploaded-file-thumb">
+                    ${f.type && f.type.startsWith('image/') ? `<img src="${f.dataUrl}" onclick="previewImage('${f.dataUrl}')" style="cursor:zoom-in" alt="">` : `<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>`}
+                </div>
+                <div class="uploaded-file-info">
+                    <div class="uploaded-file-name">${f.name}</div>
+                    <div class="uploaded-file-size">${formatFileSize(f.size)}</div>
+                </div>
+                <button class="uploaded-file-remove" onclick="removeUploadedFile(${i})">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>`).join('');
+    }
+    function previewImage(src) { document.getElementById('previewImage').src = src; document.getElementById('imagePreview').classList.add('active'); }
+    function closeImagePreview() { document.getElementById('imagePreview').classList.remove('active'); }
+
+    // Drag & drop
+    (() => {
+        const area = document.getElementById('singleUploadArea');
+        if (!area) return;
+        ['dragenter','dragover'].forEach(ev => area.addEventListener(ev, e => { e.preventDefault(); area.classList.add('dragover'); }));
+        ['dragleave','drop'].forEach(ev => area.addEventListener(ev, e => { e.preventDefault(); area.classList.remove('dragover'); }));
+        area.addEventListener('drop', e => {
+            if (e.dataTransfer.files.length) handleFileUpload({ target: { files: e.dataTransfer.files, value:'' }, target: { files: e.dataTransfer.files } });
+        });
+    })();
+
+    // ==================== DEPOSIT SUBMIT ====================
+    function handleSingleDeposit(e) {
+        e.preventDefault();
+        if (selectedCheques.size === 0) { showToast('error','No Cheques','Select at least one cheque.'); return; }
+        const bank   = document.getElementById('depositBank').value;
+        const branch = document.getElementById('branchName').value;
+        const date   = document.getElementById('depositDate').value;
+        if (!bank || !branch || !date) { showToast('error','Missing Info','Fill all required fields.'); return; }
+
+        // Read the (possibly edited) cheque field values
+        const editedChequeNo    = document.getElementById('field_chequeNo').value.trim();
+        const editedAccountName = document.getElementById('field_issuedBy').value.trim();
+        const editedChequeBank  = document.getElementById('field_chequeBank').value.trim();
+        const editedAmount      = parseFloat(document.getElementById('field_amount').value) || 0;
+
+        const chequesData = [];
+        let total = 0;
+        selectedCheques.forEach((data, id) => {
+            // If this is the "active" cheque (lastSelectedId), use edited values
+            const isActive = id === lastSelectedId;
+            const chequeNo    = isActive && editedChequeNo    ? editedChequeNo    : data.chequeNo;
+            const accountName = isActive && editedAccountName ? editedAccountName : data.accountName;
+            const chequeBank  = isActive && editedChequeBank  ? editedChequeBank  : data.chequeBank;
+            const amount      = isActive && editedAmount      ? editedAmount      : data.amount;
+            chequesData.push({ id, chequeNo, accountName, chequeBank, amount });
+            total += amount;
         });
 
-        // ==================== TOAST ====================
-        function showToast(type, title, message) {
-            const c = document.getElementById('toastContainer');
-            const t = document.createElement('div');
-            t.className = `toast ${type}`;
-            const icons = { success:'<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>', error:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>', warning:'<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>', info:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>' };
-            t.innerHTML = `<div class="toast-icon"><svg viewBox="0 0 24 24">${icons[type]||icons.info}</svg></div><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
-            c.appendChild(t);
-            setTimeout(() => { t.style.animation = 'slideOutRight 0.3s ease-out forwards'; setTimeout(() => t.remove(), 300); }, 5000);
-        }
-
-        // ==================== THEME & TIME ====================
-        function toggleTheme() {
-            const cur = document.body.getAttribute('data-theme');
-            document.body.setAttribute('data-theme', cur === 'dark' ? '' : 'dark');
-            localStorage.setItem('theme', cur === 'dark' ? 'light' : 'dark');
-        }
-        function updateTime() {
-            const n = new Date();
-            document.getElementById('currentTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:true });
-            document.getElementById('currentDate').textContent = n.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
-        }
-
-        // ==================== INIT ====================
-        window.addEventListener('load', () => {
-            if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
-            loadData();
-            updateTime();
-            setInterval(updateTime, 1000);
+        depositRecords.unshift({
+            depositId:    generateDepositId(),
+            depositBank:  bank,
+            branchName:   branch,
+            depositDate:  date,
+            depositSlipNo:  document.getElementById('depositSlipNo').value,
+            accountNumber:  document.getElementById('accountNumber').value,
+            remarks:        document.getElementById('depositRemarks').value,
+            cheques:        chequesData,
+            totalAmount:    total,
+            status:         'processing',
+            createdAt:      new Date().toISOString(),
+            slipImages:     singleUploadedFiles.map(f => ({ name:f.name, dataUrl:f.dataUrl, type:f.type }))
         });
 
-        document.getElementById('viewModal').addEventListener('click', function(e) { if (e.target === this) closeViewModal(); });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') { closeViewModal(); closeImagePreview(); document.getElementById('notificationDropdown').classList.remove('active'); }
+        localStorage.setItem(DEPOSITS_KEY, JSON.stringify(depositRecords));
+
+        // Hide deposited cheques from the list
+        chequesData.forEach(c => {
+            const el = document.querySelector(`.cheque-item[data-id="${c.id}"]`);
+            if (el) el.style.display = 'none';
         });
+
+        selectedCheques.clear();
+        singleUploadedFiles = [];
+        lastSelectedId = null;
+        e.target.reset();
+        document.getElementById('depositDate').value = new Date().toISOString().split('T')[0];
+        clearFields();
+        renderUploadedFiles();
+
+        updateSummary();
+        updateSelectAllCheckbox();
+        renderDepositHistory();
+        updateStats();
+        showToast('success','Deposit Recorded!',`${chequesData.length} cheque(s) totaling ${formatNPR(total)} recorded at ${bank}.`);
+    }
+
+    // ==================== DEPOSIT HISTORY ====================
+    function renderDepositHistory() {
+        const tbody = document.getElementById('depositHistoryBody');
+        if (!depositRecords.length) {
+            tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">No deposit records yet.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = depositRecords.map((d, i) => `
+            <tr>
+                <td class="deposit-id">${d.depositId}</td>
+                <td>${d.depositBank}</td>
+                <td>${d.branchName}</td>
+                <td><span class="deposit-cheques-count"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z"/></svg>${d.cheques.length}</span></td>
+                <td class="deposit-amount">${formatNPR(d.totalAmount)}</td>
+                <td>${formatDate(d.depositDate)}</td>
+                <td>${d.slipImages && d.slipImages.length ? `<span class="has-slip-icon"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>${d.slipImages.length}</span>` : `<span class="no-slip-icon">—</span>`}</td>
+                <td><span class="table-status ${d.status}"><span class="cheque-status-dot"></span>${d.status.charAt(0).toUpperCase()+d.status.slice(1)}</span></td>
+                <td><div class="table-actions"><button class="table-action-btn view" onclick="viewDeposit(${i})" title="View"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button></div></td>
+            </tr>`).join('');
+    }
+
+    function updateStats() {
+        const pending = document.querySelectorAll('.cheque-item[data-id]:not([style*="display: none"])').length;
+        document.getElementById('statPending').textContent = pending;
+        document.getElementById('statDeposited').textContent = depositRecords.length;
+        let totalDep = 0;
+        depositRecords.forEach(d => totalDep += parseFloat(d.totalAmount) || 0);
+        document.getElementById('statTotalAmount').textContent = formatNPR(totalDep);
+    }
+
+    // ==================== VIEW MODAL ====================
+    function viewDeposit(i) {
+        const d = depositRecords[i];
+        document.getElementById('modalBody').innerHTML = `
+            <div class="modal-section">
+                <div class="modal-section-title">Deposit Information</div>
+                <div class="modal-info-grid">
+                    <div class="modal-info-item"><div class="modal-info-label">Deposit ID</div><div class="modal-info-value highlight">${d.depositId}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Date</div><div class="modal-info-value">${formatDate(d.depositDate)}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Bank</div><div class="modal-info-value">${d.depositBank}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Branch</div><div class="modal-info-value">${d.branchName}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Slip No.</div><div class="modal-info-value">${d.depositSlipNo||'N/A'}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Account</div><div class="modal-info-value">${d.accountNumber||'N/A'}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Total Amount</div><div class="modal-info-value amount">${formatNPR(d.totalAmount)}</div></div>
+                    <div class="modal-info-item"><div class="modal-info-label">Status</div><div class="modal-info-value"><span class="table-status ${d.status}"><span class="cheque-status-dot"></span>${d.status.charAt(0).toUpperCase()+d.status.slice(1)}</span></div></div>
+                </div>
+                ${d.remarks ? `<div class="modal-info-item" style="margin-top:14px;"><div class="modal-info-label">Remarks</div><div class="modal-info-value">${d.remarks}</div></div>` : ''}
+            </div>
+            ${d.slipImages && d.slipImages.length ? `
+            <div class="modal-section">
+                <div class="modal-section-title">Deposit Slip(s)</div>
+                <div class="modal-slip-grid">
+                    ${d.slipImages.map(s => `<div class="modal-slip-thumb" onclick="previewImage('${s.dataUrl}')">
+                        ${s.type && s.type.startsWith('image/') ? `<img src="${s.dataUrl}" alt="${s.name}">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:var(--bg-secondary);"><svg viewBox="0 0 24 24" width="36" height="36" fill="var(--text-muted)"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg></div>`}
+                    </div>`).join('')}
+                </div>
+            </div>` : ''}
+            <div class="modal-section">
+                <div class="modal-section-title">Cheques in this Deposit (${d.cheques.length})</div>
+                <div class="modal-cheques-list">
+                    <div class="modal-cheque-item header"><span>Cheque No.</span><span>Issued By</span><span>Cheque Bank</span><span>Amount</span></div>
+                    ${d.cheques.map(c => `<div class="modal-cheque-item">
+                        <span style="font-weight:700;color:var(--primary)">${c.chequeNo}</span>
+                        <span>${c.accountName}</span>
+                        <span>${c.chequeBank}</span>
+                        <span style="font-weight:700;color:var(--success)">${formatNPR(c.amount)}</span>
+                    </div>`).join('')}
+                </div>
+            </div>`;
+        document.getElementById('viewModal').classList.add('active');
+    }
+    function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
+
+    // ==================== EXPORT ====================
+    function exportDepositsToExcel() {
+        if (!depositRecords.length) { showToast('error','No Data','Nothing to export.'); return; }
+        const data = [];
+        depositRecords.forEach(d => d.cheques.forEach(c => {
+            data.push({
+                'Deposit ID':d.depositId,'Deposit Bank':d.depositBank,'Branch':d.branchName,
+                'Deposit Date':formatDate(d.depositDate),'Slip No.':d.depositSlipNo||'',
+                'Account':d.accountNumber||'','Cheque No.':c.chequeNo,
+                'Issued By':c.accountName,'Cheque Bank':c.chequeBank,'Amount':c.amount,
+                'Has Slip':d.slipImages&&d.slipImages.length?'Yes':'No','Remarks':d.remarks||''
+            });
+        }));
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(data);
+        ws['!cols'] = Array(12).fill({ wch: 18 });
+        XLSX.utils.book_append_sheet(wb, ws, 'Deposits');
+        const fn = `Deposits_${new Date().toISOString().split('T')[0]}.xlsx`;
+        XLSX.writeFile(wb, fn);
+        showToast('success','Exported',`Saved as ${fn}`);
+    }
+
+    // ==================== MODE SWITCHING (stub, single mode only for now) ====================
+    function switchDepositMode(mode) {
+        document.getElementById('tabSingle').classList.toggle('active', mode==='single');
+        document.getElementById('tabMulti').classList.toggle('active', mode==='multi');
+        document.getElementById('chequeListSubtitle').textContent = mode==='single'
+            ? 'Select cheques to deposit at a single bank'
+            : 'Select cheques, then assign them to different banks';
+    }
+
+    // ==================== TOAST ====================
+    function showToast(type, title, message) {
+        const c = document.getElementById('toastContainer');
+        const t = document.createElement('div'); t.className = `toast ${type}`;
+        const icons = { success:'<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>', error:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>', warning:'<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>' };
+        t.innerHTML = `<div class="toast-icon"><svg viewBox="0 0 24 24">${icons[type]||icons.error}</svg></div><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
+        c.appendChild(t);
+        setTimeout(() => { t.style.animation = 'slideOutRight 0.3s ease-out forwards'; setTimeout(() => t.remove(), 300); }, 5000);
+    }
+
+    // ==================== THEME & TIME ====================
+    function toggleTheme() {
+        const cur = document.body.getAttribute('data-theme');
+        document.body.setAttribute('data-theme', cur==='dark' ? '' : 'dark');
+        localStorage.setItem('theme', cur==='dark' ? 'light' : 'dark');
+    }
+    function updateTime() {
+        const n = new Date();
+        document.getElementById('currentTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:true });
+        document.getElementById('currentDate').textContent = n.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+    }
+
+    // ==================== INIT ====================
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
+        document.getElementById('depositDate').value = new Date().toISOString().split('T')[0];
+        renderDepositHistory();
+        updateStats();
+        updateTime();
+        setInterval(updateTime, 1000);
+    });
+
+    document.getElementById('viewModal').addEventListener('click', function(e) { if(e.target===this) closeViewModal(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeViewModal(); closeImagePreview(); } });
     </script>
 </body>
 </html>
