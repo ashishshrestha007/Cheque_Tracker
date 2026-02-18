@@ -572,7 +572,7 @@
         .deposit-id { font-weight:700;color:var(--primary); }
         .deposit-amount { font-weight:700;color:var(--success); }
         .deposit-cheques-count { display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--primary-light);color:var(--primary);border-radius:20px;font-size:12px;font-weight:600; }
-        .table-status { display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600; }
+        .table-status { display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:15px;font-weight:600; color:var(--warning);}
         .table-status.processing { background:rgba(0,101,255,0.1);color:var(--info); }
         .table-status.completed { background:var(--success-light);color:var(--success); }
         .cheque-status-dot { width:6px;height:6px;border-radius:50%;background:currentColor; }
@@ -971,19 +971,37 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Deposit ID</th>
+                                <th>Cheque NO</th>
                                 <th>Deposit Bank</th>
                                 <th>Branch</th>
-                                <th>Cheques</th>
+                                
                                 <th>Total Amount</th>
-                                <th>Date</th>
-                                <th>Slip</th>
-                                <th>Status</th>
+                                <th>Deposit Date</th>
+                                <th>Deposit Slip</th>
+                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="depositHistoryBody">
-                            <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">No deposit records yet.</td></tr>
+                            
+                            
+                            {% for cheque_deposits in cheque_deposits %}
+                            <tr>
+                               
+                                <td class="deposit-id">{{ cheque_deposits.cheque_number }}</td>
+                                <td>{{ cheque_deposits.deposit_bank }}</td>
+                                <td>{{ cheque_deposits.branch_name }}</td>
+                               
+                                <td class="deposit-amount">{{ cheque_deposits.cheque_amount }}</td>
+                                <td>{{ cheque_deposits.deposit_date }}</td>
+                                <td>{{cheque_deposits.deposit_slip_no}}</td>
+                                <td><span class="table-status">Deposited</span></td>
+                                <td><div class="table-actions"><button class="table-action-btn view"  title="View"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button><a href="{% url 'deposit_delete' cheque_deposits.id %}"><button type="submit" class="table-action-btn delete-btn" title="Delete">
+                                                    <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                                </button></div></td>
+                                
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -1287,7 +1305,7 @@
             tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">No deposit records yet.</td></tr>`;
             return;
         }
-        tbody.innerHTML = depositRecords.map((d, i) => `
+        /*tbody.innerHTML = depositRecords.map((d, i) => `
             <tr>
                 <td class="deposit-id">${d.depositId}</td>
                 <td>${d.depositBank}</td>
@@ -1299,6 +1317,7 @@
                 <td><span class="table-status ${d.status}"><span class="cheque-status-dot"></span>${d.status.charAt(0).toUpperCase()+d.status.slice(1)}</span></td>
                 <td><div class="table-actions"><button class="table-action-btn view" onclick="viewDeposit(${i})" title="View"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button></div></td>
             </tr>`).join('');
+            */
     }
 
     function updateStats() {

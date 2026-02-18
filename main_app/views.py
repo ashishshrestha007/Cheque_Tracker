@@ -144,6 +144,7 @@ def cheque_edit(request, id):
 def cheque_delete(request, id):
     if request.method == "POST":
         cheque = get_object_or_404(cheque_details, id=id)
+    
         cheque_number = cheque.cheque_number
         cheque.delete()
         messages.success(request, f'Cheque #{cheque_number} deleted successfully!')
@@ -151,8 +152,10 @@ def cheque_delete(request, id):
 @login_required
 def deposit_home(request):
     available_cheque=cheque_details.objects.all()
+    cheque_deposits=cheque_deposit.objects.all()
+     
     
-    return render(request,"Deposit.html",{"available_cheque":available_cheque})
+    return render(request,"Deposit.html",{"available_cheque":available_cheque,"cheque_deposits":cheque_deposits})
 
 
 @login_required
@@ -181,13 +184,28 @@ def deposit_form(request):
 
         messages.success(request, f'Cheque #{cheque_number} deposited successfully!')
 
+
+       
     return redirect('deposit')
+
+def deposit_delete(request, id):
+    deposit_cheque=get_object_or_404(cheque_deposit,id=id)
+    deposit_cheque.delete()
+    messages.success(request, f'Cheque deposit deleted successfully!')
+    return redirect('deposit')
+
+
 
 @login_required
 def report_home(request):
+    available_cheque=cheque_details.objects.all()
+    cheque_deposits=cheque_deposit.objects.all()
+     
     
+    return render(request,"report.html",{"cheque_deposits":available_cheque,"cheque_deposits":cheque_deposits})
 
-    return render(request,"report.html")
+
+
 @login_required
 def setting_home(request):
     return render(request,"setting.html")

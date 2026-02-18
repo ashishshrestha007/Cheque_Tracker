@@ -6,6 +6,7 @@ urlpatterns=[
     path("dashboard/",views.dashboard_home,name="dashboard"),
     path("cheque/",views.cheque_home,name="cheque"),
     path('cheque/delete/<int:id>/', views.cheque_delete, name='cheque_delete'),
+    path("deposit/delete/<int:id>",views.deposit_delete,name='deposit_delete'),
     path('cheque/edit/<int:id>/', views.cheque_edit, name='cheque_edit'),
     path('deposit/submit/',  views.deposit_form, name='deposit_form'),
 
