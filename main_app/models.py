@@ -23,6 +23,7 @@ class cheque_deposit(models.Model):
     branch_name=models.CharField(max_length=200)
     deposit_date=models.CharField(max_length=200)
     deposit_slip_no=models.CharField(max_length=200)
+    remarks=models.CharField(max_length=200)
 
     def __str__(self):
         return self.cheque_number

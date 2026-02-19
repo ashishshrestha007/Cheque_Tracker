@@ -169,6 +169,7 @@ def deposit_form(request):
         branch_name     = request.POST.get("branch_name")
         deposit_date    = request.POST.get("deposit_date")
         deposit_slip_no = request.POST.get("deposit_slip_no")
+        remarks         = request.POST.get("remarks")
 
         new_deposit = cheque_deposit(
             cheque_number   = cheque_number,
@@ -179,6 +180,7 @@ def deposit_form(request):
             branch_name     = branch_name,
             deposit_date    = deposit_date,
             deposit_slip_no = deposit_slip_no,
+            remarks=remarks,
         )
         new_deposit.save()
 
