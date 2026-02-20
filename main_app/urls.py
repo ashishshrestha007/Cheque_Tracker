@@ -16,6 +16,8 @@ urlpatterns=[
     path("report/",views.report_home,name="report"),
     path("setting/",views.setting_home,name="setting"),
     path("logout/",views.logout_view,name="logout"),
+    path("support/",views.login_support,name="support"),
+   
 
     
 ]
