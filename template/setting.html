@@ -1746,56 +1746,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="settings-card">
-                            <div class="settings-card-header">
-                                <h2 class="settings-card-title">Active Sessions</h2>
-                                <p class="settings-card-description">Manage your active login sessions</p>
-                            </div>
-                            <div class="settings-card-body">
-                                <div class="session-card current">
-                                    <div class="session-icon">
-                                        <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
-                                    </div>
-                                    <div class="session-info">
-                                        <div class="session-device">
-                                            Windows PC - Chrome
-                                            <span class="session-current-badge">Current</span>
-                                        </div>
-                                        <div class="session-details">New York, USA • Last active: Just now</div>
-                                    </div>
-                                </div>
-
-                                <div class="session-card">
-                                    <div class="session-icon">
-                                        <svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
-                                    </div>
-                                    <div class="session-info">
-                                        <div class="session-device">iPhone 14 Pro - Safari</div>
-                                        <div class="session-details">New York, USA • Last active: 2 hours ago</div>
-                                    </div>
-                                    <button class="session-action" onclick="revokeSession('iphone')">Revoke</button>
-                                </div>
-
-                                <div class="session-card">
-                                    <div class="session-icon">
-                                        <svg viewBox="0 0 24 24"><path d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z"/></svg>
-                                    </div>
-                                    <div class="session-info">
-                                        <div class="session-device">iPad Pro - Safari</div>
-                                        <div class="session-details">Boston, USA • Last active: 1 day ago</div>
-                                    </div>
-                                    <button class="session-action" onclick="revokeSession('ipad')">Revoke</button>
-                                </div>
-
-                                <div class="btn-group" style="margin-top: 16px;">
-                                    <button class="btn btn-outline-danger" onclick="revokeAllSessions()">
-                                        <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
-                                        Sign Out All Other Sessions
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </section>
 
                     <!-- Notifications Section -->
@@ -2066,53 +2016,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="settings-card">
-                            <div class="settings-card-header">
-                                <h2 class="settings-card-title">Export Your Data</h2>
-                                <p class="settings-card-description">Download a copy of your data</p>
-                            </div>
-                            <div class="settings-card-body">
-                                <div class="export-options">
-                                    <div class="export-option" onclick="exportData('profile')">
-                                        <div class="export-icon">
-                                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                        </div>
-                                        <div class="export-info">
-                                            <div class="export-title">Profile Data</div>
-                                            <div class="export-description">Your profile information and settings</div>
-                                        </div>
-                                    </div>
-                                    <div class="export-option" onclick="exportData('cheques')">
-                                        <div class="export-icon">
-                                            <svg viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></svg>
-                                        </div>
-                                        <div class="export-info">
-                                            <div class="export-title">Cheque History</div>
-                                            <div class="export-description">All cheque transactions and records</div>
-                                        </div>
-                                    </div>
-                                    <div class="export-option" onclick="exportData('deposits')">
-                                        <div class="export-icon">
-                                            <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13z"/></svg>
-                                        </div>
-                                        <div class="export-info">
-                                            <div class="export-title">Deposit Records</div>
-                                            <div class="export-description">All deposit transactions and confirmations</div>
-                                        </div>
-                                    </div>
-                                    <div class="export-option" onclick="exportData('all')">
-                                        <div class="export-icon">
-                                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                                        </div>
-                                        <div class="export-info">
-                                            <div class="export-title">All Data</div>
-                                            <div class="export-description">Download all your data in one file</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </section>
 
                     <!-- Danger Zone Section -->
@@ -2123,13 +2026,13 @@
                                 <p class="settings-card-description">Irreversible and destructive actions</p>
                             </div>
                             <div class="settings-card-body">
-                                <div class="danger-item">
+                                <!-- <div class="danger-item">
                                     <div class="danger-item-info">
                                         <h4>Deactivate Account</h4>
                                         <p>Temporarily disable your account. You can reactivate it anytime by logging in.</p>
                                     </div>
                                     <button class="btn btn-outline-danger" onclick="openModal('deactivateModal')">Deactivate</button>
-                                </div>
+                                </div> -->
                                 <div class="danger-item">
                                     <div class="danger-item-info">
                                         <h4>Delete All Data</h4>
@@ -2153,7 +2056,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>© 2024 ChequeTracker. All rights reserved.</p>
+            <p>© 2026 ChequeTracker. All rights reserved.</p>
         </footer>
     </div>
 
