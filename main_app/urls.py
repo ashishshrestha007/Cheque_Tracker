@@ -9,6 +9,7 @@ urlpatterns=[
     path("deposit/delete/<int:id>",views.deposit_delete,name='deposit_delete'),
     path('cheque/edit/<int:id>/', views.cheque_edit, name='cheque_edit'),
     path('deposit/submit/',  views.deposit_form, name='deposit_form'),
+    path("changepassword/",views.change_password,name="change_password"),
 
     path("deposit/",views.deposit_home,name="deposit"),
     path("help/",views.help_home,name="help"),

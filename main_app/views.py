@@ -211,6 +211,28 @@ def report_home(request):
 @login_required
 def setting_home(request):
     return render(request,"setting.html")
+
+
+def change_password(request):
+    if request.method == "POST":
+        current_password = request.POST.get("currentpassword")
+        new_password = request.POST.get("newpassword")
+        confirm_password = request.POST.get("confirmpassword")
+
+        if not request.user.check_password(current_password):
+            messages.error(request, "Current password is incorrect.")
+            return redirect('setting')
+
+        if new_password != confirm_password:
+            messages.error(request, "New passwords do not match.")
+            return redirect('setting')
+
+        request.user.set_password(new_password)
+        request.user.save()
+        messages.success(request, "Password changed successfully. Please log in again.")
+        return redirect('login')
+
+    return redirect('setting')
 @login_required
 def help_home(request): 
     return render(request,"help.html")
