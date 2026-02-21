@@ -2038,7 +2038,9 @@
                                         <h4>Delete All Data</h4>
                                         <p>Permanently delete all your cheque and deposit records. This cannot be undone.</p>
                                     </div>
-                                    <button class="btn btn-outline-danger" onclick="openModal('deleteDataModal')">Delete Data</button>
+                                    <a href="{% url 'datadelete' %}">
+                                        <button class="btn btn-outline-danger" >Delete Data</button>
+                                    </a>
                                 </div>
                                 <div class="danger-item">
                                     <div class="danger-item-info">

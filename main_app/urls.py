@@ -18,6 +18,7 @@ urlpatterns=[
     path("logout/",views.logout_view,name="logout"),
     path("support/",views.login_support,name="support"),
     path("userdelete/<int:id>/",views.delete_user,name="deleteuser"),
+    path("datadelete/",views.data_delete,name="datadelete"),
    
 
     

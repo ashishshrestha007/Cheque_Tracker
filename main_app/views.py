@@ -268,3 +268,14 @@ def delete_user(request, id):
     user.delete()
     messages.success(request, 'User deleted successfully!')
     return redirect('login')
+
+#deleting all data
+def data_delete(request):
+    
+    # Delete all cheque deposits
+    cheque_deposit.objects.all().delete()
+    cheque_details.objects.all().delete()
+    
+    messages.success(request, 'All cheque data deleted successfully!')
+    return redirect('dashboard')
+
