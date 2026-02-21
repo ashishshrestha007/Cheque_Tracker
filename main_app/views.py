@@ -259,3 +259,12 @@ def login_support(request):
 
 
 # Create your views here.
+
+
+#delete a login user
+
+def delete_user(request, id):
+    user = get_object_or_404(User, id=id)
+    user.delete()
+    messages.success(request, 'User deleted successfully!')
+    return redirect('login')

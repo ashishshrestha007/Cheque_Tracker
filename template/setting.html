@@ -2045,7 +2045,9 @@
                                         <h4>Delete Account</h4>
                                         <p>Permanently delete your account and all associated data. This action cannot be reversed.</p>
                                     </div>
-                                    <button class="btn btn-danger" onclick="openModal('deleteAccountModal')">Delete Account</button>
+                                    <a href="{% url 'deleteuser' user.id %}">
+                                        <button class="btn btn-danger" >Delete Account</button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
