@@ -1155,7 +1155,7 @@
                                 <th>Issued By</th>
                                 <th>Cheque Bank</th>
                                 <th>Amount (NPR)</th>
-                                <th>Cheque Date</th>
+                                
                                 <th>Deposit Date</th>
                                 <th>Deposit Bank</th>
                                 <th>Deposit Branch</th>
@@ -1166,8 +1166,9 @@
                         </thead>
                         <tbody id="reportTableBody">
                             {% for cheque in cheque_deposits %}
+                            
                             <tr>
-                                <td class="table-sn"></td>
+                                <td class="table-sn">{{ forloop.counter }}</td>
                                 {% if cheque.cheque_bank == cheque.deposit_bank %}
                                     <td><span class="table-deposit-type clearing">NORMAL</span></td>
                                 {% else %}
@@ -1177,7 +1178,7 @@
                                 <td class="table-name">{{cheque.account_name}}</td>
                                 <td><span>{{cheque.cheque_bank}}</span></div></td>
                                 <td class="table-amount">NPR {{cheque.cheque_amount}}</td>
-                                <td class="table-date">{{cheque.cheque_date}}</td>
+                                
                                 <td class="table-date">{{cheque.deposit_date}}</td>
                                 <td style="font-size:13px;color:var(--text-secondary);">{{cheque.deposit_bank}}</td>
                                 <td style="font-size:13px;color:var(--text-secondary);">{{cheque.branch_name}}</td>

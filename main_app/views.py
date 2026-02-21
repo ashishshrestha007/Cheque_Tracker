@@ -171,6 +171,11 @@ def deposit_form(request):
         deposit_slip_no = request.POST.get("deposit_slip_no")
         remarks         = request.POST.get("remarks")
 
+        # Get selected cheque IDs from hidden input
+        selected_ids_raw = request.POST.get("selected_cheque_ids", "")
+        selected_ids = [i.strip() for i in selected_ids_raw.split(",") if i.strip()]
+
+        # Save deposit record
         new_deposit = cheque_deposit(
             cheque_number   = cheque_number,
             account_name    = account_name,
@@ -180,14 +185,18 @@ def deposit_form(request):
             branch_name     = branch_name,
             deposit_date    = deposit_date,
             deposit_slip_no = deposit_slip_no,
-            remarks=remarks,
+            remarks         = remarks,
         )
         new_deposit.save()
 
+        # Delete the deposited cheques from the pending cheques table
+        if selected_ids:
+            cheque_details.objects.filter(id__in=selected_ids).delete()
+            # ⚠️ Replace YourChequeModel with your actual model name
+            # e.g. Cheque.objects.filter(id__in=selected_ids).delete()
+
         messages.success(request, f'Cheque #{cheque_number} deposited successfully!')
 
-
-       
     return redirect('deposit')
 
 def deposit_delete(request, id):
