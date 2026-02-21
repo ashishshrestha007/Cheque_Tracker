@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome Email</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body style="margin:0;padding:0;background-color:#0d0d0d;font-family:'DM Sans',sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d0d0d;padding:40px 20px;">
+    <tr>
+      <td align="center">
+
+        <!-- Card -->
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#111111;border-radius:20px;overflow:hidden;border:1px solid #222;">
+
+          <!-- Top Banner -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#c8a96e 0%,#f0d48a 40%,#b8892e 100%);padding:50px 40px;text-align:center;">
+              <p style="margin:0 0 12px 0;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#5a3a00;font-weight:500;">Welcome Aboard</p>
+              <h1 style="margin:0;font-family:'Playfair Display',serif;font-size:42px;color:#1a0e00;font-weight:700;line-height:1.1;">You're In.</h1>
+              <div style="width:50px;height:2px;background:#5a3a00;margin:20px auto 0;opacity:0.5;"></div>
+            </td>
+          </tr>
+
+          <!-- Logo / Brand -->
+          <tr>
+            <td style="text-align:center;padding:30px 40px 0;">
+              <div style="display:inline-block;background:linear-gradient(135deg,#c8a96e,#f0d48a);border-radius:12px;padding:10px 24px;">
+                <span style="font-family:'Playfair Display',serif;font-size:20px;color:#1a0e00;font-weight:700;letter-spacing:1px;">Cheque Tracker</span>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:40px 50px;">
+              <p style="margin:0 0 8px 0;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#c8a96e;font-weight:500;">Hello,</p>
+              <h2 style="margin:0 0 24px 0;font-family:'Playfair Display',serif;font-size:32px;color:#f5f0e8;font-weight:700;">
+                {{ username }} 👋
+              </h2>
+              <p style="margin:0 0 20px 0;font-size:16px;line-height:1.8;color:#a0a0a0;font-weight:300;">
+                We're thrilled to have you join us. Your account has been successfully created and you're all set to explore everything we have to offer.
+              </p>
+              <p style="margin:0 0 36px 0;font-size:16px;line-height:1.8;color:#a0a0a0;font-weight:300;">
+                Jump right in — your dashboard is ready and waiting for you.
+              </p>
+
+              <!-- CTA Button -->
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="border-radius:10px;background:linear-gradient(135deg,#c8a96e,#f0d48a);">
+                    <a href="http://127.0.0.1:8000"
+                       style="display:inline-block;padding:16px 40px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#1a0e00;text-decoration:none;letter-spacing:0.5px;">
+                      Go to Dashboard →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:0 50px;">
+              <div style="height:1px;background:linear-gradient(to right,transparent,#333,transparent);"></div>
+            </td>
+          </tr>
+
+          <!-- Details Section -->
+          <tr>
+            <td style="padding:30px 50px;">
+              <p style="margin:0 0 16px 0;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#555;font-weight:500;">Account Details</p>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding:12px 16px;background:#1a1a1a;border-radius:8px 8px 0 0;border-bottom:1px solid #222;">
+                    <span style="font-size:12px;color:#555;text-transform:uppercase;letter-spacing:2px;">Username</span><br/>
+                    <span style="font-size:16px;color:#f0d48a;font-weight:500;font-family:'Playfair Display',serif;">{{ username }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 16px;background:#1a1a1a;border-radius:0 0 8px 8px;">
+                    <span style="font-size:12px;color:#555;text-transform:uppercase;letter-spacing:2px;">Email</span><br/>
+                    <span style="font-size:16px;color:#f0d48a;font-weight:500;font-family:'Playfair Display',serif;">{{ email }}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Features Row -->
+          <tr>
+            <td style="padding:0 50px 40px;">
+              <p style="margin:0 0 20px 0;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#555;font-weight:500;">What's next</p>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="33%" style="padding:0 6px 0 0;vertical-align:top;">
+                    <div style="background:#1a1a1a;border-radius:10px;padding:20px 16px;text-align:center;">
+                      <div style="font-size:24px;margin-bottom:10px;">🚀</div>
+                      <p style="margin:0;font-size:13px;color:#888;line-height:1.5;">Explore your dashboard</p>
+                    </div>
+                  </td>
+                  <td width="33%" style="padding:0 3px;vertical-align:top;">
+                    <div style="background:#1a1a1a;border-radius:10px;padding:20px 16px;text-align:center;">
+                      <div style="font-size:24px;margin-bottom:10px;">⚙️</div>
+                      <p style="margin:0;font-size:13px;color:#888;line-height:1.5;">Set up your profile</p>
+                    </div>
+                  </td>
+                  <td width="33%" style="padding:0 0 0 6px;vertical-align:top;">
+                    <div style="background:#1a1a1a;border-radius:10px;padding:20px 16px;text-align:center;">
+                      <div style="font-size:24px;margin-bottom:10px;">💬</div>
+                      <p style="margin:0;font-size:13px;color:#888;line-height:1.5;">Contact support anytime</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#0d0d0d;padding:30px 50px;text-align:center;border-top:1px solid #1e1e1e;">
+              <p style="margin:0 0 8px 0;font-size:13px;color:#444;">
+                If you didn't create this account, please ignore this email.
+              </p>
+              <p style="margin:0;font-size:12px;color:#333;">
+                © 2025 YourBrand · All rights reserved
+              </p>
+              <div style="margin-top:20px;">
+                <a href="#" style="font-size:12px;color:#c8a96e;text-decoration:none;margin:0 10px;">Privacy Policy</a>
+                <span style="color:#333;">·</span>
+                <a href="#" style="font-size:12px;color:#c8a96e;text-decoration:none;margin:0 10px;">Unsubscribe</a>
+                <span style="color:#333;">·</span>
+                <a href="#" style="font-size:12px;color:#c8a96e;text-decoration:none;margin:0 10px;">Help</a>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+        <!-- End Card -->
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

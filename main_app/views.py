@@ -6,6 +6,8 @@ from .models import cheque_details,cheque_deposit
 from django.db.models import Sum, Count, Q
 from datetime import date
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 
 
@@ -47,6 +49,22 @@ def register(request):
             
         )
         messages.success(request, "Account created successfully")
+        # HTML email
+        html_content = render_to_string('email/email_template.html', {
+            'username': username,
+            'email': email,
+        })
+
+        msg = EmailMultiAlternatives(
+            subject='Welcome to Our Site!',
+            body='Thank you for registering!',  # fallback plain text
+            from_email='your_email@gmail.com',
+            to=[email],
+        )
+        msg.attach_alternative(html_content, "text/html")
+        
+        msg.send()
+
         return redirect('login')
     return render(request,"register.html")
 
